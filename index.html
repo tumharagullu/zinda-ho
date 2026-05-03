@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zinda Ho? | Digital Saboot</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --card: #111;
+            --neon: #ccff00;
+            --pink: #ff0055;
+            --text: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            margin-top: 20px;
+        }
+
+        .glass-card {
+            background: var(--card);
+            border: 1px solid #222;
+            padding: 40px 25px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            letter-spacing: -3px;
+            font-weight: 900;
+            line-height: 0.9;
+        }
+
+        .pink-text { color: var(--pink); text-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+
+        .tagline {
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .streak-info {
+            background: #1a1a1a;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 25px 0;
+            font-size: 0.9rem;
+            color: var(--neon);
+            border: 1px solid #333;
+            font-weight: bold;
+        }
+
+        .grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 10px; }
+        
+        .btn {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #eee;
+            padding: 20px;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .btn:hover { border-color: var(--neon); color: var(--neon); }
+
+        #writing-area, #history-area, #dare-area { display: none; }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #333;
+            color: var(--neon);
+            font-size: 1.4rem;
+            padding: 15px 0;
+            outline: none;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .primary-btn {
+            background: var(--neon);
+            color: #000;
+            border: none;
+            padding: 20px;
+            border-radius: 50px;
+            font-weight: 900;
+            margin-top: 30px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .dare-btns { display: flex; gap: 15px; margin-top: 30px; }
+        .karlega-btn { background: var(--neon); color: #000; flex: 2; padding: 18px; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; }
+        .darr-btn { background: transparent; border: 1px solid var(--pink); color: var(--pink); flex: 1; padding: 18px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+
+        #history-list { margin-top: 20px; max-height: 400px; overflow-y: auto; text-align: left; }
+        .history-item { background: #1a1a1a; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 5px solid var(--pink); }
+        .history-date { font-size: 0.8rem; color: var(--neon); font-weight: bold; margin-bottom: 5px; }
+
+        .footer-link { margin-top: 30px; color: #444; cursor: pointer; text-decoration: underline; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div id="home" class="glass-card">
+        <h1>ZINDA<br><span class="pink-text">HO?</span></h1>
+        <p class="tagline">"Zinda ho toh saboot do."</p>
+        <div class="streak-info" id="streak-display">Loading...</div>
+        <div class="grid">
+            <button class="btn" onclick="showPage('writing-area'); setPoke('Main Character');">Main Character Energy 💅 <span>→</span></button>
+            <button class="btn" onclick="showPage('writing-area'); setPoke('Lafda');">Lafda Ho Gaya 👊 <span>→</span></button>
+            <button class="btn" onclick="showPage('writing-area'); setPoke('Delulu');">Delulu is Solulu 🤡 <span>→</span></button>
+            <button class="btn" onclick="showPage('writing-area'); setPoke('Breakdown');">Thoda Breakdown 📉 <span>→</span></button>
+        </div>
+        <p class="footer-link" onclick="openHistory()">Pichle Kaand (History)</p>
+    </div>
+
+    <div id="writing-area" class="glass-card">
+        <h2 id="ai-poke-text" style="color: var(--neon); font-size: 1.6rem; min-height: 60px;">...</h2>
+        <textarea id="userInput" placeholder="Yahan sab ugal do..."></textarea>
+        <button class="primary-btn" onclick="processSave()">DAFAN KARO</button>
+        <p onclick="goToHome()" style="color: #444; margin-top: 20px; cursor: pointer;">Wapas Jao</p>
+    </div>
+
+    <div id="dare-area" class="glass-card">
+        <h2 style="color: #00ff41;">SABOOT DAFAN! ✅</h2>
+        <div style="border: 2px dashed var(--neon); padding: 30px 20px; margin: 25px 0; border-radius: 25px;">
+            <p style="color: #666; font-size: 0.8rem; margin-bottom: 10px;">AAJ KA DARE:</p>
+            <p id="daily-dare-display" style="font-size: 1.5rem; font-weight: bold;"></p>
+        </div>
+        <div class="dare-btns">
+            <button class="karlega-btn" onclick="dareResponse('karlega')">Kar Lega? 🔥</button>
+            <button class="darr-btn" onclick="dareResponse('dar')">Darr Gaya? 🤡</button>
+        </div>
+    </div>
+
+    <div id="history-area" class="glass-card">
+        <h2 style="color: var(--pink); font-size: 2rem;">Saboot History</h2>
+        <div id="history-list"></div>
+        <button class="primary-btn" onclick="goToHome()">HOME PE JAO</button>
+    </div>
+</div>
+
+<script>
+    let activeMood = "";
+    const dareBank = [
+        "Mummy ko bina wajah 'I love you' bolo aur unka reaction dekho.",
+        "Kisi purane dost ko message karo: 'Aaj teri yaad aayi, bas.'",
+        "Aaj pure din junk food ko hath mat lagao.",
+        "Mirror mein dekh kar khud ko ek flying kiss do.",
+        "Aaj 15 minute phone switch off karke shaanti se baitho.",
+        "Kisi random anjaan ko dekh kar smile karo.",
+        "Aaj apni gallery se 10 faltu screenshots delete karo.",
+        "Ek glass paani piyo aur kaho 'Sukoon'.",
+        "Aaj kisi ki post par ek acha comment karo bina kisi wajah ke.",
+        "Apne phone ka wallpaper badlo jo tumhe motivate kare."
+    ];
+
+    function showPage(pageId) {
+        ['home', 'writing-area', 'dare-area', 'history-area'].forEach(id => {
+            document.getElementById(id).style.display = (id === pageId) ? 'block' : 'none';
+        });
+    }
+
+    function goToHome() {
+        showPage('home');
+        updateStats();
+    }
+
+    function setPoke(type) {
+        const poke = document.getElementById('ai-poke-text');
+        if(type === 'Main Character') poke.innerText = "Hero ban rahe ho? Aaj kahan jalwe dikhaye?";
+        else if(type === 'Lafda') poke.innerText = "Lafda? Poori tea ugal do, kisne panga liya?";
+        else if(type === 'Delulu') poke.innerText = "Sapno ki duniya mein kya chal raha hai?";
+        else poke.innerText = "Dil halka kar lo. Main sun raha hoon.";
+    }
+
+    function processSave() {
+        const text = document.getElementById('userInput').value;
+        if(text.trim().length < 5) return alert("Kuch toh likh, bro!");
+
+        const logs = JSON.parse(localStorage.getItem('z_ho_logs')) || [];
+        logs.unshift({d: new Date().toLocaleDateString('hi-IN'), m: activeMood, t: text});
+        localStorage.setItem('z_ho_logs', JSON.stringify(logs));
+
+        const randomDare = dareBank[Math.floor(Math.random() * dareBank.length)];
+        document.getElementById('daily-dare-display').innerText = randomDare;
+        showPage('dare-area');
+    }
+
+    function dareResponse(choice) {
+        if(choice === 'karlega') alert("Sahi hai! Kal aake batana.");
+        else alert("Hahaha! Darr gaya? 🤡");
+        goToHome();
+    }
+
+    function openHistory() {
+        showPage('history-area');
+        const list = document.getElementById('history-list');
+        const logs = JSON.parse(localStorage.getItem('z_ho_logs')) || [];
+        if(logs.length === 0) list.innerHTML = "<p style='text-align:center; color:#444;'>Khali hai!</p>";
+        else list.innerHTML = logs.map(l => `<div class="history-item"><div class="history-date">${l.d} | ${l.m}</div><div>${l.t}</div></div>`).join('');
+    }
+
+    function updateStats() {
+        const logs = JSON.parse(localStorage.getItem('z_ho_logs')) || [];
+        const streak = logs.length;
+        let rank = "Beginner 👻";
+        if(streak >= 3) rank = "Survivor 🏃";
+        if(streak >= 10) rank = "Legend 🌌";
+        document.getElementById('streak-display').innerText = `Streak: ${streak} Din | ${rank}`;
+    }
+
+    window.onload = updateStats;
+</script>
+</body>
+</html>
