@@ -1,249 +1,1161 @@
-<!DOCTYPE html>
+# Write the file in parts to avoid truncation
+part1 = '''<!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zinda Ho? | Digital Saboot</title>
-    <style>
-        :root {
-            --bg: #050505;
-            --card: #111;
-            --neon: #ccff00;
-            --pink: #ff0055;
-            --text: #ffffff;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 450px;
-            margin-top: 20px;
-        }
-
-        .glass-card {
-            background: var(--card);
-            border: 1px solid #222;
-            padding: 40px 25px;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 4rem;
-            margin: 0;
-            letter-spacing: -3px;
-            font-weight: 900;
-            line-height: 0.9;
-        }
-
-        .pink-text { color: var(--pink); text-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
-
-        .tagline {
-            color: #666;
-            font-size: 1.2rem;
-            margin-top: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .streak-info {
-            background: #1a1a1a;
-            padding: 12px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            margin: 25px 0;
-            font-size: 0.9rem;
-            color: var(--neon);
-            border: 1px solid #333;
-            font-weight: bold;
-        }
-
-        .grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 10px; }
-        
-        .btn {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #eee;
-            padding: 20px;
-            border-radius: 18px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .btn:hover { border-color: var(--neon); color: var(--neon); }
-
-        #writing-area, #history-area, #dare-area { display: none; }
-
-        textarea {
-            width: 100%;
-            height: 200px;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #333;
-            color: var(--neon);
-            font-size: 1.4rem;
-            padding: 15px 0;
-            outline: none;
-            resize: none;
-            font-family: inherit;
-        }
-
-        .primary-btn {
-            background: var(--neon);
-            color: #000;
-            border: none;
-            padding: 20px;
-            border-radius: 50px;
-            font-weight: 900;
-            margin-top: 30px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-        }
-
-        .dare-btns { display: flex; gap: 15px; margin-top: 30px; }
-        .karlega-btn { background: var(--neon); color: #000; flex: 2; padding: 18px; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; }
-        .darr-btn { background: transparent; border: 1px solid var(--pink); color: var(--pink); flex: 1; padding: 18px; border-radius: 50px; cursor: pointer; font-weight: bold; }
-
-        #history-list { margin-top: 20px; max-height: 400px; overflow-y: auto; text-align: left; }
-        .history-item { background: #1a1a1a; padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 5px solid var(--pink); }
-        .history-date { font-size: 0.8rem; color: var(--neon); font-weight: bold; margin-bottom: 5px; }
-
-        .footer-link { margin-top: 30px; color: #444; cursor: pointer; text-decoration: underline; font-size: 0.9rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zinda Ho? | Digital Saboot</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+:root{--primary:#6366f1;--secondary:#ec4899;--accent:#f59e0b;--success:#10b981;--danger:#ef4444;--bg:#0a0a14;--bg-card:#12121f;--bg-elevated:#1e1e35;--text:#f8fafc;--text-muted:#94a3b8;--text-dim:#64748b;--border:rgba(255,255,255,0.06);--g1:linear-gradient(135deg,#667eea,#764ba2);--g2:linear-gradient(135deg,#f093fb,#f5576c);--g3:linear-gradient(135deg,#4facfe,#00f2fe);--fire:linear-gradient(135deg,#f59e0b,#ef4444);}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans Devanagari','Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6}
+.bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:radial-gradient(ellipse at 20% 20%,rgba(99,102,241,0.15) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(236,72,153,0.1) 0%,transparent 50%),var(--bg);animation:bgMove 15s ease-in-out infinite}
+@keyframes bgMove{0%,100%{transform:translate(0,0)}33%{transform:translate(-20px,10px)}66%{transform:translate(15px,-15px)}}
+.orbs{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.4;animation:orbFloat linear infinite}
+.orb:nth-child(1){width:300px;height:300px;background:var(--primary);top:10%;left:10%;animation-duration:20s}
+.orb:nth-child(2){width:250px;height:250px;background:var(--secondary);top:60%;right:10%;animation-duration:25s;animation-delay:-5s}
+.orb:nth-child(3){width:200px;height:200px;background:var(--accent);bottom:10%;left:40%;animation-duration:18s;animation-delay:-10s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(30px,-30px) rotate(90deg)}50%{transform:translate(-20px,20px) rotate(180deg)}75%{transform:translate(20px,30px) rotate(270deg)}}
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;overflow:hidden}
+.particle{position:absolute;border-radius:50%;opacity:0.6;animation:pFloat linear infinite}
+@keyframes pFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+.header{padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(18,18,31,0.7);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:0.75rem;font-size:1.5rem;font-weight:800;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+.logo i{font-size:1.75rem;-webkit-text-fill-color:var(--primary)}
+.header-actions{display:flex;gap:0.75rem;align-items:center}
+.btn-icon{width:42px;height:42px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-size:1rem}
+.btn-icon:hover{background:var(--bg-elevated);color:var(--text);transform:translateY(-3px) scale(1.05);box-shadow:0 0 40px rgba(99,102,241,0.25);border-color:var(--primary)}
+.user-avatar{width:42px;height:42px;border-radius:50%;border:2px solid var(--primary);cursor:pointer;object-fit:cover;transition:all 0.3s}
+.user-avatar:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(99,102,241,0.4)}
+.container{max-width:1200px;margin:0 auto;padding:2rem}
+.hero{text-align:center;padding:2rem 0 1rem}
+.hero h1{font-size:4rem;font-weight:800;margin-bottom:0.5rem;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:titlePulse 3s ease-in-out infinite;letter-spacing:-2px}
+@keyframes titlePulse{0%,100%{filter:brightness(1) drop-shadow(0 0 20px rgba(99,102,241,0.3))}50%{filter:brightness(1.3) drop-shadow(0 0 40px rgba(99,102,241,0.5))}}
+.hero-subtitle{font-size:1.3rem;color:var(--text-muted);margin-bottom:1.5rem;font-style:italic}
+.streak-card{background:rgba(30,30,53,0.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:28px;padding:2.5rem;margin:2rem auto;max-width:520px;text-align:center;position:relative;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);transition:all 0.4s}
+.streak-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 30px 60px rgba(0,0,0,0.5),0 0 40px rgba(99,102,241,0.2)}
+.streak-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--fire)}
+.streak-number{font-size:6rem;font-weight:800;background:var(--fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:streakGlow 2s ease-in-out infinite}
+@keyframes streakGlow{0%,100%{text-shadow:0 0 30px rgba(245,158,11,0.5)}50%{text-shadow:0 0 60px rgba(245,158,11,0.9)}}
+.streak-label{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem}
+.streak-fire{font-size:3.5rem;animation:fireFlicker 0.8s ease-in-out infinite alternate;display:inline-block}
+@keyframes fireFlicker{0%{transform:scale(1) rotate(-5deg)}100%{transform:scale(1.15) rotate(5deg)}}
+.level-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.05);padding:0.6rem 1.2rem;border-radius:50px;font-size:0.95rem;font-weight:600;color:var(--accent);border:1px solid rgba(245,158,11,0.3)}
+.level-progress{margin-top:1.25rem;background:rgba(255,255,255,0.05);border-radius:50px;height:10px;overflow:hidden}
+.level-progress-bar{height:100%;background:var(--g1);border-radius:50px;transition:width 0.8s;position:relative}
+.level-progress-bar::after{content:'';position:absolute;top:0;right:0;bottom:0;width:30px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4));animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{transform:translateX(-30px)}100%{transform:translateX(30px)}}
+.section-title{font-size:1.6rem;font-weight:700;margin:2.5rem 0 1.25rem;display:flex;align-items:center;gap:0.75rem}
+.section-title i{color:var(--primary);font-size:1.3rem;background:rgba(99,102,241,0.15);width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.ai-detector{background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(236,72,153,0.1));border:1px solid rgba(99,102,241,0.3);border-radius:20px;padding:1.5rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
+.ai-detector:hover{border-color:var(--primary);transform:translateY(-3px);box-shadow:0 10px 30px rgba(99,102,241,0.2)}
+.ai-icon{font-size:2rem;width:60px;height:60px;background:var(--g1);border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.ai-text{flex:1;position:relative;z-index:1}
+.ai-text h3{font-size:1.1rem;margin-bottom:0.25rem}
+.ai-text p{font-size:0.9rem;color:var(--text-muted)}
+.ai-status{position:relative;z-index:1;padding:0.5rem 1rem;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:50px;font-size:0.85rem;font-weight:600;color:var(--success)}
+.ai-status.analyzing{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--accent);animation:pulse 1s infinite}
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.25rem;margin-bottom:2rem}
+.mood-card{background:var(--bg-card);border:2px solid var(--border);border-radius:24px;padding:1.75rem 1rem;text-align:center;cursor:pointer;transition:all 0.4s;position:relative;overflow:hidden}
+.mood-card:hover{transform:translateY(-10px) scale(1.03);border-color:var(--primary);box-shadow:0 25px 50px rgba(99,102,241,0.25)}
+.mood-card.active{border-color:var(--primary);background:var(--bg-elevated);box-shadow:0 0 40px rgba(99,102,241,0.4)}
+.mood-emoji{font-size:3.5rem;margin-bottom:0.75rem;display:block;transition:transform 0.4s}
+.mood-card:hover .mood-emoji{transform:scale(1.3) rotate(15deg)}
+.mood-card.active .mood-emoji{animation:moodBounce 0.7s}
+@keyframes moodBounce{0%,100%{transform:scale(1)}30%{transform:scale(1.4) rotate(-15deg)}50%{transform:scale(1.1) rotate(10deg)}70%{transform:scale(1.3) rotate(-5deg)}}
+.mood-name{font-weight:700;font-size:1.05rem}
+.mood-count{font-size:0.85rem;color:var(--text-dim);margin-top:0.35rem}
+.entry-section{background:var(--bg-card);border:1px solid var(--border);border-radius:28px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:none;animation:slideUp 0.5s}
+.entry-section.visible{display:block}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.entry-header{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem}
+.selected-mood-display{font-size:3rem;animation:moodPop 0.6s}
+@keyframes moodPop{0%{transform:scale(0) rotate(-30deg)}60%{transform:scale(1.3) rotate(10deg)}100%{transform:scale(1) rotate(0deg)}}
+.entry-title-text{font-size:1.3rem;font-weight:700}
+.entry-subtitle{color:var(--text-muted);font-size:0.95rem}
+.entry-textarea{width:100%;min-height:160px;background:var(--bg-elevated);border:2px solid var(--border);border-radius:20px;padding:1.25rem;color:var(--text);font-family:inherit;font-size:1.05rem;resize:vertical;transition:all 0.3s;margin-bottom:1rem}
+.entry-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 30px rgba(99,102,241,0.2)}
+.entry-textarea::placeholder{color:var(--text-dim)}
+.entry-toolbar{display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap}
+.toolbar-btn{padding:0.6rem 1rem;border-radius:12px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-muted);font-family:inherit;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all 0.2s}
+.toolbar-btn:hover{background:var(--bg-hover);color:var(--text);border-color:var(--primary);transform:translateY(-2px)}
+.photo-preview-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.75rem;margin-bottom:1rem}
+.photo-preview{aspect-ratio:1;border-radius:16px;overflow:hidden;position:relative;border:2px solid var(--border);transition:all 0.3s}
+.photo-preview:hover{border-color:var(--primary);transform:scale(1.05)}
+.photo-preview img{width:100%;height:100%;object-fit:cover}
+.photo-preview .remove-photo{position:absolute;top:5px;right:5px;width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,0.9);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;opacity:0;transition:opacity 0.2s}
+.photo-preview:hover .remove-photo{opacity:1}
+.entry-actions{display:flex;gap:1rem;justify-content:flex-end;align-items:center}
+.btn{padding:1rem 2.5rem;border-radius:14px;border:none;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;gap:0.6rem;position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s}
+.btn:hover::before{left:100%}
+.btn-primary{background:var(--g1);color:white;box-shadow:0 4px 20px rgba(99,102,241,0.4)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 30px rgba(99,102,241,0.6)}
+.btn-secondary{background:var(--bg-elevated);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg-hover);border-color:var(--primary);transform:translateY(-2px)}
+.quote-card{background:var(--g1);border-radius:24px;padding:2rem;margin-bottom:2rem;text-align:center;position:relative;overflow:hidden;animation:quoteFloat 8s ease-in-out infinite;box-shadow:0 20px 40px rgba(99,102,241,0.3)}
+@keyframes quoteFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.quote-card::before{content:'"';position:absolute;top:-30px;left:30px;font-size:10rem;opacity:0.08;font-family:serif}
+.quote-text{font-size:1.2rem;font-weight:700;position:relative;z-index:1;line-height:1.7}
+.quote-author{margin-top:0.75rem;font-size:0.95rem;opacity:0.85;font-weight:500}
+.music-player{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.5rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:1.5rem;transition:all 0.3s}
+.music-player:hover{border-color:var(--secondary);box-shadow:0 10px 30px rgba(236,72,153,0.15)}
+.music-cover{width:80px;height:80px;border-radius:16px;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;flex-shrink:0}
+.music-cover.playing{animation:musicPulse 2s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(236,72,153,0.3)}50%{transform:scale(1.05);box-shadow:0 0 40px rgba(236,72,153,0.5)}}
+.music-info{flex:1}
+.music-info h4{font-size:1.1rem;margin-bottom:0.25rem}
+.music-info p{font-size:0.85rem;color:var(--text-muted)}
+.music-controls{display:flex;align-items:center;gap:1rem}
+.music-btn{width:48px;height:48px;border-radius:50%;border:2px solid var(--border);background:var(--bg-elevated);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.3s}
+.music-btn:hover{background:var(--secondary);border-color:var(--secondary);transform:scale(1.1)}
+.music-btn.play{width:56px;height:56px;background:var(--g2);border:none;font-size:1.3rem}
+.music-progress{flex:1;height:6px;background:var(--bg-elevated);border-radius:50px;overflow:hidden;margin:0 1rem}
+.music-progress-bar{height:100%;background:var(--g2);border-radius:50px;width:0%;transition:width 0.3s}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-bottom:2rem}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);transition:all 0.4s;position:relative;overflow:hidden}
+.stat-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity 0.3s}
+.stat-card:nth-child(1)::before{background:var(--primary)}.stat-card:nth-child(2)::before{background:var(--secondary)}.stat-card:nth-child(3)::before{background:var(--success)}.stat-card:nth-child(4)::before{background:var(--accent)}
+.stat-card:hover::before{opacity:1}
+.stat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.stat-title{font-size:0.9rem;color:var(--text-muted);font-weight:500}
+.stat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.stat-icon.purple{background:rgba(99,102,241,0.15);color:var(--primary)}.stat-icon.pink{background:rgba(236,72,153,0.15);color:var(--secondary)}.stat-icon.green{background:rgba(16,185,129,0.15);color:var(--success)}.stat-icon.orange{background:rgba(245,158,11,0.15);color:var(--accent)}
+.stat-value{font-size:2.5rem;font-weight:800}
+.stat-change{font-size:0.9rem;color:var(--success);margin-top:0.5rem;font-weight:600}
+.chart-container{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.chart-title{font-size:1.15rem;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem}
+.calendar-section{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0.5rem;margin-top:1rem}
+.calendar-day{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.3s}
+.calendar-day:hover{transform:scale(1.25);z-index:10}
+.calendar-day.empty{background:transparent}
+.calendar-day.level-0{background:var(--bg-elevated)}.calendar-day.level-1{background:rgba(99,102,241,0.3)}.calendar-day.level-2{background:rgba(99,102,241,0.5)}.calendar-day.level-3{background:rgba(99,102,241,0.7)}.calendar-day.level-4{background:var(--primary);box-shadow:0 0 15px rgba(99,102,241,0.6)}
+.calendar-day.today{border:2px solid var(--accent);box-shadow:0 0 10px rgba(245,158,11,0.5)}
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-bottom:2rem}
+.badge-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.5rem;display:flex;align-items:center;gap:1.25rem;transition:all 0.4s;opacity:0.4;filter:grayscale(1);position:relative;overflow:hidden}
+.badge-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);opacity:0;transition:opacity 0.3s}
+.badge-card.unlocked{opacity:1;filter:grayscale(0);border-color:rgba(245,158,11,0.3);box-shadow:0 8px 25px rgba(245,158,11,0.15)}
+.badge-card.unlocked::before{opacity:1}
+.badge-card.unlocked:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 15px 35px rgba(245,158,11,0.25)}
+.badge-icon{font-size:2.75rem;width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);border-radius:18px;flex-shrink:0}
+.badge-info h4{font-size:1.05rem;margin-bottom:0.35rem}.badge-info p{font-size:0.85rem;color:var(--text-dim)}
+.community-section{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.community-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.live-indicator{display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;color:var(--success);font-weight:600}
+.live-dot{width:10px;height:10px;background:var(--success);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.3)}}
+.community-posts{display:flex;flex-direction:column;gap:1rem;max-height:500px;overflow-y:auto}
+.community-post{background:var(--bg-elevated);border-radius:16px;padding:1.25rem;border:1px solid var(--border);transition:all 0.3s}
+.community-post:hover{border-color:var(--primary);transform:translateX(8px)}
+.post-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+.post-user{display:flex;align-items:center;gap:0.75rem}
+.post-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
+.post-user-info h5{font-size:0.95rem}.post-user-info span{font-size:0.75rem;color:var(--text-dim)}
+.post-mood{font-size:1.75rem}.post-text{font-size:0.95rem;line-height:1.6;margin-bottom:1rem}
+.post-images{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.5rem;margin-bottom:1rem}
+.post-images img{width:100%;aspect-ratio:1;border-radius:12px;object-fit:cover;cursor:pointer;transition:transform 0.3s}
+.post-images img:hover{transform:scale(1.05)}
+.post-actions{display:flex;gap:1.5rem}
+.post-action{display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;color:var(--text-dim);cursor:pointer;transition:all 0.2s;background:none;border:none;font-family:inherit}
+.post-action:hover{color:var(--primary);transform:scale(1.1)}.post-action.liked{color:var(--danger)}.post-action.liked i{animation:heartPop 0.4s ease}
+@keyframes heartPop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+.history-section{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.history-list{display:flex;flex-direction:column;gap:0.75rem}
+.history-item{display:flex;align-items:center;gap:1.25rem;padding:1.25rem;background:var(--bg-elevated);border-radius:16px;border:1px solid var(--border);transition:all 0.3s;cursor:pointer}
+.history-item:hover{border-color:var(--primary);transform:translateX(8px)}
+.history-mood{font-size:2.5rem;width:60px;height:60px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border-radius:16px;flex-shrink:0}
+.history-content{flex:1}.history-text{font-size:0.95rem;margin-bottom:0.35rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.history-date{font-size:0.8rem;color:var(--text-dim)}
+.history-images{display:flex;gap:0.5rem;margin-top:0.5rem}
+.history-images img{width:50px;height:50px;border-radius:8px;object-fit:cover}
+.history-delete{width:40px;height:40px;border-radius:10px;border:none;background:rgba(239,68,68,0.1);color:var(--danger);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;opacity:0}
+.history-item:hover .history-delete{opacity:1}.history-delete:hover{background:rgba(239,68,68,0.25);transform:scale(1.1)}
+.challenge-card{background:var(--g2);border-radius:24px;padding:1.75rem;margin-bottom:2rem;position:relative;overflow:hidden;cursor:pointer;transition:all 0.4s;box-shadow:0 15px 35px rgba(236,72,153,0.25)}
+.challenge-card:hover{transform:scale(1.03) translateY(-5px)}
+.challenge-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,0.15) 0%,transparent 70%)}
+.challenge-card.completed{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 15px 35px rgba(16,185,129,0.25)}
+.challenge-label{font-size:0.85rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;opacity:0.9;margin-bottom:0.5rem}
+.challenge-text{font-size:1.2rem;font-weight:700;position:relative;z-index:1}
+.challenge-reward{display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;background:rgba(255,255,255,0.2);padding:0.5rem 1rem;border-radius:50px;font-size:0.9rem;font-weight:700}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity 0.4s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:28px;padding:2.5rem;max-width:520px;width:90%;transform:scale(0.9) translateY(20px);transition:all 0.4s;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.modal-overlay.active .modal{transform:scale(1) translateY(0)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+.modal-title{font-size:1.4rem;font-weight:700}
+.modal-close{width:40px;height:40px;border-radius:12px;border:none;background:var(--bg-elevated);color:var(--text);cursor:pointer;font-size:1.3rem;transition:all 0.2s}
+.modal-close:hover{background:var(--danger);transform:rotate(90deg)}
+.auth-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;background:var(--bg-elevated);padding:0.5rem;border-radius:14px}
+.auth-tab{flex:1;padding:0.75rem;border:none;background:transparent;color:var(--text-muted);font-family:inherit;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.3s}
+.auth-tab.active{background:var(--primary);color:white}
+.auth-input{width:100%;padding:1rem 1.25rem;background:var(--bg-elevated);border:2px solid var(--border);border-radius:14px;color:var(--text);font-family:inherit;font-size:1rem;margin-bottom:1rem;transition:all 0.3s}
+.auth-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 20px rgba(99,102,241,0.2)}
+.auth-btn{width:100%;padding:1rem;background:var(--g1);border:none;border-radius:14px;color:white;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s;margin-bottom:1rem}
+.auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.4)}
+.social-login{display:flex;gap:1rem;margin-top:1rem}
+.social-btn{flex:1;padding:0.875rem;border-radius:14px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text);font-family:inherit;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s}
+.social-btn:hover{background:var(--bg-hover);transform:translateY(-2px)}
+.social-btn.google:hover{border-color:#ea4335;color:#ea4335}.social-btn.facebook:hover{border-color:#1877f2;color:#1877f2}
+.share-preview{background:var(--g1);border-radius:20px;padding:2.5rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;box-shadow:0 20px 40px rgba(99,102,241,0.3)}
+.share-preview::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);animation:rotate 10s linear infinite}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.share-streak{font-size:5rem;font-weight:800;position:relative;z-index:1}.share-text{font-size:1.2rem;position:relative;z-index:1;margin-top:0.75rem;font-weight:600}
+.share-buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem}
+.share-btn{padding:0.875rem;border-radius:14px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text);font-family:inherit;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s}
+.share-btn:hover{background:var(--primary);border-color:var(--primary);transform:translateY(-3px)}
+.toast-container{position:fixed;bottom:2rem;right:2rem;z-index:1001;display:flex;flex-direction:column;gap:0.75rem}
+.toast{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.75rem;display:flex;align-items:center;gap:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:toastSlide 0.5s;min-width:340px;backdrop-filter:blur(20px)}
+@keyframes toastSlide{from{transform:translateX(100%) scale(0.9);opacity:0}to{transform:translateX(0) scale(1);opacity:1}}
+.toast-icon{font-size:1.5rem}.toast-content{flex:1}.toast-title{font-weight:700;font-size:1rem}.toast-message{font-size:0.9rem;color:var(--text-muted)}
+.empty-state{text-align:center;padding:3rem;color:var(--text-dim)}.empty-state i{font-size:3.5rem;margin-bottom:1rem;opacity:0.4}.empty-state p{font-size:1.1rem}
+.voice-btn{width:44px;height:44px;border-radius:50%;border:2px solid var(--border);background:var(--bg-elevated);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;margin-left:0.5rem;flex-shrink:0}
+.voice-btn:hover{border-color:var(--primary);color:var(--primary);transform:scale(1.1)}
+.voice-btn.recording{animation:voicePulse 1s infinite;border-color:var(--danger);color:var(--danger)}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.5)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}
+.notification-banner{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(236,72,153,0.2));border:1px solid rgba(99,102,241,0.3);border-radius:20px;padding:1.25rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;animation:slideDown 0.5s}
+.notification-banner.hidden{display:none}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.notification-text{display:flex;align-items:center;gap:0.75rem}.notification-text i{font-size:1.5rem;color:var(--primary)}
+.loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;transition:opacity 0.5s}
+.loading-overlay.hidden{opacity:0;pointer-events:none}
+.loading-spinner{width:60px;height:60px;border:4px solid var(--bg-elevated);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:1.2rem;font-weight:600;color:var(--text-muted);animation:loadPulse 1.5s ease-in-out infinite}
+@keyframes loadPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.lightbox{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.lightbox.active{opacity:1;pointer-events:all}.lightbox img{max-width:90%;max-height:90%;border-radius:16px;box-shadow:0 25px 50px rgba(0,0,0,0.5);transform:scale(0.9);transition:transform 0.3s}.lightbox.active img{transform:scale(1)}
+.lightbox-close{position:absolute;top:2rem;right:2rem;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.1);color:white;border:none;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.lightbox-close:hover{background:var(--danger);transform:rotate(90deg)}
+@media(max-width:768px){.hero h1{font-size:2.8rem}.streak-number{font-size:4rem}.mood-grid{grid-template-columns:repeat(2,1fr);gap:0.75rem}.stats-grid{grid-template-columns:1fr}.container{padding:1rem}.header{padding:1rem}.music-player{flex-direction:column;text-align:center}.entry-toolbar{justify-content:center}}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bg-elevated);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--primary)}
+</style>
 </head>
 <body>
+<div class="loading-overlay" id="loadingScreen"><div class="loading-spinner"></div><div class="loading-text">Zinda Ho? Loading...</div></div>
+<div class="bg"></div>
+<div class="orbs"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+<div class="particles" id="particles"></div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><button class="lightbox-close" onclick="event.stopPropagation();closeLightbox()"><i class="fas fa-xmark"></i></button><img src="" id="lightboxImg"></div>
 
-<div class="app-container">
-    <div id="home" class="glass-card">
-        <h1>ZINDA<br><span class="pink-text">HO?</span></h1>
-        <p class="tagline">"Zinda ho toh saboot do."</p>
-        <div class="streak-info" id="streak-display">Loading...</div>
-        <div class="grid">
-            <button class="btn" onclick="showPage('writing-area'); setPoke('Main Character');">Main Character Energy 💅 <span>→</span></button>
-            <button class="btn" onclick="showPage('writing-area'); setPoke('Lafda');">Lafda Ho Gaya 👊 <span>→</span></button>
-            <button class="btn" onclick="showPage('writing-area'); setPoke('Delulu');">Delulu is Solulu 🤡 <span>→</span></button>
-            <button class="btn" onclick="showPage('writing-area'); setPoke('Breakdown');">Thoda Breakdown 📉 <span>→</span></button>
-        </div>
-        <p class="footer-link" onclick="openHistory()">Pichle Kaand (History)</p>
-    </div>
+<header class="header">
+<div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-heart-pulse"></i><span>Zinda Ho?</span></div>
+<div class="header-actions">
+<button class="btn-icon" onclick="toggleSound()" title="Sound"><i class="fas fa-volume-up" id="soundIcon"></i></button>
+<button class="btn-icon" onclick="toggleNotifications()" title="Notifications"><i class="fas fa-bell" id="notifIcon"></i></button>
+<button class="btn-icon" onclick="showShareModal()" title="Share"><i class="fas fa-share-nodes"></i></button>
+<button class="btn-icon" onclick="exportData()" title="Export"><i class="fas fa-download"></i></button>
+<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=default" class="user-avatar" id="userAvatar" onclick="showAuthModal()" alt="User" title="Login">
+</div>
+</header>
 
-    <div id="writing-area" class="glass-card">
-        <h2 id="ai-poke-text" style="color: var(--neon); font-size: 1.6rem; min-height: 60px;">...</h2>
-        <textarea id="userInput" placeholder="Yahan sab ugal do..."></textarea>
-        <button class="primary-btn" onclick="processSave()">DAFAN KARO</button>
-        <p onclick="goToHome()" style="color: #444; margin-top: 20px; cursor: pointer;">Wapas Jao</p>
-    </div>
-
-    <div id="dare-area" class="glass-card">
-        <h2 style="color: #00ff41;">SABOOT DAFAN! ✅</h2>
-        <div style="border: 2px dashed var(--neon); padding: 30px 20px; margin: 25px 0; border-radius: 25px;">
-            <p style="color: #666; font-size: 0.8rem; margin-bottom: 10px;">AAJ KA DARE:</p>
-            <p id="daily-dare-display" style="font-size: 1.5rem; font-weight: bold;"></p>
-        </div>
-        <div class="dare-btns">
-            <button class="karlega-btn" onclick="dareResponse('karlega')">Kar Lega? 🔥</button>
-            <button class="darr-btn" onclick="dareResponse('dar')">Darr Gaya? 🤡</button>
-        </div>
-    </div>
-
-    <div id="history-area" class="glass-card">
-        <h2 style="color: var(--pink); font-size: 2rem;">Saboot History</h2>
-        <div id="history-list"></div>
-        <button class="primary-btn" onclick="goToHome()">HOME PE JAO</button>
-    </div>
+<div class="container">
+<div class="notification-banner" id="notifBanner">
+<div class="notification-text"><i class="fas fa-bell"></i><span>Daily reminders enable karo taaki streak na toote!</span></div>
+<button class="btn btn-primary" style="padding:0.6rem 1.25rem;font-size:0.9rem" onclick="enableNotifications()"><i class="fas fa-check"></i> Enable</button>
 </div>
 
+<div class="hero">
+<h1>ZINDA HO?</h1>
+<p class="hero-subtitle">"Zinda ho toh saboot do."</p>
+<div class="streak-card">
+<div class="streak-fire">🔥</div>
+<div class="streak-number" id="streakNumber">0</div>
+<div class="streak-label">Din ka Streak</div>
+<div class="level-badge"><i class="fas fa-ghost"></i><span id="levelName">Beginner 👻</span></div>
+<div class="level-progress"><div class="level-progress-bar" id="levelProgress" style="width:0%"></div></div>
+<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)"><span id="progressText">0/7 din - Next: Survivor</span></div>
+</div>
+</div>
+
+<div class="ai-detector" id="aiDetector" onclick="analyzeMoodWithAI()">
+<div class="ai-icon">🤖</div>
+<div class="ai-text"><h3>AI Mood Detector</h3><p>Apna text likho, AI automatically mood detect karega!</p></div>
+<div class="ai-status" id="aiStatus">Ready</div>
+</div>
+
+<div class="challenge-card" id="challengeCard" onclick="completeChallenge()">
+<div class="challenge-label">⚡ Aaj ka Challenge</div>
+<div class="challenge-text" id="challengeText">3 logon ko smile karwao aur unka mood pucho!</div>
+<div class="challenge-reward"><i class="fas fa-fire"></i><span>+2 Streak Bonus</span></div>
+</div>
+
+<div class="quote-card" id="quoteCard">
+<div class="quote-text" id="quoteText">"Har din nayi shuruaat hai. Bas uthna hai aur aage badhna hai."</div>
+<div class="quote-author" id="quoteAuthor">— Zinda Ho Team</div>
+</div>
+
+<div class="music-player" id="musicPlayer">
+<div class="music-cover" id="musicCover"><i class="fas fa-music"></i></div>
+<div class="music-info">
+<h4 id="musicTitle">Mood Music</h4>
+<p id="musicArtist">Select a mood to play music</p>
+</div>
+<div class="music-controls">
+<button class="music-btn" onclick="prevSong()"><i class="fas fa-backward"></i></button>
+<button class="music-btn play" id="playBtn" onclick="toggleMusic()"><i class="fas fa-play"></i></button>
+<button class="music-btn" onclick="nextSong()"><i class="fas fa-forward"></i></button>
+</div>
+<div class="music-progress"><div class="music-progress-bar" id="musicProgressBar"></div></div>
+</div>
+
+<div class="section-title"><i class="fas fa-face-smile"></i>Aaj ka Mood Kya Hai?</div>
+<div class="mood-grid" id="moodGrid">
+<div class="mood-card" data-mood="happy" onclick="selectMood('happy')"><span class="mood-emoji">😊</span><div class="mood-name">Khush</div><div class="mood-count" id="count-happy">0 din</div></div>
+<div class="mood-card" data-mood="sad" onclick="selectMood('sad')"><span class="mood-emoji">😢</span><div class="mood-name">Udaas</div><div class="mood-count" id="count-sad">0 din</div></div>
+<div class="mood-card" data-mood="angry" onclick="selectMood('angry')"><span class="mood-emoji">😡</span><div class="mood-name">Gussa</div><div class="mood-count" id="count-angry">0 din</div></div>
+<div class="mood-card" data-mood="tired" onclick="selectMood('tired')"><span class="mood-emoji">😴</span><div class="mood-name">Thakaan</div><div class="mood-count" id="count-tired">0 din</div></div>
+<div class="mood-card" data-mood="excited" onclick="selectMood('excited')"><span class="mood-emoji">🤩</span><div class="mood-name">Excited</div><div class="mood-count" id="count-excited">0 din</div></div>
+<div class="mood-card" data-mood="calm" onclick="selectMood('calm')"><span class="mood-emoji">😌</span><div class="mood-name">Shanti</div><div class="mood-count" id="count-calm">0 din</div></div>
+</div>
+
+<div class="entry-section" id="entrySection">
+<div class="entry-header">
+<span class="selected-mood-display" id="selectedMoodEmoji">😊</span>
+<div><div class="entry-title-text" id="entryTitle">Aaj ka din kaisa raha?</div><div class="entry-subtitle">Apne dil ki baat likho...</div></div>
+</div>
+<div style="display:flex;align-items:flex-start">
+<textarea class="entry-textarea" id="entryText" placeholder="Yahan likho... aaj kya hua? kaisa mehsoos kar rahe ho? koi khaas baat?"></textarea>
+<button class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="Voice Input"><i class="fas fa-microphone"></i></button>
+</div>
+<div class="entry-toolbar">
+<button class="toolbar-btn" onclick="document.getElementById('photoInput').click()"><i class="fas fa-camera"></i> Add Photo</button>
+<button class="toolbar-btn" onclick="analyzeMoodWithAI()"><i class="fas fa-wand-magic-sparkles"></i> AI Detect</button>
+<button class="toolbar-btn" onclick="playMoodMusic()"><i class="fas fa-music"></i> Play Music</button>
+<input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)">
+</div>
+<div class="photo-preview-container" id="photoPreviewContainer"></div>
+<div class="entry-actions">
+<button class="btn btn-secondary" onclick="cancelEntry()"><i class="fas fa-xmark"></i> Cancel</button>
+<button class="btn btn-primary" onclick="saveEntry()"><i class="fas fa-check"></i> Save Entry</button>
+</div>
+</div>
+
+<div class="section-title"><i class="fas fa-chart-line"></i>Aapke Stats</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-header"><span class="stat-title">Total Entries</span><div class="stat-icon purple"><i class="fas fa-book"></i></div></div><div class="stat-value" id="totalEntries">0</div><div class="stat-change">+1 aaj</div></div>
+<div class="stat-card"><div class="stat-header"><span class="stat-title">Sabse Zyada Mood</span><div class="stat-icon pink"><i class="fas fa-heart"></i></div></div><div class="stat-value" id="topMood">-</div><div class="stat-change" id="topMoodPercent">0% din</div></div>
+<div class="stat-card"><div class="stat-header"><span class="stat-title">Current Streak</span><div class="stat-icon green"><i class="fas fa-fire"></i></div></div><div class="stat-value" id="currentStreak">0</div><div class="stat-change">Best: <span id="bestStreak">0</span></div></div>
+<div class="stat-card"><div class="stat-header"><span class="stat-title">Level Progress</span><div class="stat-icon orange"><i class="fas fa-trophy"></i></div></div><div class="stat-value" id="levelDisplay">1</div><div class="stat-change" id="xpText">0 XP</div></div>
+</div>
+
+<div class="chart-container"><div class="chart-title"><i class="fas fa-chart-pie"></i>Mood Distribution</div><canvas id="moodChart" height="200"></canvas></div>
+
+<div class="calendar-section">
+<div class="section-title" style="margin:0 0 1rem 0"><i class="fas fa-calendar"></i>Activity Calendar</div>
+<div class="calendar-grid" id="calendarGrid"></div>
+</div>
+
+<div class="section-title"><i class="fas fa-medal"></i>Badges & Achievements</div>
+<div class="badges-grid" id="badgesGrid">
+<div class="badge-card" data-badge="first"><div class="badge-icon">🌱</div><div class="badge-info"><h4>First Step</h4><p>Pehli entry complete karo</p></div></div>
+<div class="badge-card" data-badge="week"><div class="badge-icon">🔥</div><div class="badge-info"><h4>7 Day Warrior</h4><p>7 din ka streak complete karo</p></div></div>
+<div class="badge-card" data-badge="month"><div class="badge-icon">👑</div><div class="badge-info"><h4>30 Day Legend</h4><p>30 din ka streak complete karo</p></div></div>
+<div class="badge-card" data-badge="variety"><div class="badge-icon">🎭</div><div class="badge-info"><h4>Mood Master</h4><p>6 alag moods try karo</p></div></div>
+<div class="badge-card" data-badge="night"><div class="badge-icon">🌙</div><div class="badge-info"><h4>Night Owl</h4><p>Raat 12 baje ke baad entry karo</p></div></div>
+<div class="badge-card" data-badge="early"><div class="badge-icon">🌅</div><div class="badge-info"><h4>Early Bird</h4><p>Subah 6 baje se pehle entry karo</p></div></div>
+<div class="badge-card" data-badge="photo"><div class="badge-icon">📸</div><div class="badge-info"><h4>Photographer</h4><p>Photo ke saath entry karo</p></div></div>
+<div class="badge-card" data-badge="social"><div class="badge-icon">🌐</div><div class="badge-info"><h4>Social Butterfly</h4><p>Apna streak share karo</p></div></div>
+</div>
+
+<div class="section-title"><i class="fas fa-users"></i>Community Wall</div>
+<div class="community-section">
+<div class="community-header"><span style="font-weight:600">Aaj ke Vibes</span><div class="live-indicator"><div class="live-dot"></div><span>Live</span></div></div>
+<div class="community-posts" id="communityPosts"></div>
+</div>
+
+<div class="section-title"><i class="fas fa-clock-rotate-left"></i>Pichle Kaand (History)</div>
+<div class="history-section">
+<div class="history-list" id="historyList">
+<div class="empty-state"><i class="fas fa-book-open"></i><p>Abhi koi history nahi hai. Pehli entry banao!</p></div>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="shareModal">
+<div class="modal">
+<div class="modal-header"><div class="modal-title">Apna Streak Share Karo</div><button class="modal-close" onclick="closeShareModal()"><i class="fas fa-xmark"></i></button></div>
+<div class="share-preview"><div class="share-streak" id="shareStreak">0 🔥</div><div class="share-text">Main zinda hoon! Kya tum?</div></div>
+<div class="share-buttons">
+<button class="share-btn" onclick="shareTo('whatsapp')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+<button class="share-btn" onclick="shareTo('instagram')"><i class="fab fa-instagram"></i> Instagram</button>
+<button class="share-btn" onclick="shareTo('twitter')"><i class="fab fa-twitter"></i> Twitter</button>
+<button class="share-btn" onclick="copyLink()"><i class="fas fa-link"></i> Copy Link</button>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="authModal">
+<div class="modal">
+<div class="modal-header"><div class="modal-title" id="authTitle">Login</div><button class="modal-close" onclick="closeAuthModal()"><i class="fas fa-xmark"></i></button></div>
+<div class="auth-tabs">
+<button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+<button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+</div>
+<div id="authForm">
+<input type="email" class="auth-input" id="authEmail" placeholder="Email address">
+<input type="password" class="auth-input" id="authPassword" placeholder="Password">
+<button class="auth-btn" onclick="handleAuth()" id="authBtn">Login</button>
+</div>
+<div class="social-login">
+<button class="social-btn google" onclick="socialLogin('google')"><i class="fab fa-google"></i> Google</button>
+<button class="social-btn facebook" onclick="socialLogin('facebook')"><i class="fab fa-facebook-f"></i> Facebook</button>
+</div>
+</div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+'''
+
+with open('/mnt/agents/output/zinda-ho-v2.html', 'w', encoding='utf-8') as f:
+    f.write(part1)
+
+print(f"Part 1 written: {len(part1)} chars")
+    # Part 2: JavaScript - Core functionality
+part2 = '''
 <script>
-    let activeMood = "";
-    const dareBank = [
-        "Mummy ko bina wajah 'I love you' bolo aur unka reaction dekho.",
-        "Kisi purane dost ko message karo: 'Aaj teri yaad aayi, bas.'",
-        "Aaj pure din junk food ko hath mat lagao.",
-        "Mirror mein dekh kar khud ko ek flying kiss do.",
-        "Aaj 15 minute phone switch off karke shaanti se baitho.",
-        "Kisi random anjaan ko dekh kar smile karo.",
-        "Aaj apni gallery se 10 faltu screenshots delete karo.",
-        "Ek glass paani piyo aur kaho 'Sukoon'.",
-        "Aaj kisi ki post par ek acha comment karo bina kisi wajah ke.",
-        "Apne phone ka wallpaper badlo jo tumhe motivate kare."
+const MOODS={
+    happy:{emoji:'😊',name:'Khush',color:'#10b981',songs:[
+        {title:'Happy - Pharrell Williams',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
+        {title:'Good Vibes - Chris Brown',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'}
+    ]},
+    sad:{emoji:'😢',name:'Udaas',color:'#3b82f6',songs:[
+        {title:'Someone Like You - Adele',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'},
+        {title:'Fix You - Coldplay',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'}
+    ]},
+    angry:{emoji:'😡',name:'Gussa',color:'#ef4444',songs:[
+        {title:'Break Stuff - Limp Bizkit',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'},
+        {title:'Given Up - Linkin Park',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'}
+    ]},
+    tired:{emoji:'😴',name:'Thakaan',color:'#8b5cf6',songs:[
+        {title:'Weightless - Marconi Union',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3'},
+        {title:'Clair de Lune - Debussy',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'}
+    ]},
+    excited:{emoji:'🤩',name:'Excited',color:'#f59e0b',songs:[
+        {title:'Can\'t Stop - Red Hot Chili Peppers',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
+        {title:'Uptown Funk - Bruno Mars',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'}
+    ]},
+    calm:{emoji:'😌',name:'Shanti',color:'#06b6d4',songs:[
+        {title:'River Flows in You - Yiruma',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp4'},
+        {title:'Gymnopédie No.1 - Satie',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'}
+    ]}
+};
+
+const LEVELS=[
+    {name:'Beginner 👻',min:0,max:7},
+    {name:'Survivor 🔥',min:7,max:30},
+    {name:'Warrior ⚔️',min:30,max:60},
+    {name:'Champion 🏆',min:60,max:100},
+    {name:'Legend 👑',min:100,max:9999}
+];
+
+const QUOTES={
+    happy:[
+        {text:"Khushi baantne se badhti hai. Aaj kisi aur ko bhi hasao!",author:"Zinda Ho"},
+        {text:"Tumhari smile duniya ka sabse khoobsurat weapon hai.",author:"Zinda Ho"},
+        {text:"Aaj ka din tumhara tha, kal bhi tumhara hoga!",author:"Zinda Ho"}
+    ],
+    sad:[
+        {text:"Andhera kitna bhi ghera ho, suraj zaroor niklega.",author:"Zinda Ho"},
+        {text:"Tum strong ho. Yeh waqt bhi beet jayega.",author:"Zinda Ho"},
+        {text:"Rona bhi zindagi ka hissa hai. Feel karo, phir aage badho.",author:"Zinda Ho"}
+    ],
+    angry:[
+        {text:"Gussa thanda karo, phir faisla lo. Tum control mein ho.",author:"Zinda Ho"},
+        {text:"Gusse ko energy banao, destruction nahi.",author:"Zinda Ho"},
+        {text:"Deep breath lo. 10 count karo. Tum better kar sakte ho.",author:"Zinda Ho"}
+    ],
+    tired:[
+        {text:"Aram karna bhi junoon ka hissa hai. Rest karo.",author:"Zinda Ho"},
+        {text:"Thakaan ka matlab hai tum mehnat kar rahe ho. Proud feel karo.",author:"Zinda Ho"},
+        {text:"Aaj rest karo, kal aur zyada tez daudo.",author:"Zinda Ho"}
+    ],
+    excited:[
+        {text:"Is energy ko bottle mein band mat karo, use karo!",author:"Zinda Ho"},
+        {text:"Excitement = Life. Is feeling ko maintain rakho!",author:"Zinda Ho"},
+        {text:"Tumhari energy contagious hai. Sabko infect karo!",author:"Zinda Ho"}
+    ],
+    calm:[
+        {text:"Shanti mein bhi taakat hai. Yeh tumhari superpower hai.",author:"Zinda Ho"},
+        {text:"Calm mind = Best decisions. Proud of you.",author:"Zinda Ho"},
+        {text:"Inner peace sabse bada achievement hai.",author:"Zinda Ho"}
+    ]
+};
+
+const CHALLENGES=[
+    "3 logon ko smile karwao aur unka mood pucho!",
+    "Aaj 10 minute meditation karo 🧘",
+    "Kisi stranger ko compliment do 💫",
+    "Apne favourite gaane par dance karo 💃",
+    "Aaj kuch naya seekho - 15 minute 📚",
+    "Phone side rakh ke 2 ghante family ke saath raho 👨‍👩‍👧‍👦",
+    "Aaj junk food skip karo, healthy khao 🥗",
+    "Raat ko 11 baje se pehle so jao 😴",
+    "Journal likho - 3 cheezein jinke liye shukr guzar ho 🙏",
+    "Aaj kisi ko help karo bina kisi expectation ke 🤝"
+];
+
+// AI Mood Keywords for detection
+const AI_MOOD_KEYWORDS={
+    happy:['khush','happy','maza','fun','enjoy','party','celebrate','achha','badhiya','mast','swag','excited','energy','positive','smile','laugh','haso','hansi'],
+    sad:['udaas','sad','cry','rona','dukh','pain','hurt','dard','tears','alone','lonely','akela','miss','gum','bhari','heavy','depressed','low'],
+    angry:['gussa','angry','rage','naraz','upset','frustrated','irritated','annoyed','hate','dislike','fight','jhagda','chill','control','temper'],
+    tired:['thaka','tired','sleep','so jao','rest','exhausted','energy nahi','weak','kamzor','lazy','aalas','neend','fatigue','drained'],
+    excited:['excited','wow','amazing','awesome','superb','fantastic','incredible','unbelievable','shock','surprise','celebrate','party','maza','thrill'],
+    calm:['shanti','calm','peace','relax','sukoon','meditation','dhyan','quiet','silent','cool','composed','relaxed','ease','comfort','stable']
+};
+
+let state={
+    entries:[],streak:0,bestStreak:0,selectedMood:null,xp:0,level:1,badges:[],
+    soundEnabled:true,challengeCompleted:false,todayEntry:false,
+    user:null,photos:[],currentSong:0,isPlaying:false,
+    notificationsEnabled:false
+};
+
+let moodChart=null,recognition=null,audioPlayer=null;
+let uploadedPhotos=[];
+
+document.addEventListener('DOMContentLoaded',()=>{
+    loadData();
+    createParticles();
+    updateUI();
+    setupSpeechRecognition();
+    generateCalendar();
+    startLiveCommunity();
+    setDailyChallenge();
+    setupAudioPlayer();
+    setTimeout(()=>{
+        document.getElementById('loadingScreen').classList.add('hidden');
+    },1500);
+    requestNotificationPermission();
+    scheduleDailyReminder();
+});
+
+function createParticles(){
+    const container=document.getElementById('particles');
+    for(let i=0;i<40;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        p.style.left=Math.random()*100+'%';
+        p.style.animationDuration=(Math.random()*15+10)+'s';
+        p.style.animationDelay=Math.random()*10+'s';
+        const size=Math.random()*5+2;
+        p.style.width=size+'px';p.style.height=size+'px';
+        const colors=['#6366f1','#ec4899','#f59e0b','#10b981','#3b82f6'];
+        p.style.background=colors[Math.floor(Math.random()*colors.length)];
+        container.appendChild(p);
+    }
+}
+
+function setDailyChallenge(){
+    const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+    document.getElementById('challengeText').textContent=CHALLENGES[dayOfYear%CHALLENGES.length];
+}
+
+// ========== AI MOOD DETECTION ==========
+function analyzeMoodWithAI(){
+    const text=document.getElementById('entryText').value.trim().toLowerCase();
+    if(!text){
+        showToast('Pehle kuch likho! AI analyze karega.','warning');
+        return;
+    }
+    const status=document.getElementById('aiStatus');
+    status.textContent='Analyzing...';
+    status.classList.add('analyzing');
+    
+    setTimeout(()=>{
+        let scores={happy:0,sad:0,angry:0,tired:0,excited:0,calm:0};
+        for(const[mood,keywords]of Object.entries(AI_MOOD_KEYWORDS)){
+            for(const keyword of keywords){
+                if(text.includes(keyword)) scores[mood]+=1;
+            }
+        }
+        let detectedMood='happy';
+        let maxScore=0;
+        for(const[mood,score]of Object.entries(scores)){
+            if(score>maxScore){maxScore=score;detectedMood=mood;}
+        }
+        status.textContent='Detected: '+MOODS[detectedMood].name;
+        status.classList.remove('analyzing');
+        selectMood(detectedMood);
+        showToast('AI ne detect kiya: '+MOODS[detectedMood].emoji+' '+MOODS[detectedMood].name+'!','success');
+        triggerConfetti();
+    },1200);
+}
+
+// ========== MOOD SELECTION ==========
+function selectMood(mood){
+    document.querySelectorAll('.mood-card').forEach(c=>c.classList.remove('active'));
+    document.querySelector(`[data-mood="${mood}"]`).classList.add('active');
+    state.selectedMood=mood;
+    document.getElementById('selectedMoodEmoji').textContent=MOODS[mood].emoji;
+    document.getElementById('entryTitle').textContent=`Aaj ${MOODS[mood].name} feel kar rahe ho?`;
+    document.getElementById('entrySection').classList.add('visible');
+    updateQuote(mood);
+    document.getElementById('entryText').value='';
+    uploadedPhotos=[];
+    document.getElementById('photoPreviewContainer').innerHTML='';
+    document.getElementById('entrySection').scrollIntoView({behavior:'smooth',block:'center'});
+    updateMusicForMood(mood);
+    if(state.soundEnabled) playSound('select');
+}
+
+function updateQuote(mood){
+    const quotes=QUOTES[mood]||QUOTES.happy;
+    const q=quotes[Math.floor(Math.random()*quotes.length)];
+    document.getElementById('quoteText').textContent=`"${q.text}"`;
+    document.getElementById('quoteAuthor').textContent=`— ${q.author}`;
+}
+
+function cancelEntry(){
+    document.getElementById('entrySection').classList.remove('visible');
+    document.querySelectorAll('.mood-card').forEach(c=>c.classList.remove('active'));
+    state.selectedMood=null;
+    document.getElementById('entryText').value='';
+    uploadedPhotos=[];
+    document.getElementById('photoPreviewContainer').innerHTML='';
+}
+
+// ========== PHOTO UPLOAD ==========
+function handlePhotoUpload(event){
+    const files=event.target.files;
+    const container=document.getElementById('photoPreviewContainer');
+    for(const file of files){
+        const reader=new FileReader();
+        reader.onload=(e)=>{
+            uploadedPhotos.push(e.target.result);
+            const div=document.createElement('div');
+            div.className='photo-preview';
+            div.innerHTML=`<img src="${e.target.result}" onclick="openLightbox('${e.target.result}')"><button class="remove-photo" onclick="removePhoto(this)"><i class="fas fa-times"></i></button>`;
+            container.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removePhoto(btn){
+    const preview=btn.closest('.photo-preview');
+    const img=preview.querySelector('img');
+    const idx=uploadedPhotos.indexOf(img.src);
+    if(idx>-1) uploadedPhotos.splice(idx,1);
+    preview.remove();
+}
+
+function openLightbox(src){
+    document.getElementById('lightboxImg').src=src;
+    document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('active');
+}
+
+// ========== MUSIC PLAYER ==========
+function setupAudioPlayer(){
+    audioPlayer=new Audio();
+    audioPlayer.addEventListener('ended',nextSong);
+    audioPlayer.addEventListener('timeupdate',updateMusicProgress);
+}
+
+function updateMusicForMood(mood){
+    state.currentSong=0;
+    state.isPlaying=false;
+    const songs=MOODS[mood]?.songs||MOODS.happy.songs;
+    document.getElementById('musicTitle').textContent=songs[0].title;
+    document.getElementById('musicArtist').textContent='Mood: '+MOODS[mood].name;
+    document.getElementById('musicCover').innerHTML='<i class="fas fa-music"></i>';
+    document.getElementById('playBtn').innerHTML='<i class="fas fa-play"></i>';
+    document.getElementById('musicCover').classList.remove('playing');
+}
+
+function playMoodMusic(){
+    if(!state.selectedMood){
+        showToast('Pehle mood select karo!','warning');
+        return;
+    }
+    toggleMusic();
+}
+
+function toggleMusic(){
+    if(!state.selectedMood) return;
+    const songs=MOODS[state.selectedMood].songs;
+    if(state.isPlaying){
+        audioPlayer.pause();
+        state.isPlaying=false;
+        document.getElementById('playBtn').innerHTML='<i class="fas fa-play"></i>';
+        document.getElementById('musicCover').classList.remove('playing');
+    }else{
+        audioPlayer.src=songs[state.currentSong].url;
+        audioPlayer.play().catch(()=>showToast('Music load nahi ho raha. Internet check karo.','warning'));
+        state.isPlaying=true;
+        document.getElementById('playBtn').innerHTML='<i class="fas fa-pause"></i>';
+        document.getElementById('musicCover').classList.add('playing');
+    }
+}
+
+function nextSong(){
+    if(!state.selectedMood) return;
+    const songs=MOODS[state.selectedMood].songs;
+    state.currentSong=(state.currentSong+1)%songs.length;
+    document.getElementById('musicTitle').textContent=songs[state.currentSong].title;
+    if(state.isPlaying){
+        audioPlayer.src=songs[state.currentSong].url;
+        audioPlayer.play();
+    }
+}
+
+function prevSong(){
+    if(!state.selectedMood) return;
+    const songs=MOODS[state.selectedMood].songs;
+    state.currentSong=(state.currentSong-1+songs.length)%songs.length;
+    document.getElementById('musicTitle').textContent=songs[state.currentSong].title;
+    if(state.isPlaying){
+        audioPlayer.src=songs[state.currentSong].url;
+        audioPlayer.play();
+    }
+}
+
+function updateMusicProgress(){
+    const pct=(audioPlayer.currentTime/audioPlayer.duration)*100||0;
+    document.getElementById('musicProgressBar').style.width=pct+'%';
+}
+
+// ========== SAVE ENTRY ==========
+function saveEntry(){
+    const text=document.getElementById('entryText').value.trim();
+    const mood=state.selectedMood;
+    if(!mood){showToast('Pehle mood select karo!','warning');return;}
+    if(!text){showToast('Kuch likho apne din ke baare mein!','warning');return;}
+    
+    const entry={
+        id:Date.now(),mood:mood,text:text,date:new Date().toISOString(),
+        timestamp:Date.now(),photos:[...uploadedPhotos]
+    };
+    state.entries.unshift(entry);
+    state.todayEntry=true;
+    updateStreak();
+    addXP(10);
+    if(uploadedPhotos.length>0) addXP(5);
+    checkBadges();
+    saveData();
+    updateUI();
+    cancelEntry();
+    showToast('Entry saved! 🔥 Streak updated!','success');
+    triggerConfetti();
+    if(state.soundEnabled) playSound('success');
+    addToCommunity(entry);
+}
+
+function updateStreak(){
+    const today=new Date().toDateString();
+    const yesterday=new Date(Date.now()-86400000).toDateString();
+    const lastEntry=state.entries[1];
+    if(lastEntry){
+        const lastDate=new Date(lastEntry.date).toDateString();
+        if(lastDate===yesterday) state.streak++;
+        else if(lastDate!==today) state.streak=1;
+    }else state.streak=1;
+    if(state.streak>state.bestStreak) state.bestStreak=state.streak;
+}
+
+function addXP(amount){
+    state.xp+=amount;
+    const nextLvl=LEVELS[state.level];
+    if(nextLvl&&state.streak>=nextLvl.min){
+        state.level++;
+        showToast(`Level Up! 🎉 ${LEVELS[state.level-1].name}!`,'success');
+        triggerConfetti();
+    }
+}
+
+function checkBadges(){
+    const badges=[];
+    if(state.entries.length>=1) badges.push('first');
+    if(state.streak>=7) badges.push('week');
+    if(state.streak>=30) badges.push('month');
+    const uniqueMoods=new Set(state.entries.map(e=>e.mood));
+    if(uniqueMoods.size>=6) badges.push('variety');
+    const hour=new Date().getHours();
+    if(hour>=0&&hour<6) badges.push('night');
+    if(hour>=5&&hour<7) badges.push('early');
+    if(state.entries.some(e=>e.photos&&e.photos.length>0)) badges.push('photo');
+    if(state.badges.includes('social')) badges.push('social');
+    badges.forEach(b=>{
+        if(!state.badges.includes(b)){
+            state.badges.push(b);
+            showToast('New Badge Unlocked! 🏆','success');
+            triggerConfetti();
+        }
+    });
+}
+
+// ========== UI UPDATES ==========
+function updateUI(){
+    document.getElementById('streakNumber').textContent=state.streak;
+    const curLvl=LEVELS.find(l=>state.streak>=l.min&&state.streak<l.max)||LEVELS[0];
+    document.getElementById('levelName').textContent=curLvl.name;
+    const nextLvl=LEVELS.find(l=>l.min>state.streak);
+    if(nextLvl){
+        const pct=((state.streak-curLvl.min)/(nextLvl.min-curLvl.min))*100;
+        document.getElementById('levelProgress').style.width=pct+'%';
+        document.getElementById('progressText').textContent=`${state.streak}/${nextLvl.min} din - Next: ${nextLvl.name}`;
+    }else{
+        document.getElementById('levelProgress').style.width='100%';
+        document.getElementById('progressText').textContent='Max Level! 🎉';
+    }
+    document.getElementById('totalEntries').textContent=state.entries.length;
+    const moodCounts={};
+    state.entries.forEach(e=>moodCounts[e.mood]=(moodCounts[e.mood]||0)+1);
+    let topMood='-',topCount=0;
+    for(const[m,c]of Object.entries(moodCounts)){if(c>topCount){topMood=MOODS[m].emoji+' '+MOODS[m].name;topCount=c;}}
+    document.getElementById('topMood').textContent=topMood;
+    document.getElementById('topMoodPercent').textContent=state.entries.length>0?Math.round((topCount/state.entries.length)*100)+'% din':'0% din';
+    document.getElementById('currentStreak').textContent=state.streak;
+    document.getElementById('bestStreak').textContent=state.bestStreak;
+    document.getElementById('levelDisplay').textContent=state.level;
+    document.getElementById('xpText').textContent=state.xp+' XP';
+    for(const m of Object.keys(MOODS)){
+        document.getElementById('count-'+m).textContent=(moodCounts[m]||0)+' din';
+    }
+    updateChart();
+    updateHistory();
+    updateBadges();
+    generateCalendar();
+}
+
+function updateChart(){
+    const ctx=document.getElementById('moodChart').getContext('2d');
+    const mc={};
+    state.entries.forEach(e=>mc[e.mood]=(mc[e.mood]||0)+1);
+    const data=Object.keys(MOODS).map(m=>mc[m]||0);
+    const colors=Object.values(MOODS).map(m=>m.color);
+    if(moodChart) moodChart.destroy();
+    moodChart=new Chart(ctx,{
+        type:'doughnut',
+        data:{labels:Object.values(MOODS).map(m=>m.name),datasets:[{data:data,backgroundColor:colors,borderColor:'#12121f',borderWidth:3}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',padding:20,font:{size:12}}}},cutout:'60%'}
+    });
+}
+
+function updateHistory(){
+    const list=document.getElementById('historyList');
+    if(state.entries.length===0){
+        list.innerHTML='<div class="empty-state"><i class="fas fa-book-open"></i><p>Abhi koi history nahi hai. Pehli entry banao!</p></div>';
+        return;
+    }
+    list.innerHTML=state.entries.map(entry=>{
+        const d=new Date(entry.date);
+        const ds=d.toLocaleDateString('hi-IN',{day:'numeric',month:'short',year:'numeric'});
+        const ts=d.toLocaleTimeString('hi-IN',{hour:'2-digit',minute:'2-digit'});
+        let photosHtml='';
+        if(entry.photos&&entry.photos.length>0){
+            photosHtml='<div class="history-images">'+entry.photos.map(p=>`<img src="${p}" onclick="openLightbox('${p}')">`).join('')+'</div>';
+        }
+        return `<div class="history-item"><div class="history-mood">${MOODS[entry.mood].emoji}</div><div class="history-content"><div class="history-text">${entry.text}</div><div class="history-date">${ds} at ${ts} · ${MOODS[entry.mood].name}</div>${photosHtml}</div><button class="history-delete" onclick="deleteEntry(${entry.id})"><i class="fas fa-trash"></i></button></div>`;
+    }).join('');
+}
+
+function updateBadges(){
+    document.querySelectorAll('.badge-card').forEach(card=>{
+        if(state.badges.includes(card.dataset.badge)) card.classList.add('unlocked');
+    });
+}
+
+function generateCalendar(){
+    const grid=document.getElementById('calendarGrid');
+    const today=new Date();
+    const y=today.getFullYear(),m=today.getMonth();
+    const fd=new Date(y,m,1).getDay();
+    const dim=new Date(y,m+1,0).getDate();
+    const ebd={};
+    state.entries.forEach(e=>{
+        const d=new Date(e.date);
+        if(d.getMonth()===m&&d.getFullYear()===y){
+            const day=d.getDate();
+            ebd[day]=(ebd[day]||0)+1;
+        }
+    });
+    let html='';
+    const days=['S','M','T','W','T','F','S'];
+    days.forEach(d=>html+=`<div class="calendar-day empty" style="font-weight:700;color:var(--text-dim)">${d}</div>`);
+    for(let i=0;i<fd;i++) html+='<div class="calendar-day empty"></div>';
+    for(let day=1;day<=dim;day++){
+        const c=ebd[day]||0;
+        let lvl='level-0';
+        if(c>=4) lvl='level-4';else if(c>=3) lvl='level-3';else if(c>=2) lvl='level-2';else if(c>=1) lvl='level-1';
+        const td=day===today.getDate()?'today':'';
+        html+=`<div class="calendar-day ${lvl} ${td}">${day}</div>`;
+    }
+    grid.innerHTML=html;
+}
+
+function deleteEntry(id){
+    state.entries=state.entries.filter(e=>e.id!==id);
+    saveData();updateUI();
+    showToast('Entry deleted','info');
+}
+
+function completeChallenge(){
+    if(state.challengeCompleted){
+        showToast('Aaj ka challenge already complete! 🎉','success');
+        return;
+    }
+    state.challengeCompleted=true;
+    addXP(20);state.streak+=2;
+    if(state.streak>state.bestStreak) state.bestStreak=state.streak;
+    document.getElementById('challengeCard').classList.add('completed');
+    document.getElementById('challengeText').textContent='✅ Challenge Complete!';
+    saveData();updateUI();
+    showToast('Challenge complete! +2 Streak Bonus! 🔥','success');
+    triggerConfetti();
+}
+
+// ========== AUTH ==========
+function showAuthModal(){
+    if(state.user){
+        showToast(`Logged in as: ${state.user.email||state.user.displayName||'User'}`,'info');
+        return;
+    }
+    document.getElementById('authModal').classList.add('active');
+}
+
+function closeAuthModal(){document.getElementById('authModal').classList.remove('active');}
+
+function switchAuthTab(tab){
+    document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('authTitle').textContent=tab==='login'?'Login':'Sign Up';
+    document.getElementById('authBtn').textContent=tab==='login'?'Login':'Sign Up';
+}
+
+function handleAuth(){
+    const email=document.getElementById('authEmail').value;
+    const pass=document.getElementById('authPassword').value;
+    if(!email||!pass){showToast('Email aur password dono daalo!','warning');return;}
+    state.user={email:email,displayName:email.split('@')[0],photoURL:`https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`};
+    document.getElementById('userAvatar').src=state.user.photoURL;
+    closeAuthModal();
+    showToast('Login successful! Welcome! 🎉','success');
+    triggerConfetti();
+    saveData();
+}
+
+function socialLogin(provider){
+    state.user={email:`user@${provider}.com`,displayName:provider+' User',photoURL:`https://api.dicebear.com/7.x/avataaars/svg?seed=${provider}`};
+    document.getElementById('userAvatar').src=state.user.photoURL;
+    closeAuthModal();
+    showToast(`${provider} login successful! 🎉`,'success');
+    triggerConfetti();
+    saveData();
+}
+
+// ========== SHARE ==========
+function showShareModal(){
+    document.getElementById('shareStreak').textContent=state.streak+' 🔥';
+    document.getElementById('shareModal').classList.add('active');
+}
+
+function closeShareModal(){document.getElementById('shareModal').classList.remove('active');}
+
+function shareTo(platform){
+    const text=`Main ${state.streak} din se zinda hoon! 🔥 Kya tum? #ZindaHo`;
+    const url=window.location.href;
+    let shareUrl='';
+    switch(platform){
+        case 'whatsapp':shareUrl=`https://wa.me/?text=${encodeURIComponent(text+' '+url)}`;break;
+        case 'twitter':shareUrl=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;break;
+        case 'instagram':showToast('Instagram par screenshot share karo! 📸','info');return;
+    }
+    if(shareUrl) window.open(shareUrl,'_blank');
+    state.badges.push('social');
+    checkBadges();
+}
+
+function copyLink(){
+    navigator.clipboard.writeText(window.location.href);
+    showToast('Link copied! 📋','success');
+}
+
+// ========== NOTIFICATIONS ==========
+function toggleNotifications(){
+    if(!state.notificationsEnabled){
+        enableNotifications();
+    }else{
+        state.notificationsEnabled=false;
+        document.getElementById('notifIcon').className='fas fa-bell-slash';
+        showToast('Notifications OFF','info');
+    }
+}
+
+function enableNotifications(){
+    if(!('Notification' in window)){
+        showToast('Browser notifications supported nahi hain.','warning');
+        return;
+    }
+    Notification.requestPermission().then(perm=>{
+        if(perm==='granted'){
+            state.notificationsEnabled=true;
+            document.getElementById('notifIcon').className='fas fa-bell';
+            document.getElementById('notifBanner').classList.add('hidden');
+            showToast('Daily reminders ON! 🔔','success');
+            new Notification('Zinda Ho?',{body:'Daily check-in ke liye ready ho?',icon:'https://api.dicebear.com/7.x/avataaars/svg?seed=zinda'});
+        }else{
+            showToast('Notifications allow karo settings se.','warning');
+        }
+    });
+}
+
+function requestNotificationPermission(){
+    if('Notification' in window&&Notification.permission==='granted'){
+        state.notificationsEnabled=true;
+        document.getElementById('notifIcon').className='fas fa-bell';
+        document.getElementById('notifBanner').classList.add('hidden');
+    }
+}
+
+function scheduleDailyReminder(){
+    if(!state.notificationsEnabled) return;
+    const now=new Date();
+    const evening=new Date(now.getFullYear(),now.getMonth(),now.getDate(),20,0,0);
+    if(evening<now) evening.setDate(evening.getDate()+1);
+    const ms=evening-now;
+    setTimeout(()=>{
+        if(state.notificationsEnabled){
+            new Notification('Zinda Ho? 🌙',{body:'Aaj ka check-in abhi baki hai! Streak mat todto!',icon:'https://api.dicebear.com/7.x/avataaars/svg?seed=zinda'});
+        }
+        scheduleDailyReminder();
+    },ms);
+}
+
+// ========== SOUND ==========
+function toggleSound(){
+    state.soundEnabled=!state.soundEnabled;
+    document.getElementById('soundIcon').className=state.soundEnabled?'fas fa-volume-up':'fas fa-volume-xmark';
+    showToast(state.soundEnabled?'Sound ON 🔊':'Sound OFF 🔇','info');
+}
+
+function playSound(type){
+    try{
+        const ctx=new(window.AudioContext||window.webkitAudioContext)();
+        const osc=ctx.createOscillator();
+        const gain=ctx.createGain();
+        osc.connect(gain);gain.connect(ctx.destination);
+        if(type==='select'){osc.frequency.value=523;gain.gain.value=0.08;osc.start();osc.stop(ctx.currentTime+0.1);}
+        else if(type==='success'){osc.frequency.value=784;gain.gain.value=0.08;osc.start();osc.frequency.setValueAtTime(784,ctx.currentTime);osc.frequency.setValueAtTime(988,ctx.currentTime+0.1);osc.stop(ctx.currentTime+0.3);}
+    }catch(e){}
+}
+
+function triggerConfetti(){
+    confetti({particleCount:120,spread:80,origin:{y:0.6},colors:['#6366f1','#ec4899','#f59e0b','#10b981','#3b82f6']});
+}
+
+function showToast(msg,type='info'){
+    const container=document.getElementById('toastContainer');
+    const toast=document.createElement('div');
+    toast.className='toast';
+    const icons={success:'✅',warning:'⚠️',error:'❌',info:'ℹ️'};
+    toast.innerHTML=`<span class="toast-icon">${icons[type]||'ℹ️'}</span><div class="toast-content"><div class="toast-title">${type.charAt(0).toUpperCase()+type.slice(1)}</div><div class="toast-message">${msg}</div></div>`;
+    container.appendChild(toast);
+    setTimeout(()=>{toast.style.animation='toastSlide 0.4s ease reverse';setTimeout(()=>toast.remove(),400);},3500);
+}
+
+// ========== VOICE INPUT ==========
+function setupSpeechRecognition(){
+    if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
+        const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+        recognition=new SR();
+        recognition.lang='hi-IN';
+        recognition.continuous=false;
+        recognition.interimResults=false;
+        recognition.onresult=(e)=>{
+            document.getElementById('entryText').value+=e.results[0][0].transcript;
+            document.getElementById('voiceBtn').classList.remove('recording');
+        };
+        recognition.onerror=()=>{document.getElementById('voiceBtn').classList.remove('recording');showToast('Voice error. Try again.','error');};
+        recognition.onend=()=>document.getElementById('voiceBtn').classList.remove('recording');
+    }
+}
+
+function toggleVoiceInput(){
+    if(!recognition){showToast('Voice input not supported','warning');return;}
+    const btn=document.getElementById('voiceBtn');
+    if(btn.classList.contains('recording')){recognition.stop();btn.classList.remove('recording');}
+    else{recognition.start();btn.classList.add('recording');showToast('Bolna shuru karo... 🎤','info');}
+}
+
+// ========== COMMUNITY ==========
+function addToCommunity(entry){
+    const posts=document.getElementById('communityPosts');
+    const post=document.createElement('div');
+    post.className='community-post';
+    let photosHtml='';
+    if(entry.photos&&entry.photos.length>0){
+        photosHtml='<div class="post-images">'+entry.photos.map(p=>`<img src="${p}" onclick="openLightbox('${p}')">`).join('')+'</div>';
+    }
+    post.innerHTML=`<div class="post-header"><div class="post-user"><img src="${state.user?state.user.photoURL:'https://api.dicebear.com/7.x/avataaars/svg?seed=anonymous'}" class="post-avatar"><div class="post-user-info"><h5>${state.user?state.user.displayName:'Anonymous'}</h5><span>Just now</span></div></div><span class="post-mood">${MOODS[entry.mood].emoji}</span></div><div class="post-text">${entry.text.substring(0,150)}${entry.text.length>150?'...':''}</div>${photosHtml}<div class="post-actions"><button class="post-action" onclick="this.classList.toggle('liked');this.querySelector('span').textContent=parseInt(this.querySelector('span').textContent)+(this.classList.contains('liked')?1:-1)"><i class="fas fa-heart"></i><span>0</span></button><button class="post-action"><i class="fas fa-comment"></i><span>0</span></button><button class="post-action"><i class="fas fa-share"></i></button></div>`;
+    posts.insertBefore(post,posts.firstChild);
+}
+
+function startLiveCommunity(){
+    const samplePosts=[
+        {mood:'happy',text:'Aaj office mein promotion mila! Bohot khush hoon! 🎉',time:'2 min ago',user:'Rahul',avatar:'rahul'},
+        {mood:'calm',text:'Subah ki chai aur baarish ka mausam. Perfect Sunday.',time:'5 min ago',user:'Priya',avatar:'priya'},
+        {mood:'excited',text:'Kal Goa ja raha hoon! First time beach dekhunga! 🏖️',time:'12 min ago',user:'Amit',avatar:'amit'},
+        {mood:'tired',text:'3 din se proper sleep nahi mila. Need rest.',time:'20 min ago',user:'Sneha',avatar:'sneha'},
+        {mood:'sad',text:'Dost se jhagda ho gaya. Udaas hoon.',time:'30 min ago',user:'Vikram',avatar:'vikram'},
+        {mood:'angry',text:'Traffic mein 2 ghante waste. Gussa aa raha hai! 😤',time:'45 min ago',user:'Neha',avatar:'neha'}
     ];
+    const posts=document.getElementById('communityPosts');
+    samplePosts.forEach(p=>{
+        const post=document.createElement('div');
+        post.className='community-post';
+        const likes=Math.floor(Math.random()*50);
+        post.innerHTML=`<div class="post-header"><div class="post-user"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${p.avatar}" class="post-avatar"><div class="post-user-info"><h5>${p.user}</h5><span>${p.time}</span></div></div><span class="post-mood">${MOODS[p.mood].emoji}</span></div><div class="post-text">${p.text}</div><div class="post-actions"><button class="post-action" onclick="this.classList.toggle('liked');this.querySelector('span').textContent=parseInt(this.querySelector('span').textContent)+(this.classList.contains('liked')?1:-1)"><i class="fas fa-heart"></i><span>${likes}</span></button><button class="post-action"><i class="fas fa-comment"></i><span>${Math.floor(Math.random()*10)}</span></button><button class="post-action"><i class="fas fa-share"></i></button></div>`;
+        posts.appendChild(post);
+    });
+}
 
-    function showPage(pageId) {
-        ['home', 'writing-area', 'dare-area', 'history-area'].forEach(id => {
-            document.getElementById(id).style.display = (id === pageId) ? 'block' : 'none';
-        });
+// ========== EXPORT ==========
+function exportData(){
+    const data=JSON.stringify(state,null,2);
+    const blob=new Blob([data],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='zinda-ho-data.json';a.click();
+    URL.revokeObjectURL(url);
+    showToast('Data exported! 💾','success');
+}
+
+function saveData(){localStorage.setItem('zindaHoState',JSON.stringify(state));}
+
+function loadData(){
+    const saved=localStorage.getItem('zindaHoState');
+    if(saved){
+        const parsed=JSON.parse(saved);
+        state={...state,...parsed};
+        if(state.user&&state.user.photoURL){
+            document.getElementById('userAvatar').src=state.user.photoURL;
+        }
     }
+}
 
-    function goToHome() {
-        showPage('home');
-        updateStats();
-    }
-
-    function setPoke(type) {
-        const poke = document.getElementById('ai-poke-text');
-        if(type === 'Main Character') poke.innerText = "Hero ban rahe ho? Aaj kahan jalwe dikhaye?";
-        else if(type === 'Lafda') poke.innerText = "Lafda? Poori tea ugal do, kisne panga liya?";
-        else if(type === 'Delulu') poke.innerText = "Sapno ki duniya mein kya chal raha hai?";
-        else poke.innerText = "Dil halka kar lo. Main sun raha hoon.";
-    }
-
-    function processSave() {
-        const text = document.getElementById('userInput').value;
-        if(text.trim().length < 5) return alert("Kuch toh likh, bro!");
-
-        const logs = JSON.parse(localStorage.getItem('z_ho_logs')) || [];
-        logs.unshift({d: new Date().toLocaleDateString('hi-IN'), m: activeMood, t: text});
-        localStorage.setItem('z_ho_logs', JSON.stringify(logs));
-
-        const randomDare = dareBank[Math.floor(Math.random() * dareBank.length)];
-        document.getElementById('daily-dare-display').innerText = randomDare;
-        showPage('dare-area');
-    }
-
-    function dareResponse(choice) {
-        if(choice === 'karlega') alert("Sahi hai! Kal aake batana.");
-        else alert("Hahaha! Darr gaya? 🤡");
-        goToHome();
-    }
-
-    function openHistory() {
-        showPage('history-area');
-        const list = document.getElementById('history-list');
-        const logs = JSON.parse(localStorage.getItem('z_ho_logs')) || [];
-        if(logs.length === 0) list.innerHTML = "<p style='text-align:center; color:#444;'>Khali hai!</p>";
-        else list.innerHTML = logs.map(l => `<div class="history-item"><div class="history-date">${l.d} | ${l.m}</div><div>${l.t}</div></div>`).join('');
-    }
-
-    function updateStats() {
-        const logs = JSON.parse(localStorage.getItem('z_ho_logs')) || [];
-        const streak = logs.length;
-        let rank = "Beginner 👻";
-        if(streak >= 3) rank = "Survivor 🏃";
-        if(streak >= 10) rank = "Legend 🌌";
-        document.getElementById('streak-display').innerText = `Streak: ${streak} Din | ${rank}`;
-    }
-
-    window.onload = updateStats;
+// Close modals on outside click
+document.getElementById('shareModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeShareModal();});
+document.getElementById('authModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuthModal();});
 </script>
 </body>
-</html>
+</html>'''
+
+# Append part 2
+with open('/mnt/agents/output/zinda-ho-v2.html', 'a', encoding='utf-8') as f:
+    f.write(part2)
+
+import os
+file_size = os.path.getsize('/mnt/agents/output/zinda-ho-v2.html')
+print(f"Complete file saved! Size: {file_size} bytes ({file_size/1024:.1f} KB)")
