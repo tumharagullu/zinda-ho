@@ -1,1161 +1,2374 @@
-# Write the file in parts to avoid truncation
-part1 = '''<!DOCTYPE html>
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zinda Ho? | Digital Saboot</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DEAD OR ALIVE — Prove You Exist</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--primary:#6366f1;--secondary:#ec4899;--accent:#f59e0b;--success:#10b981;--danger:#ef4444;--bg:#0a0a14;--bg-card:#12121f;--bg-elevated:#1e1e35;--text:#f8fafc;--text-muted:#94a3b8;--text-dim:#64748b;--border:rgba(255,255,255,0.06);--g1:linear-gradient(135deg,#667eea,#764ba2);--g2:linear-gradient(135deg,#f093fb,#f5576c);--g3:linear-gradient(135deg,#4facfe,#00f2fe);--fire:linear-gradient(135deg,#f59e0b,#ef4444);}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans Devanagari','Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6}
-.bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;background:radial-gradient(ellipse at 20% 20%,rgba(99,102,241,0.15) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(236,72,153,0.1) 0%,transparent 50%),var(--bg);animation:bgMove 15s ease-in-out infinite}
-@keyframes bgMove{0%,100%{transform:translate(0,0)}33%{transform:translate(-20px,10px)}66%{transform:translate(15px,-15px)}}
-.orbs{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.4;animation:orbFloat linear infinite}
-.orb:nth-child(1){width:300px;height:300px;background:var(--primary);top:10%;left:10%;animation-duration:20s}
-.orb:nth-child(2){width:250px;height:250px;background:var(--secondary);top:60%;right:10%;animation-duration:25s;animation-delay:-5s}
-.orb:nth-child(3){width:200px;height:200px;background:var(--accent);bottom:10%;left:40%;animation-duration:18s;animation-delay:-10s}
-@keyframes orbFloat{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(30px,-30px) rotate(90deg)}50%{transform:translate(-20px,20px) rotate(180deg)}75%{transform:translate(20px,30px) rotate(270deg)}}
-.particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;overflow:hidden}
-.particle{position:absolute;border-radius:50%;opacity:0.6;animation:pFloat linear infinite}
-@keyframes pFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:0.6}90%{opacity:0.6}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
-.header{padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(18,18,31,0.7);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.logo{display:flex;align-items:center;gap:0.75rem;font-size:1.5rem;font-weight:800;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
-.logo i{font-size:1.75rem;-webkit-text-fill-color:var(--primary)}
-.header-actions{display:flex;gap:0.75rem;align-items:center}
-.btn-icon{width:42px;height:42px;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-size:1rem}
-.btn-icon:hover{background:var(--bg-elevated);color:var(--text);transform:translateY(-3px) scale(1.05);box-shadow:0 0 40px rgba(99,102,241,0.25);border-color:var(--primary)}
-.user-avatar{width:42px;height:42px;border-radius:50%;border:2px solid var(--primary);cursor:pointer;object-fit:cover;transition:all 0.3s}
-.user-avatar:hover{transform:scale(1.1);box-shadow:0 0 20px rgba(99,102,241,0.4)}
-.container{max-width:1200px;margin:0 auto;padding:2rem}
-.hero{text-align:center;padding:2rem 0 1rem}
-.hero h1{font-size:4rem;font-weight:800;margin-bottom:0.5rem;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:titlePulse 3s ease-in-out infinite;letter-spacing:-2px}
-@keyframes titlePulse{0%,100%{filter:brightness(1) drop-shadow(0 0 20px rgba(99,102,241,0.3))}50%{filter:brightness(1.3) drop-shadow(0 0 40px rgba(99,102,241,0.5))}}
-.hero-subtitle{font-size:1.3rem;color:var(--text-muted);margin-bottom:1.5rem;font-style:italic}
-.streak-card{background:rgba(30,30,53,0.6);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:28px;padding:2.5rem;margin:2rem auto;max-width:520px;text-align:center;position:relative;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);transition:all 0.4s}
-.streak-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 30px 60px rgba(0,0,0,0.5),0 0 40px rgba(99,102,241,0.2)}
-.streak-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--fire)}
-.streak-number{font-size:6rem;font-weight:800;background:var(--fire);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:streakGlow 2s ease-in-out infinite}
-@keyframes streakGlow{0%,100%{text-shadow:0 0 30px rgba(245,158,11,0.5)}50%{text-shadow:0 0 60px rgba(245,158,11,0.9)}}
-.streak-label{font-size:1.1rem;color:var(--text-muted);margin-bottom:1rem}
-.streak-fire{font-size:3.5rem;animation:fireFlicker 0.8s ease-in-out infinite alternate;display:inline-block}
-@keyframes fireFlicker{0%{transform:scale(1) rotate(-5deg)}100%{transform:scale(1.15) rotate(5deg)}}
-.level-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.05);padding:0.6rem 1.2rem;border-radius:50px;font-size:0.95rem;font-weight:600;color:var(--accent);border:1px solid rgba(245,158,11,0.3)}
-.level-progress{margin-top:1.25rem;background:rgba(255,255,255,0.05);border-radius:50px;height:10px;overflow:hidden}
-.level-progress-bar{height:100%;background:var(--g1);border-radius:50px;transition:width 0.8s;position:relative}
-.level-progress-bar::after{content:'';position:absolute;top:0;right:0;bottom:0;width:30px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4));animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%{transform:translateX(-30px)}100%{transform:translateX(30px)}}
-.section-title{font-size:1.6rem;font-weight:700;margin:2.5rem 0 1.25rem;display:flex;align-items:center;gap:0.75rem}
-.section-title i{color:var(--primary);font-size:1.3rem;background:rgba(99,102,241,0.15);width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center}
-.ai-detector{background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(236,72,153,0.1));border:1px solid rgba(99,102,241,0.3);border-radius:20px;padding:1.5rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
-.ai-detector:hover{border-color:var(--primary);transform:translateY(-3px);box-shadow:0 10px 30px rgba(99,102,241,0.2)}
-.ai-icon{font-size:2rem;width:60px;height:60px;background:var(--g1);border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
-.ai-text{flex:1;position:relative;z-index:1}
-.ai-text h3{font-size:1.1rem;margin-bottom:0.25rem}
-.ai-text p{font-size:0.9rem;color:var(--text-muted)}
-.ai-status{position:relative;z-index:1;padding:0.5rem 1rem;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);border-radius:50px;font-size:0.85rem;font-weight:600;color:var(--success)}
-.ai-status.analyzing{background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.3);color:var(--accent);animation:pulse 1s infinite}
-.mood-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.25rem;margin-bottom:2rem}
-.mood-card{background:var(--bg-card);border:2px solid var(--border);border-radius:24px;padding:1.75rem 1rem;text-align:center;cursor:pointer;transition:all 0.4s;position:relative;overflow:hidden}
-.mood-card:hover{transform:translateY(-10px) scale(1.03);border-color:var(--primary);box-shadow:0 25px 50px rgba(99,102,241,0.25)}
-.mood-card.active{border-color:var(--primary);background:var(--bg-elevated);box-shadow:0 0 40px rgba(99,102,241,0.4)}
-.mood-emoji{font-size:3.5rem;margin-bottom:0.75rem;display:block;transition:transform 0.4s}
-.mood-card:hover .mood-emoji{transform:scale(1.3) rotate(15deg)}
-.mood-card.active .mood-emoji{animation:moodBounce 0.7s}
-@keyframes moodBounce{0%,100%{transform:scale(1)}30%{transform:scale(1.4) rotate(-15deg)}50%{transform:scale(1.1) rotate(10deg)}70%{transform:scale(1.3) rotate(-5deg)}}
-.mood-name{font-weight:700;font-size:1.05rem}
-.mood-count{font-size:0.85rem;color:var(--text-dim);margin-top:0.35rem}
-.entry-section{background:var(--bg-card);border:1px solid var(--border);border-radius:28px;padding:2.5rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:none;animation:slideUp 0.5s}
-.entry-section.visible{display:block}
-@keyframes slideUp{from{opacity:0;transform:translateY(30px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.entry-header{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem}
-.selected-mood-display{font-size:3rem;animation:moodPop 0.6s}
-@keyframes moodPop{0%{transform:scale(0) rotate(-30deg)}60%{transform:scale(1.3) rotate(10deg)}100%{transform:scale(1) rotate(0deg)}}
-.entry-title-text{font-size:1.3rem;font-weight:700}
-.entry-subtitle{color:var(--text-muted);font-size:0.95rem}
-.entry-textarea{width:100%;min-height:160px;background:var(--bg-elevated);border:2px solid var(--border);border-radius:20px;padding:1.25rem;color:var(--text);font-family:inherit;font-size:1.05rem;resize:vertical;transition:all 0.3s;margin-bottom:1rem}
-.entry-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 30px rgba(99,102,241,0.2)}
-.entry-textarea::placeholder{color:var(--text-dim)}
-.entry-toolbar{display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap}
-.toolbar-btn{padding:0.6rem 1rem;border-radius:12px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text-muted);font-family:inherit;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all 0.2s}
-.toolbar-btn:hover{background:var(--bg-hover);color:var(--text);border-color:var(--primary);transform:translateY(-2px)}
-.photo-preview-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:0.75rem;margin-bottom:1rem}
-.photo-preview{aspect-ratio:1;border-radius:16px;overflow:hidden;position:relative;border:2px solid var(--border);transition:all 0.3s}
-.photo-preview:hover{border-color:var(--primary);transform:scale(1.05)}
-.photo-preview img{width:100%;height:100%;object-fit:cover}
-.photo-preview .remove-photo{position:absolute;top:5px;right:5px;width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,0.9);color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;opacity:0;transition:opacity 0.2s}
-.photo-preview:hover .remove-photo{opacity:1}
-.entry-actions{display:flex;gap:1rem;justify-content:flex-end;align-items:center}
-.btn{padding:1rem 2.5rem;border-radius:14px;border:none;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;gap:0.6rem;position:relative;overflow:hidden}
-.btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s}
-.btn:hover::before{left:100%}
-.btn-primary{background:var(--g1);color:white;box-shadow:0 4px 20px rgba(99,102,241,0.4)}
-.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 30px rgba(99,102,241,0.6)}
-.btn-secondary{background:var(--bg-elevated);color:var(--text);border:1px solid var(--border)}
-.btn-secondary:hover{background:var(--bg-hover);border-color:var(--primary);transform:translateY(-2px)}
-.quote-card{background:var(--g1);border-radius:24px;padding:2rem;margin-bottom:2rem;text-align:center;position:relative;overflow:hidden;animation:quoteFloat 8s ease-in-out infinite;box-shadow:0 20px 40px rgba(99,102,241,0.3)}
-@keyframes quoteFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.quote-card::before{content:'"';position:absolute;top:-30px;left:30px;font-size:10rem;opacity:0.08;font-family:serif}
-.quote-text{font-size:1.2rem;font-weight:700;position:relative;z-index:1;line-height:1.7}
-.quote-author{margin-top:0.75rem;font-size:0.95rem;opacity:0.85;font-weight:500}
-.music-player{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.5rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:1.5rem;transition:all 0.3s}
-.music-player:hover{border-color:var(--secondary);box-shadow:0 10px 30px rgba(236,72,153,0.15)}
-.music-cover{width:80px;height:80px;border-radius:16px;background:var(--g2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;overflow:hidden;flex-shrink:0}
-.music-cover.playing{animation:musicPulse 2s ease-in-out infinite}
-@keyframes musicPulse{0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(236,72,153,0.3)}50%{transform:scale(1.05);box-shadow:0 0 40px rgba(236,72,153,0.5)}}
-.music-info{flex:1}
-.music-info h4{font-size:1.1rem;margin-bottom:0.25rem}
-.music-info p{font-size:0.85rem;color:var(--text-muted)}
-.music-controls{display:flex;align-items:center;gap:1rem}
-.music-btn{width:48px;height:48px;border-radius:50%;border:2px solid var(--border);background:var(--bg-elevated);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.3s}
-.music-btn:hover{background:var(--secondary);border-color:var(--secondary);transform:scale(1.1)}
-.music-btn.play{width:56px;height:56px;background:var(--g2);border:none;font-size:1.3rem}
-.music-progress{flex:1;height:6px;background:var(--bg-elevated);border-radius:50px;overflow:hidden;margin:0 1rem}
-.music-progress-bar{height:100%;background:var(--g2);border-radius:50px;width:0%;transition:width 0.3s}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-bottom:2rem}
-.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);transition:all 0.4s;position:relative;overflow:hidden}
-.stat-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,0.4)}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity 0.3s}
-.stat-card:nth-child(1)::before{background:var(--primary)}.stat-card:nth-child(2)::before{background:var(--secondary)}.stat-card:nth-child(3)::before{background:var(--success)}.stat-card:nth-child(4)::before{background:var(--accent)}
-.stat-card:hover::before{opacity:1}
-.stat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
-.stat-title{font-size:0.9rem;color:var(--text-muted);font-weight:500}
-.stat-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
-.stat-icon.purple{background:rgba(99,102,241,0.15);color:var(--primary)}.stat-icon.pink{background:rgba(236,72,153,0.15);color:var(--secondary)}.stat-icon.green{background:rgba(16,185,129,0.15);color:var(--success)}.stat-icon.orange{background:rgba(245,158,11,0.15);color:var(--accent)}
-.stat-value{font-size:2.5rem;font-weight:800}
-.stat-change{font-size:0.9rem;color:var(--success);margin-top:0.5rem;font-weight:600}
-.chart-container{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-.chart-title{font-size:1.15rem;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem}
-.calendar-section{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0.5rem;margin-top:1rem}
-.calendar-day{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.3s}
-.calendar-day:hover{transform:scale(1.25);z-index:10}
-.calendar-day.empty{background:transparent}
-.calendar-day.level-0{background:var(--bg-elevated)}.calendar-day.level-1{background:rgba(99,102,241,0.3)}.calendar-day.level-2{background:rgba(99,102,241,0.5)}.calendar-day.level-3{background:rgba(99,102,241,0.7)}.calendar-day.level-4{background:var(--primary);box-shadow:0 0 15px rgba(99,102,241,0.6)}
-.calendar-day.today{border:2px solid var(--accent);box-shadow:0 0 10px rgba(245,158,11,0.5)}
-.badges-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-bottom:2rem}
-.badge-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:1.5rem;display:flex;align-items:center;gap:1.25rem;transition:all 0.4s;opacity:0.4;filter:grayscale(1);position:relative;overflow:hidden}
-.badge-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);opacity:0;transition:opacity 0.3s}
-.badge-card.unlocked{opacity:1;filter:grayscale(0);border-color:rgba(245,158,11,0.3);box-shadow:0 8px 25px rgba(245,158,11,0.15)}
-.badge-card.unlocked::before{opacity:1}
-.badge-card.unlocked:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 15px 35px rgba(245,158,11,0.25)}
-.badge-icon{font-size:2.75rem;width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);border-radius:18px;flex-shrink:0}
-.badge-info h4{font-size:1.05rem;margin-bottom:0.35rem}.badge-info p{font-size:0.85rem;color:var(--text-dim)}
-.community-section{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-.community-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
-.live-indicator{display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;color:var(--success);font-weight:600}
-.live-dot{width:10px;height:10px;background:var(--success);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.3)}}
-.community-posts{display:flex;flex-direction:column;gap:1rem;max-height:500px;overflow-y:auto}
-.community-post{background:var(--bg-elevated);border-radius:16px;padding:1.25rem;border:1px solid var(--border);transition:all 0.3s}
-.community-post:hover{border-color:var(--primary);transform:translateX(8px)}
-.post-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
-.post-user{display:flex;align-items:center;gap:0.75rem}
-.post-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
-.post-user-info h5{font-size:0.95rem}.post-user-info span{font-size:0.75rem;color:var(--text-dim)}
-.post-mood{font-size:1.75rem}.post-text{font-size:0.95rem;line-height:1.6;margin-bottom:1rem}
-.post-images{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.5rem;margin-bottom:1rem}
-.post-images img{width:100%;aspect-ratio:1;border-radius:12px;object-fit:cover;cursor:pointer;transition:transform 0.3s}
-.post-images img:hover{transform:scale(1.05)}
-.post-actions{display:flex;gap:1.5rem}
-.post-action{display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;color:var(--text-dim);cursor:pointer;transition:all 0.2s;background:none;border:none;font-family:inherit}
-.post-action:hover{color:var(--primary);transform:scale(1.1)}.post-action.liked{color:var(--danger)}.post-action.liked i{animation:heartPop 0.4s ease}
-@keyframes heartPop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
-.history-section{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:1.75rem;margin-bottom:2rem;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-.history-list{display:flex;flex-direction:column;gap:0.75rem}
-.history-item{display:flex;align-items:center;gap:1.25rem;padding:1.25rem;background:var(--bg-elevated);border-radius:16px;border:1px solid var(--border);transition:all 0.3s;cursor:pointer}
-.history-item:hover{border-color:var(--primary);transform:translateX(8px)}
-.history-mood{font-size:2.5rem;width:60px;height:60px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border-radius:16px;flex-shrink:0}
-.history-content{flex:1}.history-text{font-size:0.95rem;margin-bottom:0.35rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.history-date{font-size:0.8rem;color:var(--text-dim)}
-.history-images{display:flex;gap:0.5rem;margin-top:0.5rem}
-.history-images img{width:50px;height:50px;border-radius:8px;object-fit:cover}
-.history-delete{width:40px;height:40px;border-radius:10px;border:none;background:rgba(239,68,68,0.1);color:var(--danger);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;opacity:0}
-.history-item:hover .history-delete{opacity:1}.history-delete:hover{background:rgba(239,68,68,0.25);transform:scale(1.1)}
-.challenge-card{background:var(--g2);border-radius:24px;padding:1.75rem;margin-bottom:2rem;position:relative;overflow:hidden;cursor:pointer;transition:all 0.4s;box-shadow:0 15px 35px rgba(236,72,153,0.25)}
-.challenge-card:hover{transform:scale(1.03) translateY(-5px)}
-.challenge-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,0.15) 0%,transparent 70%)}
-.challenge-card.completed{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 15px 35px rgba(16,185,129,0.25)}
-.challenge-label{font-size:0.85rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;opacity:0.9;margin-bottom:0.5rem}
-.challenge-text{font-size:1.2rem;font-weight:700;position:relative;z-index:1}
-.challenge-reward{display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;background:rgba(255,255,255,0.2);padding:0.5rem 1rem;border-radius:50px;font-size:0.9rem;font-weight:700}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity 0.4s}
-.modal-overlay.active{opacity:1;pointer-events:all}
-.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:28px;padding:2.5rem;max-width:520px;width:90%;transform:scale(0.9) translateY(20px);transition:all 0.4s;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
-.modal-overlay.active .modal{transform:scale(1) translateY(0)}
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
-.modal-title{font-size:1.4rem;font-weight:700}
-.modal-close{width:40px;height:40px;border-radius:12px;border:none;background:var(--bg-elevated);color:var(--text);cursor:pointer;font-size:1.3rem;transition:all 0.2s}
-.modal-close:hover{background:var(--danger);transform:rotate(90deg)}
-.auth-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem;background:var(--bg-elevated);padding:0.5rem;border-radius:14px}
-.auth-tab{flex:1;padding:0.75rem;border:none;background:transparent;color:var(--text-muted);font-family:inherit;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.3s}
-.auth-tab.active{background:var(--primary);color:white}
-.auth-input{width:100%;padding:1rem 1.25rem;background:var(--bg-elevated);border:2px solid var(--border);border-radius:14px;color:var(--text);font-family:inherit;font-size:1rem;margin-bottom:1rem;transition:all 0.3s}
-.auth-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 20px rgba(99,102,241,0.2)}
-.auth-btn{width:100%;padding:1rem;background:var(--g1);border:none;border-radius:14px;color:white;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s;margin-bottom:1rem}
-.auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,0.4)}
-.social-login{display:flex;gap:1rem;margin-top:1rem}
-.social-btn{flex:1;padding:0.875rem;border-radius:14px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text);font-family:inherit;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s}
-.social-btn:hover{background:var(--bg-hover);transform:translateY(-2px)}
-.social-btn.google:hover{border-color:#ea4335;color:#ea4335}.social-btn.facebook:hover{border-color:#1877f2;color:#1877f2}
-.share-preview{background:var(--g1);border-radius:20px;padding:2.5rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;box-shadow:0 20px 40px rgba(99,102,241,0.3)}
-.share-preview::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);animation:rotate 10s linear infinite}
-@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.share-streak{font-size:5rem;font-weight:800;position:relative;z-index:1}.share-text{font-size:1.2rem;position:relative;z-index:1;margin-top:0.75rem;font-weight:600}
-.share-buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem}
-.share-btn{padding:0.875rem;border-radius:14px;border:1px solid var(--border);background:var(--bg-elevated);color:var(--text);font-family:inherit;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s}
-.share-btn:hover{background:var(--primary);border-color:var(--primary);transform:translateY(-3px)}
-.toast-container{position:fixed;bottom:2rem;right:2rem;z-index:1001;display:flex;flex-direction:column;gap:0.75rem}
-.toast{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.75rem;display:flex;align-items:center;gap:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.4);animation:toastSlide 0.5s;min-width:340px;backdrop-filter:blur(20px)}
-@keyframes toastSlide{from{transform:translateX(100%) scale(0.9);opacity:0}to{transform:translateX(0) scale(1);opacity:1}}
-.toast-icon{font-size:1.5rem}.toast-content{flex:1}.toast-title{font-weight:700;font-size:1rem}.toast-message{font-size:0.9rem;color:var(--text-muted)}
-.empty-state{text-align:center;padding:3rem;color:var(--text-dim)}.empty-state i{font-size:3.5rem;margin-bottom:1rem;opacity:0.4}.empty-state p{font-size:1.1rem}
-.voice-btn{width:44px;height:44px;border-radius:50%;border:2px solid var(--border);background:var(--bg-elevated);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;margin-left:0.5rem;flex-shrink:0}
-.voice-btn:hover{border-color:var(--primary);color:var(--primary);transform:scale(1.1)}
-.voice-btn.recording{animation:voicePulse 1s infinite;border-color:var(--danger);color:var(--danger)}
-@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.5)}50%{box-shadow:0 0 0 15px rgba(239,68,68,0)}}
-.notification-banner{background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(236,72,153,0.2));border:1px solid rgba(99,102,241,0.3);border-radius:20px;padding:1.25rem 1.5rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;animation:slideDown 0.5s}
-.notification-banner.hidden{display:none}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-.notification-text{display:flex;align-items:center;gap:0.75rem}.notification-text i{font-size:1.5rem;color:var(--primary)}
-.loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;transition:opacity 0.5s}
-.loading-overlay.hidden{opacity:0;pointer-events:none}
-.loading-spinner{width:60px;height:60px;border:4px solid var(--bg-elevated);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-size:1.2rem;font-weight:600;color:var(--text-muted);animation:loadPulse 1.5s ease-in-out infinite}
-@keyframes loadPulse{0%,100%{opacity:0.5}50%{opacity:1}}
-.lightbox{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
-.lightbox.active{opacity:1;pointer-events:all}.lightbox img{max-width:90%;max-height:90%;border-radius:16px;box-shadow:0 25px 50px rgba(0,0,0,0.5);transform:scale(0.9);transition:transform 0.3s}.lightbox.active img{transform:scale(1)}
-.lightbox-close{position:absolute;top:2rem;right:2rem;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.1);color:white;border:none;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
-.lightbox-close:hover{background:var(--danger);transform:rotate(90deg)}
-@media(max-width:768px){.hero h1{font-size:2.8rem}.streak-number{font-size:4rem}.mood-grid{grid-template-columns:repeat(2,1fr);gap:0.75rem}.stats-grid{grid-template-columns:1fr}.container{padding:1rem}.header{padding:1rem}.music-player{flex-direction:column;text-align:center}.entry-toolbar{justify-content:center}}
-::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bg-elevated);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--primary)}
+:root {
+  --dead: #0a0a0a;
+  --alive: #ff2d55;
+  --alive2: #ff6b35;
+  --electric: #00f5ff;
+  --gold: #ffd700;
+  --green: #39ff14;
+  --surface: #111111;
+  --card: #161616;
+  --border: #222;
+  --text: #f5f5f5;
+  --muted: #666;
+  --glow-red: 0 0 20px #ff2d5566, 0 0 40px #ff2d5533;
+  --glow-blue: 0 0 20px #00f5ff66, 0 0 40px #00f5ff33;
+  --glow-green: 0 0 20px #39ff1466, 0 0 40px #39ff1433;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dead);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::after {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  width:12px; height:12px;
+  background: var(--alive);
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s, width 0.2s, height 0.2s;
+  box-shadow: var(--glow-red);
+  mix-blend-mode: screen;
+}
+
+/* ── LOADER ── */
+#loader {
+  position:fixed; inset:0;
+  background:#000;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  z-index:9000;
+  transition:opacity 0.8s, visibility 0.8s;
+}
+#loader.gone { opacity:0; visibility:hidden; }
+
+.loader-heart {
+  font-size:5rem;
+  animation:heartbeat 0.8s infinite;
+}
+@keyframes heartbeat {
+  0%,100% { transform:scale(1); }
+  14% { transform:scale(1.3); }
+  28% { transform:scale(1); }
+  42% { transform:scale(1.15); }
+  70% { transform:scale(1); }
+}
+.loader-title {
+  font-family:'Black Ops One', cursive;
+  font-size:2rem;
+  margin-top:1rem;
+  background: linear-gradient(90deg, var(--alive), var(--alive2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  letter-spacing:4px;
+}
+.loader-bar-wrap {
+  width:200px; height:3px;
+  background:var(--border);
+  border-radius:3px;
+  margin-top:2rem;
+  overflow:hidden;
+}
+.loader-bar {
+  height:100%;
+  background:linear-gradient(90deg,var(--alive),var(--electric));
+  border-radius:3px;
+  width:0%;
+  animation:loadBar 1.8s ease forwards;
+}
+@keyframes loadBar { to { width:100%; } }
+
+/* ── ONBOARDING ── */
+#onboarding {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.97);
+  z-index:8000;
+  display:flex; align-items:center; justify-content:center;
+  padding:1.5rem;
+}
+.ob-card {
+  background:var(--card);
+  border:1px solid var(--alive);
+  border-radius:24px;
+  padding:2.5rem 2rem;
+  max-width:360px; width:100%;
+  text-align:center;
+  box-shadow: var(--glow-red);
+  animation:slideUp 0.5s ease;
+}
+@keyframes slideUp {
+  from { transform:translateY(40px); opacity:0; }
+  to { transform:translateY(0); opacity:1; }
+}
+.ob-step { display:none; }
+.ob-step.active { display:block; }
+.ob-emoji { font-size:4rem; margin-bottom:1rem; }
+.ob-title {
+  font-family:'Black Ops One', cursive;
+  font-size:1.6rem; margin-bottom:0.8rem;
+  background:linear-gradient(90deg,var(--alive),var(--alive2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.ob-desc { color:var(--muted); font-size:1rem; line-height:1.6; margin-bottom:1.5rem; }
+.ob-btn {
+  width:100%; padding:1rem;
+  background:linear-gradient(135deg,var(--alive),var(--alive2));
+  border:none; border-radius:14px;
+  color:white; font-family:'Black Ops One',cursive;
+  font-size:1rem; letter-spacing:2px;
+  cursor:pointer;
+  transition:transform 0.15s, box-shadow 0.15s;
+  box-shadow: var(--glow-red);
+}
+.ob-btn:hover { transform:scale(1.03); }
+.ob-dots { display:flex; gap:8px; justify-content:center; margin-top:1.2rem; }
+.ob-dot { width:8px; height:8px; border-radius:50%; background:var(--border); transition:background 0.3s; }
+.ob-dot.active { background:var(--alive); }
+
+/* ── HEADER ── */
+header {
+  position:sticky; top:0; z-index:100;
+  background:rgba(10,10,10,0.9);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0.8rem 1rem;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.logo {
+  font-family:'Black Ops One', cursive;
+  font-size:1.1rem;
+  letter-spacing:2px;
+  display:flex; align-items:center; gap:0.5rem;
+}
+.logo-dead { color:var(--muted); }
+.logo-or { color:var(--border); font-size:0.7rem; }
+.logo-alive {
+  color:var(--alive);
+  text-shadow: 0 0 10px var(--alive);
+  animation:flicker 4s infinite;
+}
+@keyframes flicker {
+  0%,95%,100% { opacity:1; }
+  96% { opacity:0.4; }
+  97% { opacity:1; }
+  98% { opacity:0.6; }
+  99% { opacity:1; }
+}
+.header-right { display:flex; align-items:center; gap:0.8rem; }
+.streak-pill {
+  background:linear-gradient(135deg,#ff2d5522,#ff6b3511);
+  border:1px solid #ff2d5544;
+  border-radius:20px; padding:0.3rem 0.8rem;
+  font-size:0.8rem; font-weight:700;
+  color:var(--alive2);
+  display:flex; align-items:center; gap:0.3rem;
+}
+.notif-btn {
+  width:34px; height:34px;
+  background:var(--card); border:1px solid var(--border);
+  border-radius:50%; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem; transition:border-color 0.2s;
+}
+.notif-btn:hover { border-color:var(--alive); }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0;
+  background:rgba(10,10,10,0.95);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:100;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.nav-item {
+  flex:1; padding:0.7rem 0.3rem;
+  background:none; border:none;
+  color:var(--muted); cursor:pointer;
+  font-family:'Rajdhani',sans-serif;
+  font-size:0.65rem; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.5px;
+  display:flex; flex-direction:column;
+  align-items:center; gap:0.2rem;
+  transition:color 0.2s;
+  position:relative;
+}
+.nav-item .nav-icon { font-size:1.3rem; }
+.nav-item.active { color:var(--alive); }
+.nav-item.active::after {
+  content:'';
+  position:absolute; top:0; left:20%; right:20%;
+  height:2px; background:var(--alive);
+  border-radius:0 0 2px 2px;
+  box-shadow: 0 0 8px var(--alive);
+}
+.nav-badge {
+  position:absolute; top:6px; right:calc(50% - 16px);
+  background:var(--alive); color:white;
+  font-size:0.55rem; font-weight:900;
+  border-radius:10px; padding:1px 5px;
+  min-width:16px; text-align:center;
+}
+
+/* ── PAGES ── */
+.page {
+  display:none;
+  padding:1rem 1rem 6rem;
+  animation:fadeUp 0.3s ease;
+  min-height:calc(100vh - 56px);
+}
+.page.active { display:block; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ── CARDS ── */
+.card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1.2rem;
+  margin-bottom:1rem;
+  position:relative;
+  overflow:hidden;
+}
+.card-label {
+  font-size:0.65rem; font-weight:700;
+  color:var(--muted); text-transform:uppercase;
+  letter-spacing:2px; margin-bottom:0.8rem;
+  display:flex; align-items:center; gap:0.4rem;
+}
+
+/* ── HOME: MAIN PULSE BUTTON ── */
+.pulse-section {
+  display:flex; flex-direction:column;
+  align-items:center; padding:1.5rem 0 0.5rem;
+  margin-bottom:1rem;
+}
+.pulse-ring-wrap {
+  position:relative;
+  width:200px; height:200px;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:1rem;
+}
+.pulse-ring {
+  position:absolute;
+  border-radius:50%;
+  border:2px solid var(--alive);
+  opacity:0;
+  animation:ringPulse 2.5s infinite;
+}
+.pulse-ring:nth-child(1) { width:100%; height:100%; animation-delay:0s; }
+.pulse-ring:nth-child(2) { width:80%; height:80%; animation-delay:0.5s; }
+.pulse-ring:nth-child(3) { width:60%; height:60%; animation-delay:1s; }
+@keyframes ringPulse {
+  0% { transform:scale(0.8); opacity:0.8; }
+  100% { transform:scale(1.2); opacity:0; }
+}
+.main-pulse-btn {
+  position:relative; z-index:2;
+  width:140px; height:140px; border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, #ff4d6a, #cc0022);
+  border:none; cursor:pointer;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  box-shadow: 0 0 30px #ff2d5577, 0 0 60px #ff2d5533, inset 0 0 30px rgba(255,255,255,0.1);
+  transition:transform 0.15s, box-shadow 0.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.main-pulse-btn:hover { transform:scale(1.05); box-shadow:0 0 40px #ff2d5599, 0 0 80px #ff2d5544; }
+.main-pulse-btn:active { transform:scale(0.95); }
+.main-pulse-btn.done {
+  background:radial-gradient(circle at 40% 35%, #1a4a1a, #0d2e0d);
+  box-shadow: 0 0 30px #39ff1477, 0 0 60px #39ff1433;
+}
+.pulse-heart { font-size:2.5rem; animation:heartbeat 1.5s infinite; }
+.pulse-btn-text {
+  font-family:'Black Ops One',cursive;
+  font-size:0.6rem; letter-spacing:2px;
+  color:rgba(255,255,255,0.9);
+  margin-top:0.3rem;
+}
+.pulse-subtitle {
+  font-size:0.85rem; color:var(--muted);
+  text-align:center; margin-bottom:0.5rem;
+}
+.pulse-count-text {
+  font-family:'Orbitron',monospace;
+  font-size:0.8rem; color:var(--electric);
+  text-shadow:0 0 10px var(--electric);
+}
+
+/* ── LIVE MAP COUNTER ── */
+.live-map {
+  background:linear-gradient(135deg,#0a1a0a,#001a0a);
+  border:1px solid #39ff1433;
+  border-radius:18px; padding:1.2rem;
+  margin-bottom:1rem;
+}
+.live-header {
+  display:flex; align-items:center; gap:0.5rem;
+  margin-bottom:1rem;
+}
+.live-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--green);
+  box-shadow: var(--glow-green);
+  animation:liveBlink 1s infinite;
+}
+@keyframes liveBlink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.live-title {
+  font-family:'Black Ops One',cursive;
+  font-size:0.85rem; color:var(--green);
+  letter-spacing:1px;
+}
+.city-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.5rem; }
+.city-item {
+  background:rgba(57,255,20,0.05);
+  border:1px solid #39ff1422;
+  border-radius:10px; padding:0.4rem 0.5rem;
+  display:flex; align-items:center; gap:0.3rem;
+}
+.city-flag { font-size:1rem; }
+.city-name { font-size:0.65rem; color:var(--muted); font-weight:600; }
+.city-count {
+  font-family:'Orbitron',monospace;
+  font-size:0.7rem; color:var(--green);
+  font-weight:700;
+  text-shadow:0 0 8px var(--green);
+}
+
+/* ── SOUL SYNC ── */
+.soul-sync-card {
+  background:linear-gradient(135deg,#0a0a1a,#0a001a);
+  border:1px solid var(--electric);
+  border-radius:18px; padding:1.2rem;
+  margin-bottom:1rem;
+  box-shadow:0 0 20px #00f5ff11;
+  text-align:center;
+}
+.soul-sync-title {
+  font-family:'Black Ops One',cursive;
+  font-size:1rem; color:var(--electric);
+  letter-spacing:2px; margin-bottom:0.3rem;
+  text-shadow:0 0 10px var(--electric);
+}
+.soul-sync-desc { color:var(--muted); font-size:0.85rem; margin-bottom:1rem; line-height:1.5; }
+.soul-sync-match {
+  background:rgba(0,245,255,0.05);
+  border:1px solid rgba(0,245,255,0.2);
+  border-radius:12px; padding:0.8rem;
+  margin-bottom:0.8rem;
+  animation:pulse-border 2s infinite;
+}
+@keyframes pulse-border {
+  0%,100% { border-color:rgba(0,245,255,0.2); }
+  50% { border-color:rgba(0,245,255,0.6); }
+}
+.soul-avatars { font-size:2rem; margin-bottom:0.3rem; }
+.soul-text { font-size:0.8rem; color:var(--electric); }
+.soul-btn {
+  background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(0,245,255,0.05));
+  border:1px solid var(--electric);
+  border-radius:10px; padding:0.5rem 1.2rem;
+  color:var(--electric); font-family:'Rajdhani',sans-serif;
+  font-size:0.85rem; font-weight:700; cursor:pointer;
+  transition:all 0.2s;
+  letter-spacing:1px;
+}
+.soul-btn:hover { background:rgba(0,245,255,0.2); box-shadow:var(--glow-blue); }
+
+/* ── SIGNAL SECTION ── */
+.signal-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px; padding:1.2rem;
+  margin-bottom:1rem;
+}
+.signal-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
+.signal-btn {
+  background:var(--surface);
+  border:2px solid var(--border);
+  border-radius:14px; padding:0.8rem;
+  cursor:pointer; text-align:center;
+  transition:all 0.2s;
+  font-family:'Rajdhani',sans-serif;
+}
+.signal-btn:hover { transform:scale(1.03); }
+.signal-btn.s1:hover, .signal-btn.s1.active { border-color:#4f9eff; background:rgba(79,158,255,0.1); box-shadow:0 0 15px rgba(79,158,255,0.3); }
+.signal-btn.s2:hover, .signal-btn.s2.active { border-color:var(--alive); background:rgba(255,45,85,0.1); box-shadow:0 0 15px rgba(255,45,85,0.3); }
+.signal-btn.s3:hover, .signal-btn.s3.active { border-color:#ffd700; background:rgba(255,215,0,0.1); box-shadow:0 0 15px rgba(255,215,0,0.3); }
+.signal-btn.s4:hover, .signal-btn.s4.active { border-color:var(--green); background:rgba(57,255,20,0.1); box-shadow:0 0 15px rgba(57,255,20,0.3); }
+.signal-emoji { font-size:1.8rem; display:block; margin-bottom:0.3rem; }
+.signal-text { font-size:0.75rem; color:var(--muted); font-weight:600; }
+.signal-sub { font-size:0.65rem; color:var(--muted); margin-top:0.1rem; opacity:0.7; }
+.send-signal-btn {
+  width:100%; margin-top:0.8rem;
+  padding:0.8rem;
+  background:linear-gradient(135deg,var(--alive),var(--alive2));
+  border:none; border-radius:12px;
+  color:white; font-family:'Black Ops One',cursive;
+  font-size:0.85rem; letter-spacing:2px;
+  cursor:pointer; transition:all 0.2s;
+  box-shadow:var(--glow-red);
+}
+.send-signal-btn:hover { transform:translateY(-2px); }
+.send-signal-btn:disabled { background:var(--border); color:var(--muted); box-shadow:none; transform:none; cursor:default; }
+
+/* ── STREAK HERO ── */
+.streak-hero {
+  background:linear-gradient(135deg,#1a0505,#0d0d0d);
+  border:1px solid #ff2d5533;
+  border-radius:18px; padding:1.2rem;
+  margin-bottom:1rem;
+  display:flex; align-items:center; gap:1rem;
+}
+.streak-fire-wrap { position:relative; }
+.streak-fire {
+  font-size:3rem;
+  animation:flameDance 1.5s infinite alternate;
+  filter:drop-shadow(0 0 10px #ff2d55);
+}
+@keyframes flameDance {
+  from { transform:rotate(-5deg) scale(1); }
+  to { transform:rotate(5deg) scale(1.1); }
+}
+.streak-info { flex:1; }
+.streak-num {
+  font-family:'Orbitron',monospace;
+  font-size:2.5rem; font-weight:900; line-height:1;
+  color:var(--alive);
+  text-shadow:0 0 20px var(--alive);
+}
+.streak-lbl { color:var(--muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; }
+.level-tag {
+  display:inline-block; margin-top:0.4rem;
+  background:linear-gradient(135deg,var(--alive),var(--alive2));
+  border-radius:20px; padding:0.2rem 0.8rem;
+  font-size:0.7rem; font-weight:700; color:white;
+  letter-spacing:1px;
+}
+
+/* ── TIME CAPSULE ── */
+.capsule-card {
+  background:linear-gradient(135deg,#1a1200,#0d0d00);
+  border:1px solid #ffd70033;
+  border-radius:18px; padding:1.2rem;
+  margin-bottom:1rem;
+}
+.capsule-title {
+  font-family:'Black Ops One',cursive;
+  font-size:0.9rem; color:var(--gold);
+  letter-spacing:2px; margin-bottom:0.3rem;
+  text-shadow:0 0 10px var(--gold);
+}
+.capsule-desc { color:var(--muted); font-size:0.8rem; margin-bottom:0.8rem; line-height:1.5; }
+.capsule-textarea {
+  width:100%;
+  background:rgba(255,215,0,0.03);
+  border:1px solid #ffd70033;
+  border-radius:10px; padding:0.8rem;
+  color:var(--text); font-family:'Rajdhani',sans-serif;
+  font-size:0.9rem; resize:none; min-height:80px;
+}
+.capsule-textarea:focus { outline:none; border-color:var(--gold); }
+.capsule-options { display:flex; gap:0.5rem; margin:0.6rem 0; flex-wrap:wrap; }
+.capsule-opt {
+  background:rgba(255,215,0,0.05);
+  border:1px solid #ffd70033; border-radius:8px;
+  padding:0.3rem 0.7rem; cursor:pointer;
+  color:var(--muted); font-size:0.75rem; font-weight:700;
+  transition:all 0.2s;
+}
+.capsule-opt.selected, .capsule-opt:hover { border-color:var(--gold); color:var(--gold); background:rgba(255,215,0,0.1); }
+.capsule-save-btn {
+  width:100%; padding:0.7rem;
+  background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,215,0,0.05));
+  border:1px solid var(--gold); border-radius:10px;
+  color:var(--gold); font-family:'Black Ops One',cursive;
+  font-size:0.8rem; letter-spacing:2px; cursor:pointer;
+  transition:all 0.2s;
+}
+.capsule-save-btn:hover { background:rgba(255,215,0,0.2); box-shadow:0 0 15px rgba(255,215,0,0.3); }
+.capsule-locked {
+  background:rgba(255,215,0,0.05);
+  border:1px solid #ffd70033;
+  border-radius:10px; padding:0.8rem;
+  margin-top:0.5rem;
+}
+.capsule-item {
+  display:flex; align-items:center; gap:0.6rem;
+  padding:0.5rem 0; border-bottom:1px solid var(--border);
+}
+.capsule-item:last-child { border-bottom:none; }
+.capsule-lock-icon { font-size:1.2rem; }
+.capsule-meta { flex:1; }
+.capsule-days { font-size:0.7rem; color:var(--muted); }
+.capsule-unlock { font-size:0.7rem; color:var(--gold); font-weight:700; }
+
+/* ── ENTRY PAGE ── */
+.mood-row {
+  display:flex; gap:0.5rem;
+  overflow-x:auto; scrollbar-width:none;
+  padding:0.3rem 0; margin-bottom:0.5rem;
+}
+.mood-row::-webkit-scrollbar { display:none; }
+.mood-chip {
+  flex-shrink:0;
+  background:var(--surface); border:2px solid var(--border);
+  border-radius:50px; padding:0.4rem 0.8rem;
+  cursor:pointer; transition:all 0.2s;
+  display:flex; align-items:center; gap:0.4rem;
+  white-space:nowrap;
+}
+.mood-chip:hover { border-color:var(--alive); transform:scale(1.05); }
+.mood-chip.selected {
+  border-color:var(--alive);
+  background:rgba(255,45,85,0.15);
+  box-shadow:0 0 12px rgba(255,45,85,0.3);
+}
+.mood-chip-emoji { font-size:1.2rem; }
+.mood-chip-label { font-size:0.8rem; font-weight:700; color:var(--muted); }
+.mood-chip.selected .mood-chip-label { color:var(--alive); }
+
+.journal-area {
+  width:100%;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:1rem;
+  color:var(--text); font-family:'Rajdhani',sans-serif;
+  font-size:1rem; resize:none; min-height:120px;
+  line-height:1.6;
+  transition:border-color 0.2s;
+}
+.journal-area:focus { outline:none; border-color:var(--alive); }
+.journal-area::placeholder { color:var(--muted); }
+
+.entry-actions { display:flex; gap:0.5rem; margin-top:0.7rem; flex-wrap:wrap; }
+.btn {
+  padding:0.5rem 1rem;
+  border-radius:10px; border:none;
+  font-family:'Rajdhani',sans-serif;
+  font-size:0.85rem; font-weight:700;
+  cursor:pointer; transition:all 0.2s;
+  letter-spacing:0.5px;
+}
+.btn-ghost { background:var(--surface); border:1px solid var(--border); color:var(--muted); }
+.btn-ghost:hover { color:var(--text); border-color:var(--alive); }
+.btn-primary {
+  background:linear-gradient(135deg,var(--alive),var(--alive2));
+  color:white; margin-left:auto;
+  box-shadow:var(--glow-red);
+}
+.btn-primary:hover { transform:translateY(-2px); }
+.btn-electric { background:rgba(0,245,255,0.1); border:1px solid var(--electric); color:var(--electric); }
+.btn-electric:hover { background:rgba(0,245,255,0.2); }
+
+.ai-box {
+  margin-top:0.7rem;
+  background:linear-gradient(135deg,rgba(0,245,255,0.05),transparent);
+  border:1px solid rgba(0,245,255,0.2);
+  border-radius:12px; padding:0.8rem;
+  display:none;
+  animation:fadeUp 0.3s ease;
+}
+.ai-box-text { font-size:0.85rem; color:var(--electric); line-height:1.5; }
+
+/* ── STATS ── */
+.stat-row { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:1rem; }
+.stat-box {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:1rem; text-align:center;
+}
+.stat-num {
+  font-family:'Orbitron',monospace;
+  font-size:1.8rem; font-weight:900;
+  color:var(--alive); text-shadow:0 0 15px var(--alive);
+}
+.stat-lbl { font-size:0.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-top:0.2rem; }
+
+.xp-card {
+  background:linear-gradient(135deg,#0d0a1a,#0a0d1a);
+  border:1px solid rgba(0,245,255,0.2);
+  border-radius:14px; padding:1rem;
+  margin-bottom:1rem;
+}
+.xp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.7rem; }
+.xp-level { font-family:'Black Ops One',cursive; font-size:1rem; color:var(--electric); }
+.xp-points { font-size:0.8rem; color:var(--muted); }
+.xp-track { height:8px; background:var(--border); border-radius:8px; overflow:hidden; }
+.xp-fill { height:100%; background:linear-gradient(90deg,var(--alive),var(--electric)); border-radius:8px; transition:width 1s ease; }
+
+/* Calendar */
+.cal-wrap { margin-top:0.5rem; }
+.cal-days-header { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:3px; }
+.cal-day-lbl { text-align:center; font-size:0.6rem; color:var(--muted); font-weight:700; }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+.cal-cell {
+  aspect-ratio:1; border-radius:4px;
+  background:var(--border);
+  transition:all 0.2s;
+  cursor:default;
+}
+.cal-cell.active { background:var(--alive); box-shadow:0 0 6px var(--alive); }
+.cal-cell.today { outline:2px solid var(--electric); outline-offset:1px; }
+
+/* Mood bars */
+.mood-bars { display:flex; align-items:flex-end; gap:5px; height:90px; margin-top:0.5rem; }
+.mood-bar-col { flex:1; display:flex; flex-direction:column; align-items:center; }
+.mood-bar-fill { width:100%; border-radius:4px 4px 0 0; min-height:4px; transition:height 0.8s ease; }
+.mood-bar-emoji { font-size:0.9rem; margin-top:4px; }
+
+/* Badges */
+.badges-wrap { display:grid; grid-template-columns:repeat(3,1fr); gap:0.6rem; }
+.badge-box {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:0.8rem 0.5rem;
+  text-align:center; transition:all 0.3s;
+}
+.badge-box.earned {
+  border-color:rgba(255,215,0,0.4);
+  background:linear-gradient(135deg,#1a1500,#0d0d00);
+  box-shadow:0 0 15px rgba(255,215,0,0.2);
+}
+.badge-box:not(.earned) { filter:grayscale(1); opacity:0.35; }
+.badge-ico { font-size:1.8rem; }
+.badge-nm { font-size:0.6rem; color:var(--muted); margin-top:0.3rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+
+/* Weather report */
+.weather-card {
+  background:linear-gradient(135deg,#050a1a,#0a0a0d);
+  border:1px solid rgba(0,245,255,0.15);
+  border-radius:18px; padding:1.2rem;
+  margin-bottom:1rem;
+}
+.weather-title { font-family:'Black Ops One',cursive; color:var(--electric); font-size:0.9rem; letter-spacing:2px; margin-bottom:0.8rem; }
+.weather-insight {
+  display:flex; align-items:center; gap:0.7rem;
+  padding:0.6rem 0; border-bottom:1px solid var(--border);
+  font-size:0.85rem;
+}
+.weather-insight:last-child { border-bottom:none; }
+.weather-icon { font-size:1.4rem; }
+.weather-text { color:var(--muted); }
+.weather-text span { color:var(--electric); font-weight:700; }
+
+/* ── COMMUNITY ── */
+.community-post {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:1rem; margin-bottom:0.8rem;
+  animation:fadeUp 0.3s ease;
+  transition:border-color 0.2s;
+}
+.community-post:hover { border-color:#333; }
+.post-top { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.6rem; }
+.post-avi {
+  width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem;
+  border:2px solid var(--border);
+}
+.post-info { flex:1; }
+.post-name { font-size:0.9rem; font-weight:700; }
+.post-time { font-size:0.7rem; color:var(--muted); }
+.post-signal {
+  font-size:1.5rem;
+  filter:drop-shadow(0 0 5px currentColor);
+}
+.post-body { font-size:0.9rem; color:var(--muted); margin-bottom:0.6rem; line-height:1.5; }
+.post-streak { font-size:0.75rem; color:var(--alive); font-weight:700; margin-bottom:0.6rem; }
+.post-footer { display:flex; gap:0.5rem; }
+.react-btn {
+  background:none; border:1px solid var(--border);
+  border-radius:8px; padding:0.25rem 0.6rem;
+  color:var(--muted); cursor:pointer; font-size:0.8rem;
+  font-family:'Rajdhani',sans-serif; font-weight:600;
+  transition:all 0.2s;
+}
+.react-btn:hover { border-color:var(--alive); color:var(--text); }
+.react-btn.fired { border-color:var(--alive); color:var(--alive); background:rgba(255,45,85,0.1); }
+
+/* Anonymous signal received */
+.incoming-signals {
+  background:linear-gradient(135deg,#0a0010,#050010);
+  border:1px solid rgba(0,245,255,0.15);
+  border-radius:18px; padding:1.2rem;
+  margin-bottom:1rem;
+}
+.signal-pill {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  background:rgba(0,245,255,0.05); border:1px solid rgba(0,245,255,0.2);
+  border-radius:50px; padding:0.4rem 0.8rem;
+  margin:0.3rem; font-size:0.8rem; color:var(--electric);
+  animation:fadeUp 0.3s ease;
+}
+
+/* Share */
+.share-hero {
+  background:linear-gradient(135deg,#1a0505,#050010);
+  border:1px solid rgba(255,45,85,0.2);
+  border-radius:18px; padding:1.5rem;
+  text-align:center; margin-bottom:1rem;
+}
+.share-big {
+  font-family:'Orbitron',monospace;
+  font-size:2rem; font-weight:900;
+  color:var(--alive); text-shadow:0 0 20px var(--alive);
+  margin-bottom:0.3rem;
+}
+.share-sub { color:var(--muted); font-size:0.85rem; margin-bottom:1.2rem; }
+.share-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; }
+.share-btn {
+  padding:0.7rem; border-radius:12px; border:none;
+  font-family:'Rajdhani',sans-serif; font-size:0.85rem; font-weight:700;
+  cursor:pointer; transition:transform 0.15s; letter-spacing:0.5px;
+}
+.share-btn:hover { transform:scale(1.04); }
+.share-wa { background:#25D366; color:white; }
+.share-tw { background:#1da1f2; color:white; }
+.share-ig { background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); color:white; }
+.share-cp { background:var(--surface); border:1px solid var(--border); color:var(--text); }
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:5.5rem; left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:0.8rem 1.4rem;
+  font-size:0.85rem; font-weight:700;
+  z-index:7000; transition:transform 0.3s ease, opacity 0.3s;
+  box-shadow:0 8px 30px rgba(0,0,0,0.6);
+  opacity:0; pointer-events:none;
+  white-space:nowrap; letter-spacing:0.5px;
+}
+.toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+.toast.success { border-color:var(--green); color:var(--green); box-shadow:0 0 20px rgba(57,255,20,0.2); }
+.toast.error { border-color:var(--alive); color:var(--alive); }
+.toast.info { border-color:var(--electric); color:var(--electric); }
+.toast.gold { border-color:var(--gold); color:var(--gold); box-shadow:0 0 20px rgba(255,215,0,0.2); }
+
+/* ── MODAL ── */
+.modal-bg {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.85); backdrop-filter:blur(8px);
+  z-index:6000; display:flex; align-items:flex-end; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity 0.3s;
+}
+.modal-bg.open { opacity:1; pointer-events:all; }
+.modal-sheet {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:24px 24px 0 0; padding:1.5rem;
+  width:100%; max-width:500px;
+  transform:translateY(100%); transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.modal-bg.open .modal-sheet { transform:translateY(0); }
+.modal-handle {
+  width:40px; height:4px; border-radius:2px;
+  background:var(--border); margin:0 auto 1.2rem;
+}
+.modal-title { font-family:'Black Ops One',cursive; font-size:1.1rem; margin-bottom:0.5rem; }
+
+/* ── CONFETTI ── */
+.confetti-p {
+  position:fixed; pointer-events:none; z-index:9997;
+  border-radius:2px;
+  animation:confettiFall 1.5s ease-out forwards;
+}
+@keyframes confettiFall {
+  0% { transform:translateY(-20px) rotate(0deg) scale(1); opacity:1; }
+  100% { transform:translateY(400px) rotate(720deg) scale(0.3); opacity:0; }
+}
+
+/* ── HISTORY ── */
+.history-entry {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:0.9rem; margin-bottom:0.7rem;
+  display:flex; gap:0.8rem; align-items:flex-start;
+}
+.h-mood { font-size:2rem; }
+.h-meta { flex:1; }
+.h-date { font-size:0.7rem; color:var(--muted); margin-bottom:0.2rem; }
+.h-text { font-size:0.88rem; line-height:1.5; }
+.h-xp { font-size:0.7rem; color:var(--alive); font-weight:700; }
+
+/* ── ROAST MODE ── */
+.btn-roast {
+  background: linear-gradient(135deg, #1a0020, #2d0035);
+  border: 1px solid #cc00ff;
+  color: #cc00ff;
+  box-shadow: 0 0 10px rgba(204,0,255,0.3);
+  transition: all 0.2s;
+}
+.btn-roast:hover { background: rgba(204,0,255,0.2); box-shadow: 0 0 20px rgba(204,0,255,0.5); transform: scale(1.03); }
+
+.roast-card {
+  background: linear-gradient(135deg, #0d0015, #15001a);
+  border: 1px solid #cc00ff55;
+  border-radius: 18px; padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 25px rgba(204,0,255,0.15);
+  animation: fadeUp 0.4s ease;
+}
+.roast-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+.roast-icon { font-size: 1.3rem; }
+.roast-title {
+  font-family: 'Black Ops One', cursive;
+  font-size: 0.85rem; color: #cc00ff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #cc00ff;
+  flex: 1;
+}
+.roast-close {
+  background: none; border: none;
+  color: var(--muted); cursor: pointer;
+  font-size: 1rem; padding: 0.2rem;
+  transition: color 0.2s;
+}
+.roast-close:hover { color: var(--text); }
+.roast-text {
+  font-size: 0.95rem; line-height: 1.6;
+  color: var(--text);
+  background: rgba(204,0,255,0.05);
+  border: 1px solid rgba(204,0,255,0.15);
+  border-radius: 12px; padding: 0.8rem;
+  margin-bottom: 0.7rem;
+  min-height: 60px;
+}
+.roast-footer { display: flex; gap: 0.5rem; }
+
+/* ── MEME CARD ── */
+.meme-card {
+  background: linear-gradient(135deg, #0a0a00, #1a1500);
+  border: 1px solid #ffd70044;
+  border-radius: 18px; padding: 1.2rem;
+  margin-bottom: 1rem;
+  animation: fadeUp 0.4s ease;
+}
+.meme-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 0.8rem;
+  font-family: 'Black Ops One', cursive;
+  font-size: 0.85rem; color: var(--gold);
+  letter-spacing: 1px;
+}
+.meme-text {
+  font-size: 2rem; text-align: center;
+  padding: 1rem 0.5rem;
+  background: rgba(255,215,0,0.04);
+  border: 1px solid rgba(255,215,0,0.1);
+  border-radius: 14px;
+  line-height: 1.4;
+  min-height: 80px;
+  display: flex; align-items: center; justify-content: center;
+}
+.meme-caption {
+  text-align: center; margin-top: 0.6rem;
+  font-size: 0.75rem; color: var(--muted);
+  font-style: italic;
+}
+
+/* ── MEME TRIGGER ON SAVE ── */
+.meme-popup {
+  position: fixed;
+  bottom: 6rem; left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: var(--card);
+  border: 1px solid var(--gold);
+  border-radius: 18px; padding: 1rem 1.5rem;
+  z-index: 5000; text-align: center;
+  max-width: 300px; width: 90%;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 0 30px rgba(255,215,0,0.2);
+}
+.meme-popup.show { transform: translateX(-50%) scale(1); }
+
+/* scrollbar */
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:var(--dead); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+/* utility */
+.mt { margin-top:0.8rem; }
+.text-center { text-align:center; }
+.text-muted { color:var(--muted); }
+.font-orb { font-family:'Orbitron',monospace; }
+.font-black { font-family:'Black Ops One',cursive; }
 </style>
 </head>
 <body>
-<div class="loading-overlay" id="loadingScreen"><div class="loading-spinner"></div><div class="loading-text">Zinda Ho? Loading...</div></div>
-<div class="bg"></div>
-<div class="orbs"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
-<div class="particles" id="particles"></div>
-<div class="lightbox" id="lightbox" onclick="closeLightbox()"><button class="lightbox-close" onclick="event.stopPropagation();closeLightbox()"><i class="fas fa-xmark"></i></button><img src="" id="lightboxImg"></div>
 
-<header class="header">
-<div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-heart-pulse"></i><span>Zinda Ho?</span></div>
-<div class="header-actions">
-<button class="btn-icon" onclick="toggleSound()" title="Sound"><i class="fas fa-volume-up" id="soundIcon"></i></button>
-<button class="btn-icon" onclick="toggleNotifications()" title="Notifications"><i class="fas fa-bell" id="notifIcon"></i></button>
-<button class="btn-icon" onclick="showShareModal()" title="Share"><i class="fas fa-share-nodes"></i></button>
-<button class="btn-icon" onclick="exportData()" title="Export"><i class="fas fa-download"></i></button>
-<img src="https://api.dicebear.com/7.x/avataaars/svg?seed=default" class="user-avatar" id="userAvatar" onclick="showAuthModal()" alt="User" title="Login">
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-heart">💀❤️</div>
+  <div class="loader-title">DEAD OR ALIVE</div>
+  <div style="color:var(--muted);font-size:0.8rem;letter-spacing:3px;margin-top:0.5rem;">PROVE YOU EXIST</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
 </div>
+
+<!-- ONBOARDING -->
+<div id="onboarding" style="display:none;">
+  <div class="ob-card">
+    <div id="ob0" class="ob-step active">
+      <div class="ob-emoji">💀❤️</div>
+      <div class="ob-title">DEAD OR ALIVE?</div>
+      <div class="ob-desc">Duniya ko prove karo ke tum exist karte ho. Ek button. Ek heartbeat. Roz.</div>
+      <button class="ob-btn" onclick="nextOb(1)">NEXT →</button>
+    </div>
+    <div id="ob1" class="ob-step">
+      <div class="ob-emoji">🌍</div>
+      <div class="ob-title">LIVE PULSE MAP</div>
+      <div class="ob-desc">Real-time dekho — abhi is waqt India mein kitne log ALIVE hain. Mumbai se Jaipur tak, tum akele nahi ho.</div>
+      <button class="ob-btn" onclick="nextOb(2)">NEXT →</button>
+    </div>
+    <div id="ob2" class="ob-step">
+      <div class="ob-emoji">⚡</div>
+      <div class="ob-title">SOUL SYNC</div>
+      <div class="ob-desc">Exactly same second mein koi aur bhi button dabaye — tum Soul Sync ho jaate ho. Magic.</div>
+      <button class="ob-btn" onclick="nextOb(3)">NEXT →</button>
+    </div>
+    <div id="ob3" class="ob-step">
+      <div class="ob-emoji">🔒</div>
+      <div class="ob-title">TIME CAPSULE</div>
+      <div class="ob-desc">Future ke liye ek message lock karo. Streak complete karo toh khulega. Apne aap se baat karo.</div>
+      <button class="ob-btn" onclick="closeOb()">LET'S GO 🔥</button>
+    </div>
+    <div class="ob-dots">
+      <div class="ob-dot active" id="dot0"></div>
+      <div class="ob-dot" id="dot1"></div>
+      <div class="ob-dot" id="dot2"></div>
+      <div class="ob-dot" id="dot3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <span class="logo-dead">DEAD</span>
+    <span class="logo-or">OR</span>
+    <span class="logo-alive">ALIVE</span>
+  </div>
+  <div class="header-right">
+    <div class="streak-pill">🔥 <span id="hStreak">0</span></div>
+    <button class="notif-btn" onclick="toggleNotif()">🔔</button>
+  </div>
 </header>
 
-<div class="container">
-<div class="notification-banner" id="notifBanner">
-<div class="notification-text"><i class="fas fa-bell"></i><span>Daily reminders enable karo taaki streak na toote!</span></div>
-<button class="btn btn-primary" style="padding:0.6rem 1.25rem;font-size:0.9rem" onclick="enableNotifications()"><i class="fas fa-check"></i> Enable</button>
+<!-- PAGES -->
+
+<!-- ══ HOME ══ -->
+<div class="page active" id="page-home">
+
+  <!-- MAIN PULSE BUTTON -->
+  <div class="pulse-section">
+    <div class="pulse-ring-wrap">
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring"></div>
+      <button class="main-pulse-btn" id="mainPulseBtn" onclick="pressPulse()">
+        <span class="pulse-heart" id="pulseHeart">💀</span>
+        <span class="pulse-btn-text" id="pulseBtnText">PRESS TO PROVE</span>
+      </button>
+    </div>
+    <div class="pulse-subtitle" id="pulseSubtitle">Aaj ka saboot do. Abhi.</div>
+    <div class="pulse-count-text">🇮🇳 <span id="globalCount">38,247</span> Indians abhi alive hain</div>
+  </div>
+
+  <!-- STREAK -->
+  <div class="streak-hero">
+    <div class="streak-fire-wrap">
+      <div class="streak-fire" id="homeStreakFire">🔥</div>
+    </div>
+    <div class="streak-info">
+      <div class="streak-num" id="homeStreakNum">0</div>
+      <div class="streak-lbl">Din Ka Streak</div>
+      <div class="level-tag" id="homeLevelTag">NEWCOMER 👻</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:0.7rem;color:var(--muted);">Best</div>
+      <div style="font-family:'Orbitron',monospace;font-size:1rem;color:var(--gold);" id="homeBestStreak">0</div>
+    </div>
+  </div>
+
+  <!-- LIVE MAP -->
+  <div class="live-map">
+    <div class="live-header">
+      <div class="live-dot"></div>
+      <div class="live-title">🇮🇳 INDIA PULSE MAP</div>
+    </div>
+    <div class="city-grid" id="cityGrid"></div>
+  </div>
+
+  <!-- SOUL SYNC -->
+  <div class="soul-sync-card">
+    <div class="soul-sync-title">⚡ SOUL SYNC</div>
+    <div class="soul-sync-desc">Agar koi aur bhi exactly same waqt button dabaye — tum dono connect ho jaate ho. Anonymous. Magical.</div>
+    <div class="soul-sync-match" id="soulSyncBox">
+      <div class="soul-avatars">👤✨👤</div>
+      <div class="soul-text" id="soulSyncText">Abhi 3 log same second mein alive hain...</div>
+    </div>
+    <button class="soul-btn" onclick="findSoul()">FIND MY SOUL TWIN</button>
+  </div>
+
+  <!-- SIGNAL -->
+  <div class="signal-card">
+    <div class="card-label">📡 Send Anonymous Signal</div>
+    <div class="signal-grid">
+      <button class="signal-btn s1" onclick="selectSignal(this,'💙','Thoda mushkil hai aaj')" id="sig1">
+        <span class="signal-emoji">💙</span>
+        <div class="signal-text">Struggling</div>
+        <div class="signal-sub">Bas ek "hi" chahiye</div>
+      </button>
+      <button class="signal-btn s2" onclick="selectSignal(this,'🔥','Aaj invincible hoon')" id="sig2">
+        <span class="signal-emoji">🔥</span>
+        <div class="signal-text">On Fire</div>
+        <div class="signal-sub">Unstoppable feel</div>
+      </button>
+      <button class="signal-btn s3" onclick="selectSignal(this,'✨','Kuch achha hua')" id="sig3">
+        <span class="signal-emoji">✨</span>
+        <div class="signal-text">Good Vibes</div>
+        <div class="signal-sub">Spread the light</div>
+      </button>
+      <button class="signal-btn s4" onclick="selectSignal(this,'🌧️','Baarish mein hoon')" id="sig4">
+        <span class="signal-emoji">🌧️</span>
+        <div class="signal-text">In The Rain</div>
+        <div class="signal-sub">It's okay</div>
+      </button>
+    </div>
+    <button class="send-signal-btn" id="sendSignalBtn" onclick="sendSignal()" disabled>SEND TO 5 STRANGERS</button>
+  </div>
+
+  <!-- INCOMING SIGNALS -->
+  <div class="incoming-signals">
+    <div class="card-label" style="color:var(--electric);">📨 Incoming Signals (Anonymous)</div>
+    <div id="incomingSignals"></div>
+  </div>
+
+  <!-- DAILY QUOTE -->
+  <div class="card text-center">
+    <div style="font-size:1.5rem;margin-bottom:0.5rem;">💬</div>
+    <div style="font-size:0.95rem;line-height:1.6;font-style:italic;" id="dailyQuote">"Zinda rehna kaafi nahi — fully alive rehna chahiye."</div>
+    <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;">— Dead or Alive</div>
+  </div>
+
+  <!-- ROAST OF THE DAY -->
+  <div style="background:linear-gradient(135deg,#0d0015,#15001a);border:1px solid #cc00ff33;border-radius:18px;padding:1.2rem;margin-bottom:1rem;">
+    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.6rem;">
+      <span style="font-size:1.2rem;">😈</span>
+      <span style="font-family:'Black Ops One',cursive;font-size:0.85rem;color:#cc00ff;letter-spacing:2px;text-shadow:0 0 10px #cc00ff;">ROAST OF THE DAY</span>
+    </div>
+    <div style="font-size:0.9rem;line-height:1.6;color:var(--muted);background:rgba(204,0,255,0.05);border:1px solid rgba(204,0,255,0.1);border-radius:10px;padding:0.7rem;" id="rotdText">Entry karo aur AI tumhe roast karega 😈</div>
+    <button class="btn btn-roast" style="margin-top:0.7rem;width:100%;" onclick="goPage('entry',document.querySelectorAll('.nav-item')[1]);setTimeout(()=>roastMe(),300);">😈 ROAST ME NOW</button>
+  </div>
+
 </div>
 
-<div class="hero">
-<h1>ZINDA HO?</h1>
-<p class="hero-subtitle">"Zinda ho toh saboot do."</p>
-<div class="streak-card">
-<div class="streak-fire">🔥</div>
-<div class="streak-number" id="streakNumber">0</div>
-<div class="streak-label">Din ka Streak</div>
-<div class="level-badge"><i class="fas fa-ghost"></i><span id="levelName">Beginner 👻</span></div>
-<div class="level-progress"><div class="level-progress-bar" id="levelProgress" style="width:0%"></div></div>
-<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)"><span id="progressText">0/7 din - Next: Survivor</span></div>
-</div>
+<!-- ══ ENTRY ══ -->
+<div class="page" id="page-entry">
+
+  <div class="card">
+    <div class="card-label">😊 Aaj Ka Mood</div>
+    <div class="mood-row" id="moodRow">
+      <button class="mood-chip" onclick="pickMood(this,'😊','Alive & Happy')"><span class="mood-chip-emoji">😊</span><span class="mood-chip-label">Happy</span></button>
+      <button class="mood-chip" onclick="pickMood(this,'😢','Barely Alive')"><span class="mood-chip-emoji">😢</span><span class="mood-chip-label">Sad</span></button>
+      <button class="mood-chip" onclick="pickMood(this,'😡','Fired Up')"><span class="mood-chip-emoji">😡</span><span class="mood-chip-label">Angry</span></button>
+      <button class="mood-chip" onclick="pickMood(this,'😴','Half Dead')"><span class="mood-chip-emoji">😴</span><span class="mood-chip-label">Tired</span></button>
+      <button class="mood-chip" onclick="pickMood(this,'🤩','Super Alive')"><span class="mood-chip-emoji">🤩</span><span class="mood-chip-label">Excited</span></button>
+      <button class="mood-chip" onclick="pickMood(this,'😌','Peacefully Alive')"><span class="mood-chip-emoji">😌</span><span class="mood-chip-label">Calm</span></button>
+      <button class="mood-chip" onclick="pickMood(this,'🥺','Soft Hours')"><span class="mood-chip-emoji">🥺</span><span class="mood-chip-label">Emotional</span></button>
+      <button class="mood-chip" onclick="pickMood(this,'😎','Too Cool')"><span class="mood-chip-emoji">😎</span><span class="mood-chip-label">Unbothered</span></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">📝 Dil Ki Baat</div>
+    <textarea class="journal-area" id="journalText" placeholder="Aaj din kaisa gaya? Kya feel hua? Koi secret? Sab apna hai yahan..."></textarea>
+    <div class="entry-actions">
+      <button class="btn btn-ghost" onclick="getPrompt()">💡 Prompt</button>
+      <button class="btn btn-electric" onclick="detectAI()">🤖 AI Read</button>
+      <button class="btn btn-roast" onclick="roastMe()">😈 Roast Me</button>
+      <button class="btn btn-primary" onclick="saveEntry()">SAVE 🔥</button>
+    </div>
+    <div class="ai-box" id="aiBox">
+      <div class="ai-box-text" id="aiText">Analyzing...</div>
+    </div>
+  </div>
+
+  <!-- ROAST RESULT CARD -->
+  <div class="roast-card" id="roastCard" style="display:none;">
+    <div class="roast-header">
+      <span class="roast-icon">😈</span>
+      <span class="roast-title">AI ROAST MODE</span>
+      <button class="roast-close" onclick="document.getElementById('roastCard').style.display='none'">✕</button>
+    </div>
+    <div class="roast-text" id="roastText"></div>
+    <div class="roast-footer">
+      <button class="btn btn-ghost" style="font-size:0.75rem;" onclick="roastMe()">🔄 Aur Roast Karo</button>
+      <button class="btn btn-ghost" style="font-size:0.75rem;" onclick="shareRoast()">📤 Share</button>
+    </div>
+  </div>
+
+  <!-- DARK MEME CARD -->
+  <div class="meme-card" id="memeCard" style="display:none;">
+    <div class="meme-header">
+      <span>🖼️ MOOD MEME</span>
+      <button class="roast-close" onclick="document.getElementById('memeCard').style.display='none'">✕</button>
+    </div>
+    <div class="meme-text" id="memeText"></div>
+    <div class="meme-caption" id="memeCaption"></div>
+    <div style="display:flex;gap:0.5rem;margin-top:0.7rem;">
+      <button class="btn btn-ghost" style="font-size:0.75rem;flex:1;" onclick="newMeme()">🔄 Naya Meme</button>
+      <button class="btn btn-ghost" style="font-size:0.75rem;flex:1;" onclick="shareMeme()">📤 Share</button>
+    </div>
+  </div>
+
+  <!-- TIME CAPSULE -->
+  <div class="capsule-card">
+    <div class="capsule-title">🔒 TIME CAPSULE</div>
+    <div class="capsule-desc">Future ke apne aap ke liye kuch likho. Streak poori karo toh khulega. Apne aap se ek promise.</div>
+    <textarea class="capsule-textarea" id="capsuleText" placeholder="'Agar main 30 din baad ye padh raha hoon, toh main bahut strong hoon...'"></textarea>
+    <div class="capsule-options">
+      <button class="capsule-opt selected" onclick="pickCapsule(this,7)">7 Din</button>
+      <button class="capsule-opt" onclick="pickCapsule(this,30)">30 Din</button>
+      <button class="capsule-opt" onclick="pickCapsule(this,100)">100 Din</button>
+      <button class="capsule-opt" onclick="pickCapsule(this,365)">1 Saal</button>
+    </div>
+    <button class="capsule-save-btn" onclick="saveCapsule()">🔒 LOCK IT</button>
+    <div class="capsule-locked mt" id="capsuleList"></div>
+  </div>
+
 </div>
 
-<div class="ai-detector" id="aiDetector" onclick="analyzeMoodWithAI()">
-<div class="ai-icon">🤖</div>
-<div class="ai-text"><h3>AI Mood Detector</h3><p>Apna text likho, AI automatically mood detect karega!</p></div>
-<div class="ai-status" id="aiStatus">Ready</div>
+<!-- ══ STATS ══ -->
+<div class="page" id="page-stats">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-num" id="sTotal">0</div><div class="stat-lbl">Total Entries</div></div>
+    <div class="stat-box"><div class="stat-num" id="sStreak">0</div><div class="stat-lbl">Current 🔥</div></div>
+    <div class="stat-box"><div class="stat-num" id="sBest">0</div><div class="stat-lbl">Best 👑</div></div>
+    <div class="stat-box"><div class="stat-num" id="sXP">0</div><div class="stat-lbl">XP ⚡</div></div>
+  </div>
+
+  <div class="xp-card">
+    <div class="xp-header">
+      <div class="xp-level" id="xpLevel">LEVEL 1</div>
+      <div class="xp-points" id="xpPoints">0 / 100 XP</div>
+    </div>
+    <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    <div style="font-size:0.7rem;color:var(--muted);margin-top:0.4rem;" id="xpNext">Next: Survivor</div>
+  </div>
+
+  <!-- WEATHER REPORT -->
+  <div class="weather-card">
+    <div class="weather-title">🌤️ TERI LIFE KA WEATHER</div>
+    <div id="weatherInsights"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">🎭 Mood Distribution</div>
+    <div class="mood-bars" id="moodBars"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">📅 Activity — Last 28 Days</div>
+    <div class="cal-wrap">
+      <div class="cal-days-header">
+        <div class="cal-day-lbl">S</div><div class="cal-day-lbl">M</div>
+        <div class="cal-day-lbl">T</div><div class="cal-day-lbl">W</div>
+        <div class="cal-day-lbl">T</div><div class="cal-day-lbl">F</div>
+        <div class="cal-day-lbl">S</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">🏆 Achievements</div>
+    <div class="badges-wrap" id="badgesWrap"></div>
+  </div>
+
 </div>
 
-<div class="challenge-card" id="challengeCard" onclick="completeChallenge()">
-<div class="challenge-label">⚡ Aaj ka Challenge</div>
-<div class="challenge-text" id="challengeText">3 logon ko smile karwao aur unka mood pucho!</div>
-<div class="challenge-reward"><i class="fas fa-fire"></i><span>+2 Streak Bonus</span></div>
+<!-- ══ COMMUNITY ══ -->
+<div class="page" id="page-community">
+
+  <div class="share-hero">
+    <div class="share-big">🔥 <span id="shareStreak">0</span> DAYS ALIVE</div>
+    <div class="share-sub">Main zinda hoon — kya tum bhi ho? Prove karo.</div>
+    <div class="share-grid">
+      <button class="share-btn share-wa" onclick="doShare('wa')">WhatsApp</button>
+      <button class="share-btn share-tw" onclick="doShare('tw')">Twitter/X</button>
+      <button class="share-btn share-ig" onclick="doShare('ig')">Instagram</button>
+      <button class="share-btn share-cp" onclick="doShare('cp')">📋 Copy</button>
+    </div>
+  </div>
+
+  <!-- Anonymous Signals -->
+  <div class="card">
+    <div class="card-label" style="color:var(--electric);">
+      📡 Anonymous Signals
+      <span style="margin-left:auto;background:rgba(57,255,20,0.1);border:1px solid rgba(57,255,20,0.3);color:var(--green);border-radius:6px;padding:1px 6px;font-size:0.6rem;">LIVE</span>
+    </div>
+    <div id="anonSignals"></div>
+  </div>
+
+  <!-- Community Posts -->
+  <div class="card">
+    <div class="card-label">🌐 Community Wall <span style="margin-left:0.3rem;font-size:0.65rem;color:var(--green);">● LIVE</span></div>
+    <div id="communityPosts"></div>
+  </div>
+
 </div>
 
-<div class="quote-card" id="quoteCard">
-<div class="quote-text" id="quoteText">"Har din nayi shuruaat hai. Bas uthna hai aur aage badhna hai."</div>
-<div class="quote-author" id="quoteAuthor">— Zinda Ho Team</div>
+<!-- ══ HISTORY ══ -->
+<div class="page" id="page-history">
+  <div class="card">
+    <div class="card-label">📅 Pichle Kaand</div>
+    <div id="historyList"><div style="text-align:center;color:var(--muted);padding:2rem;">Abhi koi entry nahi hai. Zinda ho proof do! 🔥</div></div>
+  </div>
 </div>
 
-<div class="music-player" id="musicPlayer">
-<div class="music-cover" id="musicCover"><i class="fas fa-music"></i></div>
-<div class="music-info">
-<h4 id="musicTitle">Mood Music</h4>
-<p id="musicArtist">Select a mood to play music</p>
-</div>
-<div class="music-controls">
-<button class="music-btn" onclick="prevSong()"><i class="fas fa-backward"></i></button>
-<button class="music-btn play" id="playBtn" onclick="toggleMusic()"><i class="fas fa-play"></i></button>
-<button class="music-btn" onclick="nextSong()"><i class="fas fa-forward"></i></button>
-</div>
-<div class="music-progress"><div class="music-progress-bar" id="musicProgressBar"></div></div>
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="goPage('home',this)">
+    <span class="nav-icon">💀</span>Home
+  </button>
+  <button class="nav-item" onclick="goPage('entry',this)">
+    <span class="nav-icon">✍️</span>Entry
+  </button>
+  <button class="nav-item" onclick="goPage('stats',this)">
+    <span class="nav-icon">📊</span>Stats
+  </button>
+  <button class="nav-item" onclick="goPage('community',this)">
+    <span class="nav-icon">🌐</span>Vibe
+    <span class="nav-badge" id="communityBadge">3</span>
+  </button>
+  <button class="nav-item" onclick="goPage('history',this)">
+    <span class="nav-icon">🕰️</span>History
+  </button>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="soulModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚡ Soul Sync Found!</div>
+    <div id="soulModalContent"></div>
+    <button class="btn btn-primary mt" style="width:100%" onclick="closeModal('soulModal')">✨ Beautiful Moment</button>
+  </div>
 </div>
 
-<div class="section-title"><i class="fas fa-face-smile"></i>Aaj ka Mood Kya Hai?</div>
-<div class="mood-grid" id="moodGrid">
-<div class="mood-card" data-mood="happy" onclick="selectMood('happy')"><span class="mood-emoji">😊</span><div class="mood-name">Khush</div><div class="mood-count" id="count-happy">0 din</div></div>
-<div class="mood-card" data-mood="sad" onclick="selectMood('sad')"><span class="mood-emoji">😢</span><div class="mood-name">Udaas</div><div class="mood-count" id="count-sad">0 din</div></div>
-<div class="mood-card" data-mood="angry" onclick="selectMood('angry')"><span class="mood-emoji">😡</span><div class="mood-name">Gussa</div><div class="mood-count" id="count-angry">0 din</div></div>
-<div class="mood-card" data-mood="tired" onclick="selectMood('tired')"><span class="mood-emoji">😴</span><div class="mood-name">Thakaan</div><div class="mood-count" id="count-tired">0 din</div></div>
-<div class="mood-card" data-mood="excited" onclick="selectMood('excited')"><span class="mood-emoji">🤩</span><div class="mood-name">Excited</div><div class="mood-count" id="count-excited">0 din</div></div>
-<div class="mood-card" data-mood="calm" onclick="selectMood('calm')"><span class="mood-emoji">😌</span><div class="mood-name">Shanti</div><div class="mood-count" id="count-calm">0 din</div></div>
+<!-- LOGIN MODAL -->
+<div class="modal-bg" id="loginModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;padding:0.5rem 0 1rem;">
+      <div style="font-size:3rem;">💀❤️</div>
+      <div style="font-family:'Black Ops One',cursive;font-size:1.3rem;margin:0.5rem 0;background:linear-gradient(90deg,var(--alive),var(--alive2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">DEAD OR ALIVE</div>
+      <div style="color:var(--muted);font-size:0.85rem;">Login karo — apna streak save karo</div>
+    </div>
+
+    <!-- Email Login -->
+    <div id="emailForm">
+      <div style="margin-bottom:0.7rem;">
+        <input type="email" id="loginEmail" placeholder="Email address" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.8rem 1rem;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:1rem;outline:none;" onfocus="this.style.borderColor='var(--alive)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div style="margin-bottom:0.7rem;">
+        <input type="password" id="loginPassword" placeholder="Password" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.8rem 1rem;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:1rem;outline:none;" onfocus="this.style.borderColor='var(--alive)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <button class="btn btn-primary" style="width:100%;padding:0.9rem;font-size:0.95rem;margin-bottom:0.5rem;" onclick="emailLogin()">🔥 LOGIN / SIGNUP</button>
+      <div style="text-align:center;color:var(--muted);font-size:0.75rem;margin-bottom:0.8rem;">Naya account? Same form se signup hoga automatically!</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:0.5rem;margin:0.5rem 0;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="color:var(--muted);font-size:0.75rem;">YA</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+
+    <!-- Google Login -->
+    <button onclick="googleLogin()" style="width:100%;padding:0.8rem;background:white;border:none;border-radius:12px;color:#333;font-family:'Rajdhani',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:0.8rem;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+      Google se Login Karo
+    </button>
+
+    <button onclick="guestMode()" style="width:100%;padding:0.6rem;background:none;border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:0.8rem;cursor:pointer;">👻 Guest Mode (Data save nahi hoga)</button>
+  </div>
 </div>
 
-<div class="entry-section" id="entrySection">
-<div class="entry-header">
-<span class="selected-mood-display" id="selectedMoodEmoji">😊</span>
-<div><div class="entry-title-text" id="entryTitle">Aaj ka din kaisa raha?</div><div class="entry-subtitle">Apne dil ki baat likho...</div></div>
-</div>
-<div style="display:flex;align-items:flex-start">
-<textarea class="entry-textarea" id="entryText" placeholder="Yahan likho... aaj kya hua? kaisa mehsoos kar rahe ho? koi khaas baat?"></textarea>
-<button class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="Voice Input"><i class="fas fa-microphone"></i></button>
-</div>
-<div class="entry-toolbar">
-<button class="toolbar-btn" onclick="document.getElementById('photoInput').click()"><i class="fas fa-camera"></i> Add Photo</button>
-<button class="toolbar-btn" onclick="analyzeMoodWithAI()"><i class="fas fa-wand-magic-sparkles"></i> AI Detect</button>
-<button class="toolbar-btn" onclick="playMoodMusic()"><i class="fas fa-music"></i> Play Music</button>
-<input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)">
-</div>
-<div class="photo-preview-container" id="photoPreviewContainer"></div>
-<div class="entry-actions">
-<button class="btn btn-secondary" onclick="cancelEntry()"><i class="fas fa-xmark"></i> Cancel</button>
-<button class="btn btn-primary" onclick="saveEntry()"><i class="fas fa-check"></i> Save Entry</button>
-</div>
-</div>
-
-<div class="section-title"><i class="fas fa-chart-line"></i>Aapke Stats</div>
-<div class="stats-grid">
-<div class="stat-card"><div class="stat-header"><span class="stat-title">Total Entries</span><div class="stat-icon purple"><i class="fas fa-book"></i></div></div><div class="stat-value" id="totalEntries">0</div><div class="stat-change">+1 aaj</div></div>
-<div class="stat-card"><div class="stat-header"><span class="stat-title">Sabse Zyada Mood</span><div class="stat-icon pink"><i class="fas fa-heart"></i></div></div><div class="stat-value" id="topMood">-</div><div class="stat-change" id="topMoodPercent">0% din</div></div>
-<div class="stat-card"><div class="stat-header"><span class="stat-title">Current Streak</span><div class="stat-icon green"><i class="fas fa-fire"></i></div></div><div class="stat-value" id="currentStreak">0</div><div class="stat-change">Best: <span id="bestStreak">0</span></div></div>
-<div class="stat-card"><div class="stat-header"><span class="stat-title">Level Progress</span><div class="stat-icon orange"><i class="fas fa-trophy"></i></div></div><div class="stat-value" id="levelDisplay">1</div><div class="stat-change" id="xpText">0 XP</div></div>
+<!-- USER PROFILE MODAL -->
+<div class="modal-bg" id="profileModal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;margin-bottom:1rem;">
+      <div style="font-size:3rem;" id="profileAvatar">👤</div>
+      <div style="font-weight:700;font-size:1.1rem;margin-top:0.5rem;" id="profileName">Loading...</div>
+      <div style="color:var(--muted);font-size:0.8rem;" id="profileEmail"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;margin-bottom:1rem;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:1.3rem;color:var(--alive);" id="pStreak">0</div>
+        <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;">Streak</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:1.3rem;color:var(--electric);" id="pXP">0</div>
+        <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;">XP</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.7rem;text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:1.3rem;color:var(--gold);" id="pEntries">0</div>
+        <div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;">Entries</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" style="width:100%;margin-bottom:0.5rem;" onclick="closeModal('profileModal')">✕ Close</button>
+    <button onclick="signOut()" style="width:100%;padding:0.7rem;background:rgba(255,45,85,0.1);border:1px solid rgba(255,45,85,0.3);border-radius:10px;color:var(--alive);font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;">🚪 Logout</button>
+  </div>
 </div>
 
-<div class="chart-container"><div class="chart-title"><i class="fas fa-chart-pie"></i>Mood Distribution</div><canvas id="moodChart" height="200"></canvas></div>
-
-<div class="calendar-section">
-<div class="section-title" style="margin:0 0 1rem 0"><i class="fas fa-calendar"></i>Activity Calendar</div>
-<div class="calendar-grid" id="calendarGrid"></div>
-</div>
-
-<div class="section-title"><i class="fas fa-medal"></i>Badges & Achievements</div>
-<div class="badges-grid" id="badgesGrid">
-<div class="badge-card" data-badge="first"><div class="badge-icon">🌱</div><div class="badge-info"><h4>First Step</h4><p>Pehli entry complete karo</p></div></div>
-<div class="badge-card" data-badge="week"><div class="badge-icon">🔥</div><div class="badge-info"><h4>7 Day Warrior</h4><p>7 din ka streak complete karo</p></div></div>
-<div class="badge-card" data-badge="month"><div class="badge-icon">👑</div><div class="badge-info"><h4>30 Day Legend</h4><p>30 din ka streak complete karo</p></div></div>
-<div class="badge-card" data-badge="variety"><div class="badge-icon">🎭</div><div class="badge-info"><h4>Mood Master</h4><p>6 alag moods try karo</p></div></div>
-<div class="badge-card" data-badge="night"><div class="badge-icon">🌙</div><div class="badge-info"><h4>Night Owl</h4><p>Raat 12 baje ke baad entry karo</p></div></div>
-<div class="badge-card" data-badge="early"><div class="badge-icon">🌅</div><div class="badge-info"><h4>Early Bird</h4><p>Subah 6 baje se pehle entry karo</p></div></div>
-<div class="badge-card" data-badge="photo"><div class="badge-icon">📸</div><div class="badge-info"><h4>Photographer</h4><p>Photo ke saath entry karo</p></div></div>
-<div class="badge-card" data-badge="social"><div class="badge-icon">🌐</div><div class="badge-info"><h4>Social Butterfly</h4><p>Apna streak share karo</p></div></div>
-</div>
-
-<div class="section-title"><i class="fas fa-users"></i>Community Wall</div>
-<div class="community-section">
-<div class="community-header"><span style="font-weight:600">Aaj ke Vibes</span><div class="live-indicator"><div class="live-dot"></div><span>Live</span></div></div>
-<div class="community-posts" id="communityPosts"></div>
-</div>
-
-<div class="section-title"><i class="fas fa-clock-rotate-left"></i>Pichle Kaand (History)</div>
-<div class="history-section">
-<div class="history-list" id="historyList">
-<div class="empty-state"><i class="fas fa-book-open"></i><p>Abhi koi history nahi hai. Pehli entry banao!</p></div>
-</div>
-</div>
-</div>
-
-<div class="modal-overlay" id="shareModal">
-<div class="modal">
-<div class="modal-header"><div class="modal-title">Apna Streak Share Karo</div><button class="modal-close" onclick="closeShareModal()"><i class="fas fa-xmark"></i></button></div>
-<div class="share-preview"><div class="share-streak" id="shareStreak">0 🔥</div><div class="share-text">Main zinda hoon! Kya tum?</div></div>
-<div class="share-buttons">
-<button class="share-btn" onclick="shareTo('whatsapp')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-<button class="share-btn" onclick="shareTo('instagram')"><i class="fab fa-instagram"></i> Instagram</button>
-<button class="share-btn" onclick="shareTo('twitter')"><i class="fab fa-twitter"></i> Twitter</button>
-<button class="share-btn" onclick="copyLink()"><i class="fas fa-link"></i> Copy Link</button>
-</div>
-</div>
-</div>
-
-<div class="modal-overlay" id="authModal">
-<div class="modal">
-<div class="modal-header"><div class="modal-title" id="authTitle">Login</div><button class="modal-close" onclick="closeAuthModal()"><i class="fas fa-xmark"></i></button></div>
-<div class="auth-tabs">
-<button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
-<button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
-</div>
-<div id="authForm">
-<input type="email" class="auth-input" id="authEmail" placeholder="Email address">
-<input type="password" class="auth-input" id="authPassword" placeholder="Password">
-<button class="auth-btn" onclick="handleAuth()" id="authBtn">Login</button>
-</div>
-<div class="social-login">
-<button class="social-btn google" onclick="socialLogin('google')"><i class="fab fa-google"></i> Google</button>
-<button class="social-btn facebook" onclick="socialLogin('facebook')"><i class="fab fa-facebook-f"></i> Facebook</button>
-</div>
-</div>
-</div>
-
-<div class="toast-container" id="toastContainer"></div>
-'''
-
-with open('/mnt/agents/output/zinda-ho-v2.html', 'w', encoding='utf-8') as f:
-    f.write(part1)
-
-print(f"Part 1 written: {len(part1)} chars")
-    # Part 2: JavaScript - Core functionality
-part2 = '''
 <script>
-const MOODS={
-    happy:{emoji:'😊',name:'Khush',color:'#10b981',songs:[
-        {title:'Happy - Pharrell Williams',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
-        {title:'Good Vibes - Chris Brown',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'}
-    ]},
-    sad:{emoji:'😢',name:'Udaas',color:'#3b82f6',songs:[
-        {title:'Someone Like You - Adele',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'},
-        {title:'Fix You - Coldplay',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'}
-    ]},
-    angry:{emoji:'😡',name:'Gussa',color:'#ef4444',songs:[
-        {title:'Break Stuff - Limp Bizkit',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'},
-        {title:'Given Up - Linkin Park',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'}
-    ]},
-    tired:{emoji:'😴',name:'Thakaan',color:'#8b5cf6',songs:[
-        {title:'Weightless - Marconi Union',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3'},
-        {title:'Clair de Lune - Debussy',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'}
-    ]},
-    excited:{emoji:'🤩',name:'Excited',color:'#f59e0b',songs:[
-        {title:'Can\'t Stop - Red Hot Chili Peppers',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
-        {title:'Uptown Funk - Bruno Mars',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'}
-    ]},
-    calm:{emoji:'😌',name:'Shanti',color:'#06b6d4',songs:[
-        {title:'River Flows in You - Yiruma',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp4'},
-        {title:'Gymnopédie No.1 - Satie',url:'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'}
-    ]}
+// ══ SUPABASE INIT ══
+const SUPA_URL = 'https://qcjnldvnosctqwtlrnuh.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjam5sZHZub3NjdHF3dGxybnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMTY2MTQsImV4cCI6MjA5Mzc5MjYxNH0.2GFWU6zBUVbjm1WPNbGsKzTgkZwfmCOvvArt9PxRwuo';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+let currentUser = null;
+
+// ══ STATE ══
+let S = {
+  entries:[],streak:0,bestStreak:0,xp:0,level:1,
+  lastDate:null,moodCounts:{'😊':0,'😢':0,'😡':0,'😴':0,'🤩':0,'😌':0,'🥺':0,'😎':0},
+  selectedMood:null,selectedMoodLabel:null,
+  selectedSignal:null,badges:[],capsules:[],
+  signals:[],soulMatches:[]
 };
 
 const LEVELS=[
-    {name:'Beginner 👻',min:0,max:7},
-    {name:'Survivor 🔥',min:7,max:30},
-    {name:'Warrior ⚔️',min:30,max:60},
-    {name:'Champion 🏆',min:60,max:100},
-    {name:'Legend 👑',min:100,max:9999}
+  {min:0,name:'NEWCOMER 👻',next:'Survivor',xpN:100},
+  {min:7,name:'SURVIVOR ⚔️',next:'Fighter',xpN:200},
+  {min:14,name:'FIGHTER 💪',next:'Warrior',xpN:350},
+  {min:30,name:'WARRIOR 🛡️',next:'Legend',xpN:600},
+  {min:60,name:'LEGEND 👑',next:'Immortal',xpN:1000},
+  {min:100,name:'IMMORTAL 🔥',next:'MAX',xpN:9999}
 ];
 
-const QUOTES={
-    happy:[
-        {text:"Khushi baantne se badhti hai. Aaj kisi aur ko bhi hasao!",author:"Zinda Ho"},
-        {text:"Tumhari smile duniya ka sabse khoobsurat weapon hai.",author:"Zinda Ho"},
-        {text:"Aaj ka din tumhara tha, kal bhi tumhara hoga!",author:"Zinda Ho"}
-    ],
-    sad:[
-        {text:"Andhera kitna bhi ghera ho, suraj zaroor niklega.",author:"Zinda Ho"},
-        {text:"Tum strong ho. Yeh waqt bhi beet jayega.",author:"Zinda Ho"},
-        {text:"Rona bhi zindagi ka hissa hai. Feel karo, phir aage badho.",author:"Zinda Ho"}
-    ],
-    angry:[
-        {text:"Gussa thanda karo, phir faisla lo. Tum control mein ho.",author:"Zinda Ho"},
-        {text:"Gusse ko energy banao, destruction nahi.",author:"Zinda Ho"},
-        {text:"Deep breath lo. 10 count karo. Tum better kar sakte ho.",author:"Zinda Ho"}
-    ],
-    tired:[
-        {text:"Aram karna bhi junoon ka hissa hai. Rest karo.",author:"Zinda Ho"},
-        {text:"Thakaan ka matlab hai tum mehnat kar rahe ho. Proud feel karo.",author:"Zinda Ho"},
-        {text:"Aaj rest karo, kal aur zyada tez daudo.",author:"Zinda Ho"}
-    ],
-    excited:[
-        {text:"Is energy ko bottle mein band mat karo, use karo!",author:"Zinda Ho"},
-        {text:"Excitement = Life. Is feeling ko maintain rakho!",author:"Zinda Ho"},
-        {text:"Tumhari energy contagious hai. Sabko infect karo!",author:"Zinda Ho"}
-    ],
-    calm:[
-        {text:"Shanti mein bhi taakat hai. Yeh tumhari superpower hai.",author:"Zinda Ho"},
-        {text:"Calm mind = Best decisions. Proud of you.",author:"Zinda Ho"},
-        {text:"Inner peace sabse bada achievement hai.",author:"Zinda Ho"}
-    ]
-};
+const BADGES=[
+  {id:'first',e:'🌱',n:'First Step',c:s=>s.entries.length>=1},
+  {id:'week',e:'🔥',n:'7 Day Warrior',c:s=>s.streak>=7},
+  {id:'month',e:'👑',n:'30 Day Legend',c:s=>s.streak>=30},
+  {id:'moods',e:'🎭',n:'Mood Master',c:s=>Object.values(s.moodCounts).filter(v=>v>0).length>=6},
+  {id:'night',e:'🌙',n:'Night Owl',c:s=>s.entries.some(e=>new Date(e.ts).getHours()>=0&&new Date(e.ts).getHours()<4)},
+  {id:'morning',e:'🌅',n:'Early Bird',c:s=>s.entries.some(e=>new Date(e.ts).getHours()<6)},
+  {id:'share',e:'🌐',n:'Social Butterfly',c:s=>s.badges.includes('share')},
+  {id:'writer',e:'📝',n:'Deep Thinker',c:s=>s.entries.some(e=>e.text&&e.text.split(' ').length>=15)},
+  {id:'streak10',e:'⚡',n:'On Fire',c:s=>s.streak>=10},
+  {id:'capsule',e:'🔒',n:'Time Traveler',c:s=>s.capsules&&s.capsules.length>=1},
+  {id:'signal',e:'📡',n:'Signal Sender',c:s=>s.signals&&s.signals.length>=1},
+  {id:'soul',e:'💫',n:'Soul Synced',c:s=>s.soulMatches&&s.soulMatches.length>=1}
+];
+
+const QUOTES=[
+  '"Zinda rehna kaafi nahi — fully alive rehna chahiye."',
+  '"Har din ek choice hai. Choose alive."',
+  '"Dead inside? Prove otherwise."',
+  '"Main still here hoon — aur yahi kaafi hai."',
+  '"Jo bhi ho raha hai, tum isse survive kar rahe ho."',
+  '"Existence itself is an achievement."',
+  '"Small steps still move you forward."'
+];
 
 const CHALLENGES=[
-    "3 logon ko smile karwao aur unka mood pucho!",
-    "Aaj 10 minute meditation karo 🧘",
-    "Kisi stranger ko compliment do 💫",
-    "Apne favourite gaane par dance karo 💃",
-    "Aaj kuch naya seekho - 15 minute 📚",
-    "Phone side rakh ke 2 ghante family ke saath raho 👨‍👩‍👧‍👦",
-    "Aaj junk food skip karo, healthy khao 🥗",
-    "Raat ko 11 baje se pehle so jao 😴",
-    "Journal likho - 3 cheezein jinke liye shukr guzar ho 🙏",
-    "Aaj kisi ko help karo bina kisi expectation ke 🤝"
+  '3 logon ko smile karwao without reason',
+  'Aaj ek nayi cheez try karo, chahe chhoti si ho',
+  'Kisi ko "tu kaisa hai?" bolo aur really suno',
+  'Phone rakh ke 20 min bahar jao',
+  'Kisi ki madad karo bina bataye',
+  'Khud ko mirror mein dekho aur kuch achha kaho',
+  'Social media se 2 ghante complete break lo'
 ];
 
-// AI Mood Keywords for detection
-const AI_MOOD_KEYWORDS={
-    happy:['khush','happy','maza','fun','enjoy','party','celebrate','achha','badhiya','mast','swag','excited','energy','positive','smile','laugh','haso','hansi'],
-    sad:['udaas','sad','cry','rona','dukh','pain','hurt','dard','tears','alone','lonely','akela','miss','gum','bhari','heavy','depressed','low'],
-    angry:['gussa','angry','rage','naraz','upset','frustrated','irritated','annoyed','hate','dislike','fight','jhagda','chill','control','temper'],
-    tired:['thaka','tired','sleep','so jao','rest','exhausted','energy nahi','weak','kamzor','lazy','aalas','neend','fatigue','drained'],
-    excited:['excited','wow','amazing','awesome','superb','fantastic','incredible','unbelievable','shock','surprise','celebrate','party','maza','thrill'],
-    calm:['shanti','calm','peace','relax','sukoon','meditation','dhyan','quiet','silent','cool','composed','relaxed','ease','comfort','stable']
+const CITIES=[
+  {f:'🏙️',n:'Mumbai',base:5800},
+  {f:'🏛️',n:'Delhi',base:5200},
+  {f:'💻',n:'Bangalore',base:4100},
+  {f:'🌆',n:'Noida',base:2800},
+  {f:'🏰',n:'Jaipur',base:2400},
+  {f:'🌊',n:'Chennai',base:2100},
+  {f:'💎',n:'Hyderabad',base:2300},
+  {f:'🏔️',n:'Dehradun',base:900},
+  {f:'🎨',n:'Kolkata',base:1900},
+  {f:'🌸',n:'Lucknow',base:1600},
+  {f:'⚡',n:'Pune',base:2000},
+  {f:'🦁',n:'Ahmedabad',base:1700}
+];
+
+const DEMO_POSTS=[
+  {name:'Priya S.',avi:'🌸',signal:'🔥',text:'Aaj presentation dedi jo 2 mahine se dar rahi thi. ALIVE.',streak:15,time:'2m ago',likes:42},
+  {name:'Rohan M.',avi:'🦁',signal:'✨',text:'3 AM pe akela hu lekin somehow okay hoon. Yahi life hai.',streak:7,time:'8m ago',likes:89},
+  {name:'Anonymous',avi:'👤',signal:'💙',text:'Aaj bahut mushkil tha. Lekin main still here hoon.',streak:3,time:'23m ago',likes:134},
+  {name:'Zara K.',avi:'⭐',signal:'🌧️',text:'Rona bhi ek tarah ka alive rehna hai.',streak:22,time:'1h ago',likes:267},
+  {name:'Dev A.',avi:'🎯',signal:'🔥',text:'31 days! Duniya nahi jaanti main kahan se aaya hoon.',streak:31,time:'2h ago',likes:521}
+];
+
+const ANON_SIGNALS=[
+  {signal:'💙',count:847,msg:'Struggling but here'},
+  {signal:'🔥',count:2341,msg:'On fire today'},
+  {signal:'✨',count:1203,msg:'Good things happened'},
+  {signal:'🌧️',count:934,msg:'In the rain but alive'}
+];
+
+// ══ LOAD/SAVE — LocalStorage + Supabase ══
+function load(){
+  const d=localStorage.getItem('doa_v2');
+  if(d) S={...S,...JSON.parse(d)};
+}
+function save(){
+  localStorage.setItem('doa_v2',JSON.stringify(S));
+  if(currentUser) syncToSupabase();
+}
+
+// ══ SUPABASE SYNC ══
+async function syncToSupabase(){
+  if(!currentUser) return;
+  try{
+    await supa.from('profiles').upsert({
+      id: currentUser.id,
+      username: currentUser.email.split('@')[0],
+      streak: S.streak,
+      best_streak: S.bestStreak,
+      xp: S.xp,
+      level: S.level,
+      last_entry_date: S.lastDate
+    });
+  }catch(e){ console.log('Sync error:',e); }
+}
+
+async function loadFromSupabase(){
+  if(!currentUser) return;
+  try{
+    const {data} = await supa.from('profiles').select('*').eq('id',currentUser.id).single();
+    if(data){
+      S.streak = data.streak || 0;
+      S.bestStreak = data.best_streak || 0;
+      S.xp = data.xp || 0;
+      S.level = data.level || 1;
+      S.lastDate = data.last_entry_date;
+    }
+    // Load entries
+    const {data:entries} = await supa.from('entries').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(50);
+    if(entries && entries.length){
+      S.entries = entries.map(e=>({
+        id:e.id, mood:e.mood, label:e.mood_label,
+        text:e.journal_text, ts:e.created_at, xp:e.xp_earned
+      }));
+      // Rebuild mood counts
+      S.entries.forEach(e=>{ if(e.mood) S.moodCounts[e.mood]=(S.moodCounts[e.mood]||0)+1; });
+    }
+    save();
+    updateAllUI();
+    renderHistory();
+    buildCalendar();
+    buildMoodBars();
+    buildBadges();
+  }catch(e){ console.log('Load error:',e); }
+}
+
+async function saveEntryToSupabase(entry){
+  if(!currentUser) return;
+  try{
+    await supa.from('entries').insert({
+      user_id: currentUser.id,
+      mood: entry.mood,
+      mood_label: entry.label,
+      journal_text: entry.text,
+      xp_earned: entry.xp
+    });
+  }catch(e){ console.log('Entry save error:',e); }
+}
+
+// ══ AUTH FUNCTIONS ══
+async function emailLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  if(!email || !password){ showToast('Email aur password dono dalo!','error'); return; }
+
+  showToast('⏳ Loading...','info');
+
+  // Try signup first, then login
+  const {data:signupData, error:signupError} = await supa.auth.signUp({email, password});
+
+  if(signupError && signupError.message.includes('already registered')){
+    // Already exists — login karo
+    const {data:loginData, error:loginError} = await supa.auth.signInWithPassword({email, password});
+    if(loginError){ showToast('❌ '+loginError.message,'error'); return; }
+    currentUser = loginData.user;
+  } else if(signupError){
+    showToast('❌ '+signupError.message,'error'); return;
+  } else {
+    currentUser = signupData.user;
+    showToast('📧 Confirmation email bheja! (Check karo)','info');
+  }
+
+  if(currentUser){
+    onUserLogin();
+  }
+}
+
+async function googleLogin(){
+  const {error} = await supa.auth.signInWithOAuth({
+    provider:'google',
+    options:{ redirectTo: window.location.href }
+  });
+  if(error) showToast('❌ '+error.message,'error');
+}
+
+function guestMode(){
+  closeModal('loginModal');
+  showToast('👻 Guest mode — data sirf is device pe save hoga','info');
+  updateHeaderForGuest();
+}
+
+async function signOut(){
+  await supa.auth.signOut();
+  currentUser = null;
+  closeModal('profileModal');
+  updateHeaderForGuest();
+  showToast('👋 Logout ho gaye!','info');
+}
+
+function onUserLogin(){
+  closeModal('loginModal');
+  loadFromSupabase();
+  updateHeaderForUser();
+  showToast('🔥 Welcome back! Data sync ho raha hai...','success');
+}
+
+function updateHeaderForUser(){
+  const btn = document.querySelector('.notif-btn');
+  if(btn){
+    btn.textContent = '👤';
+    btn.onclick = showProfile;
+  }
+}
+
+function updateHeaderForGuest(){
+  const btn = document.querySelector('.notif-btn');
+  if(btn){
+    btn.textContent = '🔔';
+    btn.onclick = () => openModal('loginModal');
+  }
+}
+
+async function showProfile(){
+  if(!currentUser){ openModal('loginModal'); return; }
+  const email = currentUser.email || '';
+  const name = email.split('@')[0];
+  document.getElementById('profileAvatar').textContent = '👤';
+  document.getElementById('profileName').textContent = name.charAt(0).toUpperCase()+name.slice(1);
+  document.getElementById('profileEmail').textContent = email;
+  document.getElementById('pStreak').textContent = S.streak;
+  document.getElementById('pXP').textContent = S.xp;
+  document.getElementById('pEntries').textContent = S.entries.length;
+  openModal('profileModal');
+}
+
+// ══ INIT ══
+async function init(){
+  load();
+
+  // Check Supabase session
+  const {data:{session}} = await supa.auth.getSession();
+  if(session){
+    currentUser = session.user;
+    updateHeaderForUser();
+    await loadFromSupabase();
+  } else {
+    // Show login after onboarding
+    updateHeaderForGuest();
+  }
+
+  // Auth state listener
+  supa.auth.onAuthStateChange((_event, session)=>{
+    if(session){
+      currentUser = session.user;
+      onUserLogin();
+    } else {
+      currentUser = null;
+    }
+  });
+
+  checkStreakExpiry();
+  updateAllUI();
+  renderCities();
+  renderIncomingSignals();
+  renderCommunity();
+  renderHistory();
+  renderCapsules();
+  buildCalendar();
+  buildBadges();
+  buildMoodBars();
+  buildWeather();
+
+  // Quote
+  document.getElementById('dailyQuote').textContent = QUOTES[new Date().getDay()%QUOTES.length];
+
+  // Roast of the day
+  const rotd = LOCAL_ROASTS['😊'][new Date().getDate() % LOCAL_ROASTS['😊'].length];
+  if(document.getElementById('rotdText')) document.getElementById('rotdText').textContent = rotd;
+
+  // Simulate live counts
+  setInterval(updateGlobalCount,3000);
+  setInterval(updateCities,8000);
+  setInterval(addIncomingSignal,12000);
+
+  // Loader
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('gone');
+    if(!localStorage.getItem('doa_welcomed')){
+      setTimeout(()=>document.getElementById('onboarding').style.display='flex',800);
+    } else if(!currentUser){
+      // Show login after 3 seconds if not logged in
+      setTimeout(()=>openModal('loginModal'),3000);
+    }
+  },2000);
+
+  // Cursor
+  document.addEventListener('mousemove',e=>{
+    const c=document.getElementById('cursor');
+    if(c){ c.style.left=e.clientX+'px'; c.style.top=e.clientY+'px'; }
+  });
+}
+
+
+// ══ ONBOARDING ══
+let obStep=0;
+function nextOb(n){
+  document.getElementById('ob'+(n-1)).classList.remove('active');
+  document.getElementById('ob'+n).classList.add('active');
+  document.getElementById('dot'+(n-1)).classList.remove('active');
+  document.getElementById('dot'+n).classList.add('active');
+}
+function closeOb(){
+  localStorage.setItem('doa_welcomed','1');
+  document.getElementById('onboarding').style.display='none';
+}
+
+// ══ STREAK ══
+function checkStreakExpiry(){
+  if(!S.lastDate) return;
+  const last=new Date(S.lastDate);
+  const today=new Date();
+  const diff=Math.floor((today-last)/(1000*60*60*24));
+  if(diff>1){ S.streak=0; save(); }
+}
+
+function todayKey(){ return new Date().toISOString().split('T')[0]; }
+function hasToday(){ return S.entries.some(e=>e.ts&&e.ts.startsWith(todayKey())); }
+
+// ══ PULSE BUTTON ══
+function pressPulse(){
+  if(hasToday()){
+    showToast('Aaj ka saboot de diya! ✅','info');
+    return;
+  }
+  const btn=document.getElementById('mainPulseBtn');
+  const heart=document.getElementById('pulseHeart');
+  const txt=document.getElementById('pulseBtnText');
+  const sub=document.getElementById('pulseSubtitle');
+
+  // Update streak
+  if(S.lastDate){
+    const diff=Math.floor((new Date()-new Date(S.lastDate))/(1000*60*60*24));
+    S.streak = diff===1 ? S.streak+1 : 1;
+  } else { S.streak=1; }
+  S.lastDate=new Date().toISOString();
+  if(S.streak>S.bestStreak) S.bestStreak=S.streak;
+  S.xp+=5;
+  
+  checkBadges();
+  save();
+  updateAllUI();
+  confetti();
+  
+  btn.classList.add('done');
+  heart.textContent='❤️';
+  txt.textContent='ALIVE TODAY';
+  sub.textContent='Saboot de diya! 🔥 Entry bhi banao na?';
+  
+  showToast('💓 ALIVE! +5 XP','success');
+  setTimeout(()=>goPage('entry',document.querySelectorAll('.nav-item')[1]),1500);
+}
+
+// ══ LIVE MAP ══
+function renderCities(){
+  document.getElementById('cityGrid').innerHTML=CITIES.map(c=>`
+    <div class="city-item">
+      <span class="city-flag">${c.f}</span>
+      <div style="flex:1;min-width:0;">
+        <div class="city-name">${c.n}</div>
+        <div class="city-count">${(c.base+Math.floor(Math.random()*300)).toLocaleString('en-IN')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateCities(){ renderCities(); }
+
+let globalBase=38247;
+function updateGlobalCount(){
+  globalBase+=Math.floor(Math.random()*80)-30;
+  if(globalBase<30000) globalBase=38000;
+  document.getElementById('globalCount').textContent=globalBase.toLocaleString('en-IN');
+}
+
+// ══ SOUL SYNC ══
+const soulNames=['A mysterious soul','Someone from Mumbai','A night owl like you','Someone who also pressed at 3AM','A kindred spirit'];
+function findSoul(){
+  const name=soulNames[Math.floor(Math.random()*soulNames.length)];
+  const time=new Date();
+  
+  document.getElementById('soulModalContent').innerHTML=`
+    <div style="text-align:center;padding:1rem 0;">
+      <div style="font-size:3rem;margin-bottom:0.5rem;">💫</div>
+      <div style="font-size:1rem;font-weight:700;color:var(--electric);margin-bottom:0.5rem;">SOUL SYNCED!</div>
+      <div style="color:var(--muted);font-size:0.85rem;line-height:1.6;">
+        <strong>${name}</strong> pressed the button<br>
+        at <strong style="color:var(--electric)">${time.toLocaleTimeString()}</strong> — exactly like you.<br><br>
+        They exist. You exist. That's beautiful.
+      </div>
+      <div style="margin-top:1rem;padding:0.8rem;background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.2);border-radius:12px;">
+        <div style="font-size:1.5rem;">👤 ✨ 👤</div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem;">Two strangers. Same moment. Both alive.</div>
+      </div>
+    </div>
+  `;
+  
+  if(!S.soulMatches) S.soulMatches=[];
+  S.soulMatches.push({ts:new Date().toISOString()});
+  checkBadges(); save();
+  
+  openModal('soulModal');
+  showToast('💫 Soul Sync! Badge earned!','gold');
+}
+
+// ══ SIGNAL ══
+let selectedSig=null;
+function selectSignal(btn,emoji,msg){
+  document.querySelectorAll('.signal-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedSig={emoji,msg};
+  document.getElementById('sendSignalBtn').disabled=false;
+}
+
+function sendSignal(){
+  if(!selectedSig){ showToast('Pehle signal choose karo!','error'); return; }
+  if(!S.signals) S.signals=[];
+  S.signals.push({...selectedSig,ts:new Date().toISOString()});
+  S.xp+=3;
+  checkBadges(); save(); updateAllUI();
+  showToast(`📡 Signal sent to 5 strangers! ${selectedSig.emoji}`,'success');
+  document.querySelectorAll('.signal-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sendSignalBtn').disabled=true;
+  selectedSig=null;
+  addIncomingSignal();
+}
+
+function renderIncomingSignals(){
+  const signals=[
+    {signal:'🔥',from:'Someone in Bangalore',time:'just now'},
+    {signal:'💙',from:'A soul in Delhi',time:'2 min ago'},
+    {signal:'✨',from:'Night owl from Mumbai',time:'5 min ago'}
+  ];
+  document.getElementById('incomingSignals').innerHTML=signals.map(s=>`
+    <div class="signal-pill">${s.signal} ${s.from} <span style="opacity:0.5;font-size:0.7rem">• ${s.time}</span></div>
+  `).join('');
+}
+
+function addIncomingSignal(){
+  const signals=['🔥','💙','✨','🌧️'];
+  const froms=['Someone in Mumbai','A soul from Delhi','Night owl alive','Anonymous human','Someone like you'];
+  const el=document.getElementById('incomingSignals');
+  if(!el) return;
+  const pill=document.createElement('div');
+  pill.className='signal-pill';
+  pill.innerHTML=`${signals[Math.floor(Math.random()*signals.length)]} ${froms[Math.floor(Math.random()*froms.length)]} <span style="opacity:0.5;font-size:0.7rem">• just now</span>`;
+  el.insertBefore(pill,el.firstChild);
+  if(el.children.length>5) el.removeChild(el.lastChild);
+}
+
+// ══ MOOD & ENTRY ══
+function pickMood(btn,emoji,label){
+  document.querySelectorAll('.mood-chip').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  S.selectedMood=emoji; S.selectedMoodLabel=label;
+}
+
+const PROMPTS=[
+  'Aaj ka sabse best moment kya tha?',
+  'Kya cheez tujhe alive feel karti hai?',
+  'Kisi ke baare mein kya sochna chahta hai?',
+  'Aaj kya mushkil tha? Kaise handle kiya?',
+  'Kal ke liye ek wish kya hai?',
+  'Koi secret jo sirf tu jaanta hai?',
+  'Duniya mein teri favorite cheez kya hai?'
+];
+function getPrompt(){
+  const p=PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
+  document.getElementById('journalText').placeholder=p;
+  showToast('💡 '+p,'info');
+}
+
+async function detectAI(){
+  const txt=document.getElementById('journalText').value.trim();
+  if(!txt){ showToast('Pehle kuch likho!','error'); return; }
+  const box=document.getElementById('aiBox');
+  const aiTxt=document.getElementById('aiText');
+  box.style.display='block';
+  aiTxt.textContent='🤖 AI pad raha hai...';
+  
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:200,
+        system:'You are an empathetic mood analyzer for "Dead or Alive" — a GenZ emotional wellbeing app. Analyze the text and respond in casual Hinglish (Hindi+English mix). Reply ONLY in this format: EMOJI | MOOD_WORD | ONE_LINE_EMPATHETIC_RESPONSE. Keep it real, warm, GenZ-style. No fluff.',
+        messages:[{role:'user',content:txt}]
+      })
+    });
+    const d=await r.json();
+    const reply=d.content?.[0]?.text||'';
+    if(reply.includes('|')){
+      const [em,mood,msg]=reply.split('|').map(s=>s.trim());
+      aiTxt.innerHTML=`<strong>${em} ${mood}</strong><br>${msg}`;
+      document.querySelectorAll('.mood-chip').forEach(b=>{
+        if(b.querySelector('.mood-chip-emoji').textContent===em){
+          b.click();
+        }
+      });
+    } else { aiTxt.textContent='🤖 '+reply; }
+  }catch(e){
+    // Local fallback
+    const t=txt.toLowerCase();
+    let em='😊',mood='Happy',msg='Good vibes! Keep it up 🔥';
+    if(t.match(/udaas|sad|rona|cry|dukh|hurt/)){em='😢';mood='Sad';msg='Ye feelings valid hain. Tu akela nahi hai. 💙';}
+    else if(t.match(/gussa|angry|tang|frustrated|kisi pe/)){em='😡';mood='Fired Up';msg='Woh gussa energy mein badlo. Channel it. 💪';}
+    else if(t.match(/thaka|tired|neend|exhausted|nahi ho raha/)){em='😴';mood='Drained';msg='Rest is productive. Khud ko permission do. 🌙';}
+    else if(t.match(/excited|maza|happy|khushi|yay|great|amazing/)){em='🤩';mood='Lit';msg='Ye energy banaye rakho! 🔥🔥';}
+    else if(t.match(/shant|peaceful|calm|okay|theek/)){em='😌';mood='At Peace';msg='Yahi asli richness hai. 😌';}
+    aiTxt.innerHTML=`<strong>${em} ${mood}</strong><br>${msg}`;
+    document.querySelectorAll('.mood-chip').forEach(b=>{
+      if(b.querySelector('.mood-chip-emoji').textContent===em) b.click();
+    });
+  }
+}
+
+// ══ ROAST MODE ══
+const LOCAL_ROASTS = {
+  '😊': [
+    "Khush ho? Bhai enjoy kar le, kal phir Monday aayega 😂",
+    "Itne khush ho jaise exam mein copy nahi pakdi gayi ho 💀",
+    "Happy face dekh ke lagta hai tu Netflix pe naya season dekh raha tha, kaam nahi 😈",
+    "Tu itna khush hai aur teri ex abhi bhi tera WhatsApp status dekh rahi hai 👀"
+  ],
+  '😢': [
+    "Rona band kar, teri aankhein already chhoti hain aur bhi chhhoti ho jaayengi 💀",
+    "Udaas hai? Teri feeling aur teri wifi speed dono same hain — zero pe 😂",
+    "Bhai ro mat, tera makeup kharab hoga... oh wait tu toh lagata hi nahi 😈",
+    "Udaas hona theek hai, lekin itna bhi mat ro ke log sochen baarish ho rahi hai ☔"
+  ],
+  '😡': [
+    "Gussa hai? Chill kar bhai, tu koi Bollywood villain nahi hai 💀",
+    "Itna gussa? Teri mummy ne tujhe ghar pe rokha kya? 😂",
+    "Bhai gussa utaar de, gym ja — body bana, baad mein gussa dikha 😈",
+    "Gusse mein itna anda lag raha hai jaise train miss ho gayi aur next 3 ghante baad hai 🚂"
+  ],
+  '😴': [
+    "Thaka hua hai? Tu toh 10 ghante soya tha, phir bhi thaka? Bhai sona teri hobby hai 💀",
+    "Half dead? Bhai teri zindagi energy drink pe chal rahi hai ya nahi? 😂",
+    "Thakan? Bhai tune kiya kya aaj? Netflix aur so gaya — ye toh vacation hai 😈",
+    "Itna thaka hua hai jaise tune aaj pura India walk karke ghuma diya 🥾"
+  ],
+  '🤩': [
+    "Itna excited hai jaise pehli baar wifi password mila ho 💀",
+    "Excited? Kal tak dekh, Monday aayega aur ye excitement kahan jaati hai 😂",
+    "Super alive feel? Bhai ye dopamine hai, kal subah 6 baje alarm bajega 😈",
+    "Itna hype mat le bhai, main teri hype man ki tarah hoon — kal phir roast karunga 🔥"
+  ],
+  '😌': [
+    "Shanti mein hai? Bhai tu Buddha banna chahta hai ya real life mein kuch karna chahta hai? 💀",
+    "Calm? Teri life mein itna calm hai matlab kuch ho hi nahi raha bhai 😂",
+    "Peacefully alive? Bhai ye app ka naam 'Dead or Alive' hai, tu alive side pe bhi barely hai 😈",
+    "Itna peaceful hai jaise class mein back bencher so raha ho 😴"
+  ],
+  '🥺': [
+    "Soft hours? Bhai kaunsi movie dekhi aaj? 3 tissue box khatam kiye? 💀",
+    "Emotional? Bhai koi baat nahi, main bhi kabhi kabhi Maggi dekhke ro leta hoon 😂",
+    "Itna emotional hai jaise birthday pe cake cut kiya aur candles ne bhi ignore kar diya 😈",
+    "Soft hours mein ho aur social media scroll kar rahe ho — perfect combo for crying 🥲"
+  ],
+  '😎': [
+    "Too cool? Bhai teri attitude aur teri marks ka ratio bilkul opposite hai 💀",
+    "Unbothered? Bhai tu itna unbothered hai ki apni zindagi bhi bother nahi karti tujhe 😂",
+    "Itna cool lag raha hai jaise AC chalake chhata leke bahar gaya ho 😈",
+    "Cool face ke peeche wala banda toh hum jaante hain — raat ko anxiety check karta hai 👀"
+  ]
 };
 
-let state={
-    entries:[],streak:0,bestStreak:0,selectedMood:null,xp:0,level:1,badges:[],
-    soundEnabled:true,challengeCompleted:false,todayEntry:false,
-    user:null,photos:[],currentSong:0,isPlaying:false,
-    notificationsEnabled:false
-};
+const DARK_MEMES = [
+  { emoji: "💀📱", text: "Me checking Dead or Alive at 3 AM\ninstead of sleeping", caption: "Zinda hoon technically" },
+  { emoji: "🧠💭", text: "Brain: Sleep karo\nMe: Ek aur entry\nBrain: ...\nMe: Aur ek", caption: "Streak > Health" },
+  { emoji: "😴☕", text: "Monday morning me:\nCoffee ☕ + Existential Crisis 💀\n= Dead or Alive Check-in", caption: "Routine hai bhai" },
+  { emoji: "🔥📉", text: "My streak after one lazy Sunday:\n📉📉📉\nMe: I am dead inside", caption: "RIP Streak 2024" },
+  { emoji: "👻📲", text: "Me at 11:59 PM\nrunning to open the app\nbefore streak breaks", caption: "Fastest I've ever moved" },
+  { emoji: "🤡😭", text: "Me: Main productive rahunga\nAlso me: Roast mode pe\nkhud ko roast karwa raha hoon", caption: "Peak 2025 energy" },
+  { emoji: "💪🦴", text: "Friend: Gym chal\nMe: Nahi yaar thaka hoon\nAlso me: *checks streak at midnight*", caption: "Selective energy" },
+  { emoji: "🌚😂", text: "Therapist: Tum kaisa feel karte ho?\nMe: *opens Dead or Alive*\nMe: App batayega", caption: "Modern problems" },
+  { emoji: "📊😩", text: "My mood chart:\nMon-Fri: 😢😡😴\nSat-Sun: 🤩😌😊\nMon again: 💀", caption: "Predictable af" },
+  { emoji: "🤖💬", text: "AI: Main tumhara mood detect kar sakta hoon\nMe: Please dont\nAI: You're exhausted and—\nMe: I SAID DONT", caption: "AI knows too much" },
+  { emoji: "🔥💸", text: "My streak: 🔥🔥🔥\nMy bank account: 💀\nAt least something is alive", caption: "Financial goals loading..." },
+  { emoji: "👀🌙", text: "3 AM thoughts:\n- Am I alive?\n- What is alive?\n- *opens app*\n- Yes. Technically.", caption: "Philosophy at 3am hits different" }
+];
 
-let moodChart=null,recognition=null,audioPlayer=null;
-let uploadedPhotos=[];
+let lastRoastMood = null;
 
-document.addEventListener('DOMContentLoaded',()=>{
-    loadData();
-    createParticles();
-    updateUI();
-    setupSpeechRecognition();
-    generateCalendar();
-    startLiveCommunity();
-    setDailyChallenge();
-    setupAudioPlayer();
-    setTimeout(()=>{
-        document.getElementById('loadingScreen').classList.add('hidden');
-    },1500);
-    requestNotificationPermission();
-    scheduleDailyReminder();
-});
+async function roastMe() {
+  const txt = document.getElementById('journalText').value.trim();
+  const mood = S.selectedMood || '😊';
+  lastRoastMood = mood;
 
-function createParticles(){
-    const container=document.getElementById('particles');
-    for(let i=0;i<40;i++){
-        const p=document.createElement('div');
-        p.className='particle';
-        p.style.left=Math.random()*100+'%';
-        p.style.animationDuration=(Math.random()*15+10)+'s';
-        p.style.animationDelay=Math.random()*10+'s';
-        const size=Math.random()*5+2;
-        p.style.width=size+'px';p.style.height=size+'px';
-        const colors=['#6366f1','#ec4899','#f59e0b','#10b981','#3b82f6'];
-        p.style.background=colors[Math.floor(Math.random()*colors.length)];
-        container.appendChild(p);
-    }
+  const roastCard = document.getElementById('roastCard');
+  const roastTxt = document.getElementById('roastText');
+  roastCard.style.display = 'block';
+  roastTxt.innerHTML = '😈 AI roast kar raha hai...';
+  roastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 200,
+        system: `You are a savage but funny roast master for "Dead or Alive" — an Indian GenZ app. 
+Roast the user based on their mood and journal entry in Hinglish (Hindi+English mix). 
+Be funny, dark-humored, savage but never actually mean or hurtful. Think like a best friend roasting you.
+Keep it 2-3 lines MAX. Use emojis. No intro, just the roast directly.
+Indian references, Bollywood jokes, relatable desi situations preferred.`,
+        messages: [{ role: 'user', content: `Mood: ${mood}\nJournal: ${txt || 'Kuch nahi likha'}` }]
+      })
+    });
+    const d = await r.json();
+    const reply = d.content?.[0]?.text || '';
+    roastTxt.innerHTML = reply || getLocalRoast(mood);
+  } catch(e) {
+    roastTxt.innerHTML = getLocalRoast(mood);
+  }
+
+  // Auto show meme too!
+  setTimeout(() => newMeme(), 500);
 }
 
-function setDailyChallenge(){
-    const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
-    document.getElementById('challengeText').textContent=CHALLENGES[dayOfYear%CHALLENGES.length];
+function getLocalRoast(mood) {
+  const roasts = LOCAL_ROASTS[mood] || LOCAL_ROASTS['😊'];
+  return roasts[Math.floor(Math.random() * roasts.length)];
 }
 
-// ========== AI MOOD DETECTION ==========
-function analyzeMoodWithAI(){
-    const text=document.getElementById('entryText').value.trim().toLowerCase();
-    if(!text){
-        showToast('Pehle kuch likho! AI analyze karega.','warning');
-        return;
-    }
-    const status=document.getElementById('aiStatus');
-    status.textContent='Analyzing...';
-    status.classList.add('analyzing');
-    
-    setTimeout(()=>{
-        let scores={happy:0,sad:0,angry:0,tired:0,excited:0,calm:0};
-        for(const[mood,keywords]of Object.entries(AI_MOOD_KEYWORDS)){
-            for(const keyword of keywords){
-                if(text.includes(keyword)) scores[mood]+=1;
-            }
-        }
-        let detectedMood='happy';
-        let maxScore=0;
-        for(const[mood,score]of Object.entries(scores)){
-            if(score>maxScore){maxScore=score;detectedMood=mood;}
-        }
-        status.textContent='Detected: '+MOODS[detectedMood].name;
-        status.classList.remove('analyzing');
-        selectMood(detectedMood);
-        showToast('AI ne detect kiya: '+MOODS[detectedMood].emoji+' '+MOODS[detectedMood].name+'!','success');
-        triggerConfetti();
-    },1200);
+function shareRoast() {
+  const txt = document.getElementById('roastText').textContent;
+  const shareText = `😈 Dead or Alive ne mujhe roast kiya:\n\n"${txt}"\n\nKya tum survive kar sakte ho? 💀❤️\ndeadoralive.app`;
+  navigator.clipboard.writeText(shareText);
+  showToast('Roast copied! Share karo 😂', 'success');
 }
 
-// ========== MOOD SELECTION ==========
-function selectMood(mood){
-    document.querySelectorAll('.mood-card').forEach(c=>c.classList.remove('active'));
-    document.querySelector(`[data-mood="${mood}"]`).classList.add('active');
-    state.selectedMood=mood;
-    document.getElementById('selectedMoodEmoji').textContent=MOODS[mood].emoji;
-    document.getElementById('entryTitle').textContent=`Aaj ${MOODS[mood].name} feel kar rahe ho?`;
-    document.getElementById('entrySection').classList.add('visible');
-    updateQuote(mood);
-    document.getElementById('entryText').value='';
-    uploadedPhotos=[];
-    document.getElementById('photoPreviewContainer').innerHTML='';
-    document.getElementById('entrySection').scrollIntoView({behavior:'smooth',block:'center'});
-    updateMusicForMood(mood);
-    if(state.soundEnabled) playSound('select');
+// ══ DARK MEMES ══
+let currentMemeIndex = -1;
+
+function newMeme() {
+  let idx;
+  do { idx = Math.floor(Math.random() * DARK_MEMES.length); }
+  while (idx === currentMemeIndex);
+  currentMemeIndex = idx;
+
+  const meme = DARK_MEMES[idx];
+  const memeCard = document.getElementById('memeCard');
+  document.getElementById('memeText').textContent = meme.emoji + '\n' + meme.text;
+  document.getElementById('memeCaption').textContent = '"' + meme.caption + '"';
+  memeCard.style.display = 'block';
+  memeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function updateQuote(mood){
-    const quotes=QUOTES[mood]||QUOTES.happy;
-    const q=quotes[Math.floor(Math.random()*quotes.length)];
-    document.getElementById('quoteText').textContent=`"${q.text}"`;
-    document.getElementById('quoteAuthor').textContent=`— ${q.author}`;
+function shareMeme() {
+  const meme = DARK_MEMES[currentMemeIndex];
+  if (!meme) return;
+  const shareText = `${meme.emoji}\n${meme.text}\n\n"${meme.caption}"\n\n💀❤️ Dead or Alive — Prove You Exist\ndeadoralive.app`;
+  navigator.clipboard.writeText(shareText);
+  showToast('Meme copied! WhatsApp pe bhejo 😂', 'success');
 }
 
-function cancelEntry(){
-    document.getElementById('entrySection').classList.remove('visible');
-    document.querySelectorAll('.mood-card').forEach(c=>c.classList.remove('active'));
-    state.selectedMood=null;
-    document.getElementById('entryText').value='';
-    uploadedPhotos=[];
-    document.getElementById('photoPreviewContainer').innerHTML='';
+// Show random meme popup on entry save
+function showSaveMeme(mood) {
+  const moodMemes = {
+    '😊': { e: '🎉', t: 'KHUSH HO?\nProve it roz karo 🔥' },
+    '😢': { e: '💙', t: 'UDAAS HO?\nBut still here.\nThat counts. 💪' },
+    '😡': { e: '🔥', t: 'GUSSE MEIN HO?\nAt least alive toh ho 😈' },
+    '😴': { e: '💀', t: 'THAKE HO?\nPhir bhi check-in kiya.\nLegend move.' },
+    '🤩': { e: '⚡', t: 'SUPER ALIVE!\nIs energy ko bottle mein band karo 🔥' },
+    '😌': { e: '🌙', t: 'SHANTI MEIN HO?\nRare species. Protect. 😌' },
+    '🥺': { e: '🫂', t: 'SOFT HOURS?\nValid. Completely valid.' },
+    '😎': { e: '😎', t: 'TOO COOL\nfor this app?\nPhir bhi check-in kiya 💀' }
+  };
+  const m = moodMemes[mood] || { e: '💀', t: 'ALIVE.\nThat is enough.' };
+  const popup = document.createElement('div');
+  popup.className = 'meme-popup';
+  popup.innerHTML = `<div style="font-size:2rem;">${m.e}</div><div style="font-family:'Black Ops One',cursive;font-size:0.9rem;margin-top:0.5rem;line-height:1.5;">${m.t}</div>`;
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add('show'), 100);
+  setTimeout(() => { popup.classList.remove('show'); setTimeout(() => popup.remove(), 400); }, 2500);
 }
 
-// ========== PHOTO UPLOAD ==========
-function handlePhotoUpload(event){
-    const files=event.target.files;
-    const container=document.getElementById('photoPreviewContainer');
-    for(const file of files){
-        const reader=new FileReader();
-        reader.onload=(e)=>{
-            uploadedPhotos.push(e.target.result);
-            const div=document.createElement('div');
-            div.className='photo-preview';
-            div.innerHTML=`<img src="${e.target.result}" onclick="openLightbox('${e.target.result}')"><button class="remove-photo" onclick="removePhoto(this)"><i class="fas fa-times"></i></button>`;
-            container.appendChild(div);
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-function removePhoto(btn){
-    const preview=btn.closest('.photo-preview');
-    const img=preview.querySelector('img');
-    const idx=uploadedPhotos.indexOf(img.src);
-    if(idx>-1) uploadedPhotos.splice(idx,1);
-    preview.remove();
-}
-
-function openLightbox(src){
-    document.getElementById('lightboxImg').src=src;
-    document.getElementById('lightbox').classList.add('active');
-}
-
-function closeLightbox(){
-    document.getElementById('lightbox').classList.remove('active');
-}
-
-// ========== MUSIC PLAYER ==========
-function setupAudioPlayer(){
-    audioPlayer=new Audio();
-    audioPlayer.addEventListener('ended',nextSong);
-    audioPlayer.addEventListener('timeupdate',updateMusicProgress);
-}
-
-function updateMusicForMood(mood){
-    state.currentSong=0;
-    state.isPlaying=false;
-    const songs=MOODS[mood]?.songs||MOODS.happy.songs;
-    document.getElementById('musicTitle').textContent=songs[0].title;
-    document.getElementById('musicArtist').textContent='Mood: '+MOODS[mood].name;
-    document.getElementById('musicCover').innerHTML='<i class="fas fa-music"></i>';
-    document.getElementById('playBtn').innerHTML='<i class="fas fa-play"></i>';
-    document.getElementById('musicCover').classList.remove('playing');
-}
-
-function playMoodMusic(){
-    if(!state.selectedMood){
-        showToast('Pehle mood select karo!','warning');
-        return;
-    }
-    toggleMusic();
-}
-
-function toggleMusic(){
-    if(!state.selectedMood) return;
-    const songs=MOODS[state.selectedMood].songs;
-    if(state.isPlaying){
-        audioPlayer.pause();
-        state.isPlaying=false;
-        document.getElementById('playBtn').innerHTML='<i class="fas fa-play"></i>';
-        document.getElementById('musicCover').classList.remove('playing');
-    }else{
-        audioPlayer.src=songs[state.currentSong].url;
-        audioPlayer.play().catch(()=>showToast('Music load nahi ho raha. Internet check karo.','warning'));
-        state.isPlaying=true;
-        document.getElementById('playBtn').innerHTML='<i class="fas fa-pause"></i>';
-        document.getElementById('musicCover').classList.add('playing');
-    }
-}
-
-function nextSong(){
-    if(!state.selectedMood) return;
-    const songs=MOODS[state.selectedMood].songs;
-    state.currentSong=(state.currentSong+1)%songs.length;
-    document.getElementById('musicTitle').textContent=songs[state.currentSong].title;
-    if(state.isPlaying){
-        audioPlayer.src=songs[state.currentSong].url;
-        audioPlayer.play();
-    }
-}
-
-function prevSong(){
-    if(!state.selectedMood) return;
-    const songs=MOODS[state.selectedMood].songs;
-    state.currentSong=(state.currentSong-1+songs.length)%songs.length;
-    document.getElementById('musicTitle').textContent=songs[state.currentSong].title;
-    if(state.isPlaying){
-        audioPlayer.src=songs[state.currentSong].url;
-        audioPlayer.play();
-    }
-}
-
-function updateMusicProgress(){
-    const pct=(audioPlayer.currentTime/audioPlayer.duration)*100||0;
-    document.getElementById('musicProgressBar').style.width=pct+'%';
-}
-
-// ========== SAVE ENTRY ==========
 function saveEntry(){
-    const text=document.getElementById('entryText').value.trim();
-    const mood=state.selectedMood;
-    if(!mood){showToast('Pehle mood select karo!','warning');return;}
-    if(!text){showToast('Kuch likho apne din ke baare mein!','warning');return;}
-    
-    const entry={
-        id:Date.now(),mood:mood,text:text,date:new Date().toISOString(),
-        timestamp:Date.now(),photos:[...uploadedPhotos]
-    };
-    state.entries.unshift(entry);
-    state.todayEntry=true;
-    updateStreak();
-    addXP(10);
-    if(uploadedPhotos.length>0) addXP(5);
-    checkBadges();
-    saveData();
-    updateUI();
-    cancelEntry();
-    showToast('Entry saved! 🔥 Streak updated!','success');
-    triggerConfetti();
-    if(state.soundEnabled) playSound('success');
-    addToCommunity(entry);
+  if(!S.selectedMood){ showToast('Mood choose karo pehle!','error'); return; }
+  const txt=document.getElementById('journalText').value.trim();
+  const now=new Date();
+  const entry={
+    id:Date.now(), mood:S.selectedMood, label:S.selectedMoodLabel,
+    text:txt, ts:now.toISOString(), xp:10+(txt.length>100?5:0)
+  };
+  
+  S.entries.unshift(entry);
+  S.moodCounts[S.selectedMood]=(S.moodCounts[S.selectedMood]||0)+1;
+  S.xp+=entry.xp;
+
+  const lvlBefore=S.level;
+  S.level=Math.floor(S.xp/100)+1;
+  if(S.level>lvlBefore) setTimeout(()=>showToast('🎉 LEVEL UP! Level '+S.level,'gold'),600);
+
+  checkBadges(); save(); updateAllUI();
+  buildMoodBars(); renderHistory(); buildCalendar();
+  
+  // Supabase mein bhi save karo
+  saveEntryToSupabase(entry);
+
+  S.selectedMood=null; S.selectedMoodLabel=null;
+  document.querySelectorAll('.mood-chip').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('journalText').value='';
+  document.getElementById('aiBox').style.display='none';
+
+  confetti();
+  showSaveMeme(entry.mood);
+  showToast('✅ Entry saved! +'+entry.xp+' XP','success');
+  setTimeout(()=>goPage('home',document.querySelectorAll('.nav-item')[0]),1200);
 }
 
-function updateStreak(){
-    const today=new Date().toDateString();
-    const yesterday=new Date(Date.now()-86400000).toDateString();
-    const lastEntry=state.entries[1];
-    if(lastEntry){
-        const lastDate=new Date(lastEntry.date).toDateString();
-        if(lastDate===yesterday) state.streak++;
-        else if(lastDate!==today) state.streak=1;
-    }else state.streak=1;
-    if(state.streak>state.bestStreak) state.bestStreak=state.streak;
+// ══ TIME CAPSULE ══
+let capsuleDays=7;
+function pickCapsule(btn,days){
+  document.querySelectorAll('.capsule-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  capsuleDays=days;
 }
 
-function addXP(amount){
-    state.xp+=amount;
-    const nextLvl=LEVELS[state.level];
-    if(nextLvl&&state.streak>=nextLvl.min){
-        state.level++;
-        showToast(`Level Up! 🎉 ${LEVELS[state.level-1].name}!`,'success');
-        triggerConfetti();
-    }
+function saveCapsule(){
+  const txt=document.getElementById('capsuleText').value.trim();
+  if(!txt){ showToast('Kuch likho pehle!','error'); return; }
+  if(!S.capsules) S.capsules=[];
+  S.capsules.unshift({text:txt,days:capsuleDays,ts:new Date().toISOString(),streakNeeded:S.streak+capsuleDays});
+  document.getElementById('capsuleText').value='';
+  checkBadges(); save();
+  renderCapsules();
+  showToast(`🔒 Locked for ${capsuleDays} days! Keep your streak!`,'gold');
 }
 
+function renderCapsules(){
+  const el=document.getElementById('capsuleList');
+  if(!S.capsules||!S.capsules.length){ el.innerHTML=''; return; }
+  el.innerHTML=S.capsules.slice(0,5).map(c=>{
+    const daysLeft=Math.max(0,c.streakNeeded-S.streak);
+    const unlocked=daysLeft===0;
+    return `<div class="capsule-item">
+      <span class="capsule-lock-icon">${unlocked?'🔓':'🔒'}</span>
+      <div class="capsule-meta">
+        <div class="capsule-days">${unlocked?'UNLOCKED! Read it:':daysLeft+' more streak days needed'}</div>
+        <div style="font-size:0.8rem;color:var(--text)">${unlocked?c.text:'Your message is locked...'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ══ BADGES ══
 function checkBadges(){
-    const badges=[];
-    if(state.entries.length>=1) badges.push('first');
-    if(state.streak>=7) badges.push('week');
-    if(state.streak>=30) badges.push('month');
-    const uniqueMoods=new Set(state.entries.map(e=>e.mood));
-    if(uniqueMoods.size>=6) badges.push('variety');
-    const hour=new Date().getHours();
-    if(hour>=0&&hour<6) badges.push('night');
-    if(hour>=5&&hour<7) badges.push('early');
-    if(state.entries.some(e=>e.photos&&e.photos.length>0)) badges.push('photo');
-    if(state.badges.includes('social')) badges.push('social');
-    badges.forEach(b=>{
-        if(!state.badges.includes(b)){
-            state.badges.push(b);
-            showToast('New Badge Unlocked! 🏆','success');
-            triggerConfetti();
-        }
-    });
-}
-
-// ========== UI UPDATES ==========
-function updateUI(){
-    document.getElementById('streakNumber').textContent=state.streak;
-    const curLvl=LEVELS.find(l=>state.streak>=l.min&&state.streak<l.max)||LEVELS[0];
-    document.getElementById('levelName').textContent=curLvl.name;
-    const nextLvl=LEVELS.find(l=>l.min>state.streak);
-    if(nextLvl){
-        const pct=((state.streak-curLvl.min)/(nextLvl.min-curLvl.min))*100;
-        document.getElementById('levelProgress').style.width=pct+'%';
-        document.getElementById('progressText').textContent=`${state.streak}/${nextLvl.min} din - Next: ${nextLvl.name}`;
-    }else{
-        document.getElementById('levelProgress').style.width='100%';
-        document.getElementById('progressText').textContent='Max Level! 🎉';
+  BADGES.forEach(b=>{
+    if(!S.badges.includes(b.id)&&b.c(S)){
+      S.badges.push(b.id);
+      setTimeout(()=>showToast('🏆 Badge: '+b.n,'gold'),400);
     }
-    document.getElementById('totalEntries').textContent=state.entries.length;
-    const moodCounts={};
-    state.entries.forEach(e=>moodCounts[e.mood]=(moodCounts[e.mood]||0)+1);
-    let topMood='-',topCount=0;
-    for(const[m,c]of Object.entries(moodCounts)){if(c>topCount){topMood=MOODS[m].emoji+' '+MOODS[m].name;topCount=c;}}
-    document.getElementById('topMood').textContent=topMood;
-    document.getElementById('topMoodPercent').textContent=state.entries.length>0?Math.round((topCount/state.entries.length)*100)+'% din':'0% din';
-    document.getElementById('currentStreak').textContent=state.streak;
-    document.getElementById('bestStreak').textContent=state.bestStreak;
-    document.getElementById('levelDisplay').textContent=state.level;
-    document.getElementById('xpText').textContent=state.xp+' XP';
-    for(const m of Object.keys(MOODS)){
-        document.getElementById('count-'+m).textContent=(moodCounts[m]||0)+' din';
-    }
-    updateChart();
-    updateHistory();
-    updateBadges();
-    generateCalendar();
+  });
 }
 
-function updateChart(){
-    const ctx=document.getElementById('moodChart').getContext('2d');
-    const mc={};
-    state.entries.forEach(e=>mc[e.mood]=(mc[e.mood]||0)+1);
-    const data=Object.keys(MOODS).map(m=>mc[m]||0);
-    const colors=Object.values(MOODS).map(m=>m.color);
-    if(moodChart) moodChart.destroy();
-    moodChart=new Chart(ctx,{
-        type:'doughnut',
-        data:{labels:Object.values(MOODS).map(m=>m.name),datasets:[{data:data,backgroundColor:colors,borderColor:'#12121f',borderWidth:3}]},
-        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',padding:20,font:{size:12}}}},cutout:'60%'}
-    });
+function buildBadges(){
+  document.getElementById('badgesWrap').innerHTML=BADGES.map(b=>`
+    <div class="badge-box ${S.badges.includes(b.id)?'earned':''}">
+      <div class="badge-ico">${b.e}</div>
+      <div class="badge-nm">${b.n}</div>
+    </div>
+  `).join('');
 }
 
-function updateHistory(){
-    const list=document.getElementById('historyList');
-    if(state.entries.length===0){
-        list.innerHTML='<div class="empty-state"><i class="fas fa-book-open"></i><p>Abhi koi history nahi hai. Pehli entry banao!</p></div>';
-        return;
-    }
-    list.innerHTML=state.entries.map(entry=>{
-        const d=new Date(entry.date);
-        const ds=d.toLocaleDateString('hi-IN',{day:'numeric',month:'short',year:'numeric'});
-        const ts=d.toLocaleTimeString('hi-IN',{hour:'2-digit',minute:'2-digit'});
-        let photosHtml='';
-        if(entry.photos&&entry.photos.length>0){
-            photosHtml='<div class="history-images">'+entry.photos.map(p=>`<img src="${p}" onclick="openLightbox('${p}')">`).join('')+'</div>';
-        }
-        return `<div class="history-item"><div class="history-mood">${MOODS[entry.mood].emoji}</div><div class="history-content"><div class="history-text">${entry.text}</div><div class="history-date">${ds} at ${ts} · ${MOODS[entry.mood].name}</div>${photosHtml}</div><button class="history-delete" onclick="deleteEntry(${entry.id})"><i class="fas fa-trash"></i></button></div>`;
-    }).join('');
+// ══ CALENDAR ══
+function buildCalendar(){
+  const today=new Date();
+  const dates=new Set(S.entries.map(e=>e.ts?e.ts.split('T')[0]:''));
+  let html='';
+  for(let i=27;i>=0;i--){
+    const d=new Date(today); d.setDate(d.getDate()-i);
+    const k=d.toISOString().split('T')[0];
+    const isToday=i===0;
+    html+=`<div class="cal-cell ${dates.has(k)?'active':''} ${isToday?'today':''}" title="${k}"></div>`;
+  }
+  document.getElementById('calGrid').innerHTML=html;
 }
 
-function updateBadges(){
-    document.querySelectorAll('.badge-card').forEach(card=>{
-        if(state.badges.includes(card.dataset.badge)) card.classList.add('unlocked');
-    });
+// ══ MOOD BARS ══
+function buildMoodBars(){
+  const moods=['😊','😢','😡','😴','🤩','😌'];
+  const colors=['#ffd700','#4f9eff','#ff2d55','#9b59b6','#ff8c00','#00e5ff'];
+  const max=Math.max(...moods.map(m=>S.moodCounts[m]||0),1);
+  document.getElementById('moodBars').innerHTML=moods.map((m,i)=>`
+    <div class="mood-bar-col">
+      <div class="mood-bar-fill" style="height:${((S.moodCounts[m]||0)/max*100)}%;background:${colors[i]};"></div>
+      <div class="mood-bar-emoji">${m}</div>
+    </div>
+  `).join('');
 }
 
-function generateCalendar(){
-    const grid=document.getElementById('calendarGrid');
-    const today=new Date();
-    const y=today.getFullYear(),m=today.getMonth();
-    const fd=new Date(y,m,1).getDay();
-    const dim=new Date(y,m+1,0).getDate();
-    const ebd={};
-    state.entries.forEach(e=>{
-        const d=new Date(e.date);
-        if(d.getMonth()===m&&d.getFullYear()===y){
-            const day=d.getDate();
-            ebd[day]=(ebd[day]||0)+1;
-        }
-    });
-    let html='';
-    const days=['S','M','T','W','T','F','S'];
-    days.forEach(d=>html+=`<div class="calendar-day empty" style="font-weight:700;color:var(--text-dim)">${d}</div>`);
-    for(let i=0;i<fd;i++) html+='<div class="calendar-day empty"></div>';
-    for(let day=1;day<=dim;day++){
-        const c=ebd[day]||0;
-        let lvl='level-0';
-        if(c>=4) lvl='level-4';else if(c>=3) lvl='level-3';else if(c>=2) lvl='level-2';else if(c>=1) lvl='level-1';
-        const td=day===today.getDate()?'today':'';
-        html+=`<div class="calendar-day ${lvl} ${td}">${day}</div>`;
-    }
-    grid.innerHTML=html;
+// ══ WEATHER ══
+function buildWeather(){
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const today=days[new Date().getDay()];
+  const topMood=Object.entries(S.moodCounts).sort((a,b)=>b[1]-a[1])[0];
+  const insights=[
+    {icon:'☀️',text:`<span>${today}</span> is your check-in day!`},
+    {icon:'📊',text:`Most common mood: <span>${topMood?topMood[0]+' '+topMood[1]+' times':'Track more to see'}</span>`},
+    {icon:'🔥',text:`Current streak: <span>${S.streak} days</span>. Keep going!`},
+    {icon:'⚡',text:`Total XP earned: <span>${S.xp} XP</span>`}
+  ];
+  document.getElementById('weatherInsights').innerHTML=insights.map(i=>`
+    <div class="weather-insight">
+      <span class="weather-icon">${i.icon}</span>
+      <span class="weather-text">${i.text}</span>
+    </div>
+  `).join('');
 }
 
-function deleteEntry(id){
-    state.entries=state.entries.filter(e=>e.id!==id);
-    saveData();updateUI();
-    showToast('Entry deleted','info');
+// ══ COMMUNITY ══
+function renderCommunity(){
+  const myEntry=S.entries[0];
+  let posts=[...DEMO_POSTS];
+  if(myEntry){
+    posts.unshift({name:'You (Just Now)',avi:'⭐',signal:myEntry.mood,text:myEntry.text||'Main zinda hoon!',streak:S.streak,time:'just now',likes:0,isMe:true});
+  }
+  document.getElementById('communityPosts').innerHTML=posts.map((p,i)=>`
+    <div class="community-post">
+      <div class="post-top">
+        <div class="post-avi">${p.avi}</div>
+        <div class="post-info">
+          <div class="post-name">${p.name}</div>
+          <div class="post-time">${p.time}</div>
+        </div>
+        <div class="post-signal">${p.signal}</div>
+      </div>
+      <div class="post-body">${p.text||'...'}</div>
+      <div class="post-streak">🔥 ${p.streak} days alive</div>
+      <div class="post-footer">
+        <button class="react-btn" onclick="firePost(this)">🔥 ${p.likes}</button>
+        <button class="react-btn" onclick="showToast('Reply coming soon!','info')">💬 Reply</button>
+        <button class="react-btn" onclick="showToast('Reported ✓','info')">🚩</button>
+      </div>
+    </div>
+  `).join('');
+
+  // Anon signals
+  document.getElementById('anonSignals').innerHTML=ANON_SIGNALS.map(s=>`
+    <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:1.5rem;">${s.signal}</span>
+      <div style="flex:1;">
+        <div style="font-size:0.85rem;font-weight:700;">${s.msg}</div>
+        <div style="font-size:0.7rem;color:var(--muted);">${(s.count+Math.floor(Math.random()*10)).toLocaleString()} people sent this today</div>
+      </div>
+    </div>
+  `).join('');
 }
 
-function completeChallenge(){
-    if(state.challengeCompleted){
-        showToast('Aaj ka challenge already complete! 🎉','success');
-        return;
-    }
-    state.challengeCompleted=true;
-    addXP(20);state.streak+=2;
-    if(state.streak>state.bestStreak) state.bestStreak=state.streak;
-    document.getElementById('challengeCard').classList.add('completed');
-    document.getElementById('challengeText').textContent='✅ Challenge Complete!';
-    saveData();updateUI();
-    showToast('Challenge complete! +2 Streak Bonus! 🔥','success');
-    triggerConfetti();
+function firePost(btn){
+  btn.classList.toggle('fired');
+  const n=parseInt(btn.textContent.replace('🔥 ',''));
+  btn.textContent='🔥 '+(btn.classList.contains('fired')?n+1:n-1);
 }
 
-// ========== AUTH ==========
-function showAuthModal(){
-    if(state.user){
-        showToast(`Logged in as: ${state.user.email||state.user.displayName||'User'}`,'info');
-        return;
-    }
-    document.getElementById('authModal').classList.add('active');
+// ══ HISTORY ══
+function renderHistory(){
+  const el=document.getElementById('historyList');
+  if(!S.entries.length){
+    el.innerHTML='<div style="text-align:center;color:var(--muted);padding:2rem;">Abhi koi entry nahi. Zinda hone ka saboot do! 🔥</div>';
+    return;
+  }
+  el.innerHTML=S.entries.slice(0,50).map(e=>{
+    const d=new Date(e.ts);
+    return `<div class="history-entry">
+      <div class="h-mood">${e.mood}</div>
+      <div class="h-meta">
+        <div class="h-date">${d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})} • ${d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div>
+        <div class="h-text">${e.text||'<span style="color:var(--muted)">Mood only entry</span>'}</div>
+        <div class="h-xp">+${e.xp||10} XP • ${e.label||''}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-function closeAuthModal(){document.getElementById('authModal').classList.remove('active');}
-
-function switchAuthTab(tab){
-    document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
-    event.target.classList.add('active');
-    document.getElementById('authTitle').textContent=tab==='login'?'Login':'Sign Up';
-    document.getElementById('authBtn').textContent=tab==='login'?'Login':'Sign Up';
+// ══ SHARE ══
+function getShareMsg(){
+  return `💀❤️ DEAD OR ALIVE\n\nMain ${S.streak} din se ALIVE hoon!\nKya tum bhi prove kar sakte ho?\n\n→ deadoralive.app`;
+}
+function doShare(type){
+  S.badges.push('share'); checkBadges(); save();
+  if(type==='wa') window.open('https://wa.me/?text='+encodeURIComponent(getShareMsg()),'_blank');
+  else if(type==='tw') window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(getShareMsg()),'_blank');
+  else if(type==='ig'){ navigator.clipboard.writeText(getShareMsg()); showToast('Copied! Paste on Instagram','info'); }
+  else if(type==='cp'){ navigator.clipboard.writeText(getShareMsg()); showToast('📋 Copied!','success'); }
 }
 
-function handleAuth(){
-    const email=document.getElementById('authEmail').value;
-    const pass=document.getElementById('authPassword').value;
-    if(!email||!pass){showToast('Email aur password dono daalo!','warning');return;}
-    state.user={email:email,displayName:email.split('@')[0],photoURL:`https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`};
-    document.getElementById('userAvatar').src=state.user.photoURL;
-    closeAuthModal();
-    showToast('Login successful! Welcome! 🎉','success');
-    triggerConfetti();
-    saveData();
+// ══ UPDATE UI ══
+function updateAllUI(){
+  const streak=S.streak;
+  document.getElementById('hStreak').textContent=streak;
+  document.getElementById('homeStreakNum').textContent=streak;
+  document.getElementById('homeBestStreak').textContent=S.bestStreak;
+  document.getElementById('shareStreak').textContent=streak;
+  document.getElementById('sTotal').textContent=S.entries.length;
+  document.getElementById('sStreak').textContent=streak;
+  document.getElementById('sBest').textContent=S.bestStreak;
+  document.getElementById('sXP').textContent=S.xp;
+
+  // Level
+  const lvlDef=LEVELS.slice().reverse().find(l=>streak>=l.min)||LEVELS[0];
+  document.getElementById('homeLevelTag').textContent=lvlDef.name;
+
+  // XP
+  const xpForLevel=S.level*100;
+  const xpCurrent=S.xp%(xpForLevel)||S.xp;
+  document.getElementById('xpLevel').textContent='LEVEL '+S.level;
+  document.getElementById('xpPoints').textContent=xpCurrent+' / '+xpForLevel+' XP';
+  document.getElementById('xpFill').style.width=(xpCurrent/xpForLevel*100)+'%';
+  document.getElementById('xpNext').textContent='Next: '+lvlDef.next;
+
+  // Pulse button state
+  const pb=document.getElementById('mainPulseBtn');
+  if(hasToday()){
+    pb.classList.add('done');
+    document.getElementById('pulseHeart').textContent='❤️';
+    document.getElementById('pulseBtnText').textContent='ALIVE TODAY';
+    document.getElementById('pulseSubtitle').textContent='Saboot de diya! Entry bhi banao 📝';
+  }
+  
+  // Fire size based on streak
+  const fire=document.getElementById('homeStreakFire');
+  if(streak>=30) fire.style.fontSize='4rem';
+  else if(streak>=7) fire.style.fontSize='3.5rem';
+  else fire.style.fontSize='3rem';
+  
+  buildWeather();
 }
 
-function socialLogin(provider){
-    state.user={email:`user@${provider}.com`,displayName:provider+' User',photoURL:`https://api.dicebear.com/7.x/avataaars/svg?seed=${provider}`};
-    document.getElementById('userAvatar').src=state.user.photoURL;
-    closeAuthModal();
-    showToast(`${provider} login successful! 🎉`,'success');
-    triggerConfetti();
-    saveData();
+// ══ NAVIGATION ══
+function goPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  
+  if(id==='stats'){ buildCalendar(); buildBadges(); buildMoodBars(); buildWeather(); }
+  if(id==='community'){ renderCommunity(); }
+  if(id==='history'){ renderHistory(); }
+  if(id==='entry'){ renderCapsules(); }
+  
+  // Hide community badge
+  if(id==='community') document.getElementById('communityBadge').style.display='none';
+  
+  window.scrollTo(0,0);
 }
 
-// ========== SHARE ==========
-function showShareModal(){
-    document.getElementById('shareStreak').textContent=state.streak+' 🔥';
-    document.getElementById('shareModal').classList.add('active');
-}
+// ══ MODAL ══
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 
-function closeShareModal(){document.getElementById('shareModal').classList.remove('active');}
-
-function shareTo(platform){
-    const text=`Main ${state.streak} din se zinda hoon! 🔥 Kya tum? #ZindaHo`;
-    const url=window.location.href;
-    let shareUrl='';
-    switch(platform){
-        case 'whatsapp':shareUrl=`https://wa.me/?text=${encodeURIComponent(text+' '+url)}`;break;
-        case 'twitter':shareUrl=`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;break;
-        case 'instagram':showToast('Instagram par screenshot share karo! 📸','info');return;
-    }
-    if(shareUrl) window.open(shareUrl,'_blank');
-    state.badges.push('social');
-    checkBadges();
-}
-
-function copyLink(){
-    navigator.clipboard.writeText(window.location.href);
-    showToast('Link copied! 📋','success');
-}
-
-// ========== NOTIFICATIONS ==========
-function toggleNotifications(){
-    if(!state.notificationsEnabled){
-        enableNotifications();
-    }else{
-        state.notificationsEnabled=false;
-        document.getElementById('notifIcon').className='fas fa-bell-slash';
-        showToast('Notifications OFF','info');
-    }
-}
-
-function enableNotifications(){
-    if(!('Notification' in window)){
-        showToast('Browser notifications supported nahi hain.','warning');
-        return;
-    }
-    Notification.requestPermission().then(perm=>{
-        if(perm==='granted'){
-            state.notificationsEnabled=true;
-            document.getElementById('notifIcon').className='fas fa-bell';
-            document.getElementById('notifBanner').classList.add('hidden');
-            showToast('Daily reminders ON! 🔔','success');
-            new Notification('Zinda Ho?',{body:'Daily check-in ke liye ready ho?',icon:'https://api.dicebear.com/7.x/avataaars/svg?seed=zinda'});
-        }else{
-            showToast('Notifications allow karo settings se.','warning');
-        }
-    });
-}
-
-function requestNotificationPermission(){
-    if('Notification' in window&&Notification.permission==='granted'){
-        state.notificationsEnabled=true;
-        document.getElementById('notifIcon').className='fas fa-bell';
-        document.getElementById('notifBanner').classList.add('hidden');
-    }
-}
-
-function scheduleDailyReminder(){
-    if(!state.notificationsEnabled) return;
-    const now=new Date();
-    const evening=new Date(now.getFullYear(),now.getMonth(),now.getDate(),20,0,0);
-    if(evening<now) evening.setDate(evening.getDate()+1);
-    const ms=evening-now;
-    setTimeout(()=>{
-        if(state.notificationsEnabled){
-            new Notification('Zinda Ho? 🌙',{body:'Aaj ka check-in abhi baki hai! Streak mat todto!',icon:'https://api.dicebear.com/7.x/avataaars/svg?seed=zinda'});
-        }
-        scheduleDailyReminder();
-    },ms);
-}
-
-// ========== SOUND ==========
-function toggleSound(){
-    state.soundEnabled=!state.soundEnabled;
-    document.getElementById('soundIcon').className=state.soundEnabled?'fas fa-volume-up':'fas fa-volume-xmark';
-    showToast(state.soundEnabled?'Sound ON 🔊':'Sound OFF 🔇','info');
-}
-
-function playSound(type){
-    try{
-        const ctx=new(window.AudioContext||window.webkitAudioContext)();
-        const osc=ctx.createOscillator();
-        const gain=ctx.createGain();
-        osc.connect(gain);gain.connect(ctx.destination);
-        if(type==='select'){osc.frequency.value=523;gain.gain.value=0.08;osc.start();osc.stop(ctx.currentTime+0.1);}
-        else if(type==='success'){osc.frequency.value=784;gain.gain.value=0.08;osc.start();osc.frequency.setValueAtTime(784,ctx.currentTime);osc.frequency.setValueAtTime(988,ctx.currentTime+0.1);osc.stop(ctx.currentTime+0.3);}
-    }catch(e){}
-}
-
-function triggerConfetti(){
-    confetti({particleCount:120,spread:80,origin:{y:0.6},colors:['#6366f1','#ec4899','#f59e0b','#10b981','#3b82f6']});
-}
-
+// ══ TOAST ══
 function showToast(msg,type='info'){
-    const container=document.getElementById('toastContainer');
-    const toast=document.createElement('div');
-    toast.className='toast';
-    const icons={success:'✅',warning:'⚠️',error:'❌',info:'ℹ️'};
-    toast.innerHTML=`<span class="toast-icon">${icons[type]||'ℹ️'}</span><div class="toast-content"><div class="toast-title">${type.charAt(0).toUpperCase()+type.slice(1)}</div><div class="toast-message">${msg}</div></div>`;
-    container.appendChild(toast);
-    setTimeout(()=>{toast.style.animation='toastSlide 0.4s ease reverse';setTimeout(()=>toast.remove(),400);},3500);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+type;
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// ========== VOICE INPUT ==========
-function setupSpeechRecognition(){
-    if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
-        const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-        recognition=new SR();
-        recognition.lang='hi-IN';
-        recognition.continuous=false;
-        recognition.interimResults=false;
-        recognition.onresult=(e)=>{
-            document.getElementById('entryText').value+=e.results[0][0].transcript;
-            document.getElementById('voiceBtn').classList.remove('recording');
-        };
-        recognition.onerror=()=>{document.getElementById('voiceBtn').classList.remove('recording');showToast('Voice error. Try again.','error');};
-        recognition.onend=()=>document.getElementById('voiceBtn').classList.remove('recording');
-    }
+// ══ CONFETTI ══
+function confetti(){
+  const cols=['#ff2d55','#ff8c00','#ffd700','#00f5ff','#39ff14','#ff6b35'];
+  for(let i=0;i<25;i++){
+    const el=document.createElement('div');
+    el.className='confetti-p';
+    el.style.cssText=`left:${Math.random()*100}vw;top:30%;width:${4+Math.random()*8}px;height:${4+Math.random()*8}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*0.4}s;animation-duration:${1+Math.random()*0.8}s;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
 }
 
-function toggleVoiceInput(){
-    if(!recognition){showToast('Voice input not supported','warning');return;}
-    const btn=document.getElementById('voiceBtn');
-    if(btn.classList.contains('recording')){recognition.stop();btn.classList.remove('recording');}
-    else{recognition.start();btn.classList.add('recording');showToast('Bolna shuru karo... 🎤','info');}
-}
-
-// ========== COMMUNITY ==========
-function addToCommunity(entry){
-    const posts=document.getElementById('communityPosts');
-    const post=document.createElement('div');
-    post.className='community-post';
-    let photosHtml='';
-    if(entry.photos&&entry.photos.length>0){
-        photosHtml='<div class="post-images">'+entry.photos.map(p=>`<img src="${p}" onclick="openLightbox('${p}')">`).join('')+'</div>';
-    }
-    post.innerHTML=`<div class="post-header"><div class="post-user"><img src="${state.user?state.user.photoURL:'https://api.dicebear.com/7.x/avataaars/svg?seed=anonymous'}" class="post-avatar"><div class="post-user-info"><h5>${state.user?state.user.displayName:'Anonymous'}</h5><span>Just now</span></div></div><span class="post-mood">${MOODS[entry.mood].emoji}</span></div><div class="post-text">${entry.text.substring(0,150)}${entry.text.length>150?'...':''}</div>${photosHtml}<div class="post-actions"><button class="post-action" onclick="this.classList.toggle('liked');this.querySelector('span').textContent=parseInt(this.querySelector('span').textContent)+(this.classList.contains('liked')?1:-1)"><i class="fas fa-heart"></i><span>0</span></button><button class="post-action"><i class="fas fa-comment"></i><span>0</span></button><button class="post-action"><i class="fas fa-share"></i></button></div>`;
-    posts.insertBefore(post,posts.firstChild);
-}
-
-function startLiveCommunity(){
-    const samplePosts=[
-        {mood:'happy',text:'Aaj office mein promotion mila! Bohot khush hoon! 🎉',time:'2 min ago',user:'Rahul',avatar:'rahul'},
-        {mood:'calm',text:'Subah ki chai aur baarish ka mausam. Perfect Sunday.',time:'5 min ago',user:'Priya',avatar:'priya'},
-        {mood:'excited',text:'Kal Goa ja raha hoon! First time beach dekhunga! 🏖️',time:'12 min ago',user:'Amit',avatar:'amit'},
-        {mood:'tired',text:'3 din se proper sleep nahi mila. Need rest.',time:'20 min ago',user:'Sneha',avatar:'sneha'},
-        {mood:'sad',text:'Dost se jhagda ho gaya. Udaas hoon.',time:'30 min ago',user:'Vikram',avatar:'vikram'},
-        {mood:'angry',text:'Traffic mein 2 ghante waste. Gussa aa raha hai! 😤',time:'45 min ago',user:'Neha',avatar:'neha'}
-    ];
-    const posts=document.getElementById('communityPosts');
-    samplePosts.forEach(p=>{
-        const post=document.createElement('div');
-        post.className='community-post';
-        const likes=Math.floor(Math.random()*50);
-        post.innerHTML=`<div class="post-header"><div class="post-user"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${p.avatar}" class="post-avatar"><div class="post-user-info"><h5>${p.user}</h5><span>${p.time}</span></div></div><span class="post-mood">${MOODS[p.mood].emoji}</span></div><div class="post-text">${p.text}</div><div class="post-actions"><button class="post-action" onclick="this.classList.toggle('liked');this.querySelector('span').textContent=parseInt(this.querySelector('span').textContent)+(this.classList.contains('liked')?1:-1)"><i class="fas fa-heart"></i><span>${likes}</span></button><button class="post-action"><i class="fas fa-comment"></i><span>${Math.floor(Math.random()*10)}</span></button><button class="post-action"><i class="fas fa-share"></i></button></div>`;
-        posts.appendChild(post);
+// ══ NOTIF ══
+function toggleNotif(){
+  if('Notification' in window){
+    Notification.requestPermission().then(p=>{
+      if(p==='granted') showToast('🔔 Notifications on!','success');
+      else showToast('Notifications blocked','error');
     });
+  } else showToast('Browser notifications not supported','error');
 }
 
-// ========== EXPORT ==========
-function exportData(){
-    const data=JSON.stringify(state,null,2);
-    const blob=new Blob([data],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;a.download='zinda-ho-data.json';a.click();
-    URL.revokeObjectURL(url);
-    showToast('Data exported! 💾','success');
-}
-
-function saveData(){localStorage.setItem('zindaHoState',JSON.stringify(state));}
-
-function loadData(){
-    const saved=localStorage.getItem('zindaHoState');
-    if(saved){
-        const parsed=JSON.parse(saved);
-        state={...state,...parsed};
-        if(state.user&&state.user.photoURL){
-            document.getElementById('userAvatar').src=state.user.photoURL;
-        }
-    }
-}
-
-// Close modals on outside click
-document.getElementById('shareModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeShareModal();});
-document.getElementById('authModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuthModal();});
+window.onload=init;
 </script>
 </body>
-</html>'''
-
-# Append part 2
-with open('/mnt/agents/output/zinda-ho-v2.html', 'a', encoding='utf-8') as f:
-    f.write(part2)
-
-import os
-file_size = os.path.getsize('/mnt/agents/output/zinda-ho-v2.html')
-print(f"Complete file saved! Size: {file_size} bytes ({file_size/1024:.1f} KB)")
+</html>
